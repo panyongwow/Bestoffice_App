@@ -5,28 +5,52 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 //一级目录分类显示
 export default class ListgoodsTop extends Component{
     render(){
+        const navigation=this.props.navigation
         return(
             <View style={styles.container}>
                 <View style={styles.sub_container}>
-                    <TouchableOpacity style={styles.item}>
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:1})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='file' size={20} color='white' />
                         </View>
                         <Text style={styles.iconfont}>办公用纸</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item}>
+
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:2})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='cut' size={20} color='white' />
                         </View>
                         <Text style={styles.iconfont}>办公文具</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item}>
+
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:3})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='marker' size={20} color='white' />
                         </View>
                         <Text style={styles.iconfont}>办公耗材</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item}>
+
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:4})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='box' size={20} color='white' />
                         </View>
@@ -34,25 +58,48 @@ export default class ListgoodsTop extends Component{
                     </TouchableOpacity>
                 </View>
                 <View style={styles.sub_container}>
-                    <TouchableOpacity style={styles.item}>
+                <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:5})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='fax' size={20} color='white' />
                         </View>
                         <Text style={styles.iconfont}>办公设备</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item}>
+
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:6})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='keyboard' size={20} color='white' />
                         </View>
                         <Text style={styles.iconfont}>电脑配件</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item}>
+
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:7})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='headphones' size={20} color='white' />
                         </View>
                         <Text style={styles.iconfont}>数码设备</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item}>
+
+                    <TouchableOpacity 
+                        style={styles.item}
+                        onPress={()=>{
+                            navigation.navigate('ListGoods',{id:8})
+                        }}
+                    >
                         <View style={styles.iconborder}>
                             <FontAwesome5 name='university' size={20} color='white' />
                         </View>

@@ -3,34 +3,38 @@ import {StyleSheet,Image,View,TouchableOpacity} from 'react-native'
 
 //副广告区
 export default class SubAD extends Component{
+    constructor(){
+        super()
+    }
+
     render(){
+        const navigation=this.props.navigation
         return(
+
              <View style={styles.container}>
-                 <View style={{flexDirection:'row',justifyContent:'center'}}>
-                    <TouchableOpacity>
-                        <Image resizeMode="stretch" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170109113320_8574.jpg'}} />
-                    </TouchableOpacity> 
-                    <TouchableOpacity> 
-                        <Image resizeMode="stretch" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170109113553_3661.jpg'}} />
-                    </TouchableOpacity>       
-                 </View>
-                 <View style={{flexDirection:'row',justifyContent:'center'}}>
-                    <TouchableOpacity>
-                        <Image resizeMode="stretch" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170831145811_2506.jpg'}} />
-                    </TouchableOpacity> 
-                    <TouchableOpacity> 
-                        <Image resizeMode="stretch" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170824163810_2986.jpg'}} />
-                    </TouchableOpacity>       
-                 </View>
-                 <View style={{flexDirection:'row',justifyContent:'center'}}>
-                    <TouchableOpacity>
-                        <Image resizeMode="stretch" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170824163333_9028.jpg'}} />
-                    </TouchableOpacity> 
-                    <TouchableOpacity> 
-                        <Image resizeMode="stretch" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170109114600_4688.jpg'}} />
-                    </TouchableOpacity>       
-                 </View>                 
+             {
+                this.props.data.map((item,index)=>{
+                    return(
+                        <ViceAD item={item} key={index} navigation={navigation} />
+                    )
+                })
+             }
              </View>
+        )
+    }
+}
+
+class ViceAD extends Component{
+    render(){
+        const item=this.props.item
+        return(
+            <TouchableOpacity
+                onPress={()=>{
+                    this.props.navigation.navigate('Product',{id:1})
+                }}
+            >
+                <Image resizeMode="stretch" style={styles.img} source={{uri:item.picname}} />
+            </TouchableOpacity> 
         )
     }
 }
@@ -38,8 +42,8 @@ export default class SubAD extends Component{
 const styles =StyleSheet.create({
     container:{
         flex:1,
-        // backgroundColor:'red',
-        // padding:5,
+        flexDirection:'row',
+        flexWrap:'wrap',
         margin:5
     },
     img:{

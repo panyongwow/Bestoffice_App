@@ -6,10 +6,12 @@ import My from '../containers/my'
 import ShoppingCart from '../containers/shoppingcart'
 import ListGoods from '../containers/listgoods'
 import Welcome from '../../welcome'
+import Product from '../containers/product'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 export const RootStack=StackNavigator({
     Welcome:{screen:Welcome},
+    Product:{screen:Product},
     Main:{
         screen:createBottomTabNavigator({
             HomePage:{

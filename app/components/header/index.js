@@ -30,14 +30,6 @@ export default class Header extends Component{
                             )
                         })
                     }
-                    {/* <TouchableOpacity
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:123})
-                        }}
-                    >
-                        <Text style={styles.tag}>档案夹</Text>
-                    </TouchableOpacity>
-              */}
                 </View>
             </View>                     
         )

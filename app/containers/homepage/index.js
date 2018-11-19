@@ -11,25 +11,40 @@ export default class HomePage extends Component{
     constructor(props){
         super(props)
         this.state={
-            Tag:[]
+            Tag:[],
+            AD:[],
+            ViceAD:[]
         }
     }
     componentDidMount(){
         this.loadData()
     }
+    //获取首页相关数据
     loadData(){
-     //   HomePageDao.init()
-        this.loadTag()
-    }
-    //获取热门标签
-    loadTag(){
-        HomePageDao.get('TAG')
+        HomePageDao.get()
             .then(result=>{
                 this.setState({
-                    Tag:result
+                    Tag:result.tag,
+                    AD:result.ad,
+                    ViceAD:result.vice_ad
                 })
             })
-
+    }
+    loadTag(){
+        HomePageDao.get('AD')
+            .then(result=>{
+                this.setState({
+                    Tag:result.tag
+                })
+            })
+    }    
+    loadAD(){
+        HomePageDao.get('AD')
+            .then(result=>{
+                this.setState({
+                    AD:result.ad
+                })
+            })
     }
     render(){
         const {navigation}=this.props
@@ -39,23 +54,30 @@ export default class HomePage extends Component{
                     <Header tag={this.state.Tag} navigation={this.props.navigation} />
                 </View> 
                 <ScrollView>
-                    <View style={{height:130}}><ListgoodsTop /></View>
+                    <View style={{height:130}}><ListgoodsTop  navigation={this.props.navigation} /></View>
                     <View style={styles.ad}><AD /></View>
                     {/* <View style={{height:10}}></View> */}
-                    <View><SubAD /></View>
+                    <View><SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  /></View>
                     <Hot />
                     {/* <View style={{height:40}}></View> */}
                     {/* <Text>主页</Text> */}
                     {/* <View style={{height:300}}>
                     <Text>这是Homepage！</Text>
                     </View> */}
-                    {/* <View style={{height:300}}><Text>{JSON.stringify(this.state.Tag)}</Text></View> */}
+                    <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>
+                    <View style={{height:200}}><Text>{JSON.stringify(this.state.AD)}</Text></View>                    
                     <Button
-                        title='获取Tag'
+                        title='获取tag数据'
                         onPress={()=>{
                             this.loadTag()
                         }}
-                    />                    
+                    />   
+                    <Button
+                        title='获取AD数据'
+                        onPress={()=>{
+                            this.loadAD()
+                        }}
+                    />                                      
                     <Button
                         title='go to 我的'
                         onPress={()=>{

@@ -55,7 +55,7 @@ export default class HomePage extends Component{
                 </View> 
                 <ScrollView>
                     <View style={{height:130}}><ListgoodsTop  navigation={this.props.navigation} /></View>
-                    <View style={styles.ad}><AD /></View>
+                    <View style={styles.ad}><AD data={this.state.AD} navigation={this.props.navigation} /></View>
                     {/* <View style={{height:10}}></View> */}
                     <View><SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  /></View>
                     <Hot />

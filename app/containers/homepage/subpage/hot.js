@@ -11,11 +11,11 @@ export default class Hot extends Component{
                     <FontAwesome5 name='hotjar' color='red' size={20} />
                     <Text style={styles.title}>热卖商品</Text>  
                 </View> 
-                <View style={{flexDirection:'row',justifyContent:'center'}}>
+                <View style={{flexDirection:'row',justifyContent:'center',flexWrap:'wrap'}}>
                     <TouchableOpacity style={styles.item}>
                         <Image style={styles.image} resizeMode="stretch" source={{uri:"http://www.bestoffice.cn:8806/product/25/320/42741d0e6233801ef63213bb4ae2818e_s.jpg"}} />
-                        <Text style={{width:150,textAlign:'left',fontSize:13,textAlign:'justify'}}>晨光 0.5创意按动中性笔GP-1008(黑色）</Text>
-                        <View style={{flexDirection:'row',margin:2,alignItems:'flex-end'}}>
+                        <Text style={{width:150,textAlign:'left',fontSize:13,backgroundColor:'#FFFFF0',borderTopWidth:1,borderTopColor:'#b0c4de',padding:2}}>晨光 0.5创意按动中性笔GP-1008(黑色）</Text>
+                        <View style={{flexDirection:'row',margin:0,alignItems:'flex-end',backgroundColor:'#FFFFF0',paddingLeft:4,borderBottomLeftRadius:3,borderBottomRightRadius:3}}>
                             <Text style={{color:'red',fontSize:16,fontWeight:'bold',marginRight:2}}>¥</Text>
                             <Text style={{color:'red',fontSize:18,fontWeight:'bold'}}>2.2</Text>
                         </View>
@@ -28,9 +28,9 @@ export default class Hot extends Component{
                             <Text style={{color:'red',fontSize:18,fontWeight:'bold'}}>30.3</Text>
                         </View>
                     </TouchableOpacity>                    
-                </View>
-                <View style={{flexDirection:'row',justifyContent:'center'}}>
-                <TouchableOpacity style={styles.item}>
+                {/* </View>
+                <View style={{flexDirection:'row',justifyContent:'center'}}> */}
+                    <TouchableOpacity style={styles.item}>
                         <Image style={styles.image} resizeMode="stretch" source={{uri:"http://www.bestoffice.cn:8806/product/84/26495/6807cd57611330f363e8d959f6f611e4_s.jpg"}} />
                         <Text style={{width:150,textAlign:'left',fontSize:13,textAlign:'justify'}}>优仕 natural A4 70G 复印纸</Text>
                         <View style={{flexDirection:'row',margin:2,alignItems:'flex-end'}}>
@@ -75,7 +75,8 @@ const styles=StyleSheet.create({
     image:{
         height:150,
         width:150,
-        borderRadius:2,
+        borderTopLeftRadius:3,
+        borderTopRightRadius:3,
         // borderColor:'black',
         // borderWidth:1,
         //margin:5,

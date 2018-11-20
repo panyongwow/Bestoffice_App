@@ -4,18 +4,12 @@ import  Storage from '../storage'
 
 export default class HomePageDao{
     static init(callback){
-
         this.clear()
-
-        //const url='/ajax/homepage/list.ashx'
         const url='/ajax/homepage/list.ashx'
-
 
         fetch(BSTURL + url)
             .then(res=>res.json())
             .then(result=>{
-                // Storage.save('TAG',result.tag)
-                // Storage.save('AD',result.ad)
                 Storage.save('HomePage',result.details)
                 callback()
             })
@@ -28,8 +22,6 @@ export default class HomePageDao{
     }
 
     static clear(){
-        // Storage.remove('TAG')
-        // Storage.remove('AD')
         Storage.remove('HomePage')
     }
 }

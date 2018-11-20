@@ -13,7 +13,8 @@ export default class HomePage extends Component{
         this.state={
             Tag:[],
             AD:[],
-            ViceAD:[]
+            ViceAD:[],
+            ProductHot:[]
         }
     }
     componentDidMount(){
@@ -26,7 +27,8 @@ export default class HomePage extends Component{
                 this.setState({
                     Tag:result.tag,
                     AD:result.ad,
-                    ViceAD:result.vice_ad
+                    ViceAD:result.vice_ad,
+                    ProductHot:result.product_hot
                 })
             })
     }
@@ -38,14 +40,6 @@ export default class HomePage extends Component{
                 })
             })
     }    
-    loadAD(){
-        HomePageDao.get('AD')
-            .then(result=>{
-                this.setState({
-                    AD:result.ad
-                })
-            })
-    }
     render(){
         const {navigation}=this.props
         return(
@@ -65,8 +59,8 @@ export default class HomePage extends Component{
                     <Text>这是Homepage！</Text>
                     </View> */}
                     <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>
-                    <View style={{height:200}}><Text>{JSON.stringify(this.state.AD)}</Text></View>                    
-                    <Button
+                    <View style={{height:200}}><Text>{JSON.stringify(this.state.ProductHot)}</Text></View>                    
+                    {/* <Button
                         title='获取tag数据'
                         onPress={()=>{
                             this.loadTag()
@@ -77,7 +71,7 @@ export default class HomePage extends Component{
                         onPress={()=>{
                             this.loadAD()
                         }}
-                    />                                      
+                    />                                       */}
                     <Button
                         title='go to 我的'
                         onPress={()=>{

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {StyleSheet,Image,View} from 'react-native'
+import {StyleSheet,Image,View,TouchableOpacity} from 'react-native'
 import Swiper from 'react-native-swiper'
 
 export default class AD extends Component{
@@ -15,15 +15,20 @@ export default class AD extends Component{
                 showsButtons={false}
                 showsPagination={false}                
             >
-                
-                {/* <Image source={require('../../../res/images/ic_star.png')} style={styles.img}/>
-                <Image source={require('../../../res/images/ic_favorite.png')} style={styles.img}/> */}
-                <Image resizeMode="contain" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20150908142808_3704.jpg'}} />
-                <Image resizeMode="contain" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170810125519_6228.jpg'}} />
-                <Image resizeMode="contain" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170109125650_1879.jpg'}} />
-                <Image resizeMode="contain" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170509102920_0312.jpg'}} />
-                <Image resizeMode="contain" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170109175416_8006.jpg'}} />
-                <Image resizeMode="contain" style={styles.img} source={{uri:'http://www.bestoffice.com.cn:8806/homepage/20170810120512_6588.jpg'}} />
+                {
+                    this.props.data.map((item,index)=>{
+                        return(
+                            <TouchableOpacity 
+                                key={index} 
+                                onPress={()=>{
+                                    this.props.navigation.navigate('Product',{id:1})
+                                }}
+                            >
+                                <Image resizeMode="contain" style={styles.img} source={{uri:item.picname}} />
+                            </TouchableOpacity>
+                        )
+                    })
+                }
             </Swiper>
         )
     }
@@ -35,7 +40,6 @@ const styles = StyleSheet.create({
         height:165,
     },
     img: {
-        // width: 300,
         height: 162,
     }
 });

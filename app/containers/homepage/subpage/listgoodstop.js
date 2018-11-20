@@ -114,7 +114,8 @@ export default class ListgoodsTop extends Component{
 const styles=StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'#ffffff'
+        backgroundColor:'#ffffff',
+        height:130
     },
     sub_container:{
         flexDirection:'row',

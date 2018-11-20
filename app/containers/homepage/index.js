@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import {View,Text,Button,StyleSheet,ScrollView} from 'react-native'
+import {View,Text,Button,StyleSheet,ScrollView,Image} from 'react-native'
 import Header from '../../components/header'
 import AD from './subpage/ad'
 import ListgoodsTop from './subpage/listgoodstop'
+import ListgoodsAD from './subpage/listgoodsad'
 import SubAD from './subpage/subad'
 import Hot from './subpage/hot'
 import HomePageDao from '../../dao/homepage'
@@ -14,7 +15,9 @@ export default class HomePage extends Component{
             Tag:[],
             AD:[],
             ViceAD:[],
-            ProductHot:[]
+            ProductHot:[],
+            ProductBargain:[],
+            ProductNew:[]
         }
     }
     componentDidMount(){
@@ -28,7 +31,9 @@ export default class HomePage extends Component{
                     Tag:result.tag,
                     AD:result.ad,
                     ViceAD:result.vice_ad,
-                    ProductHot:result.product_hot
+                    ProductHot:result.product_hot,
+                    ProductBargain:result.product_bargain,
+                    ProductNew:result.product_new
                 })
             })
     }
@@ -48,18 +53,20 @@ export default class HomePage extends Component{
                     <Header tag={this.state.Tag} navigation={this.props.navigation} />
                 </View> 
                 <ScrollView>
-                    <View style={{height:130}}><ListgoodsTop  navigation={this.props.navigation} /></View>
-                    <View style={styles.ad}><AD data={this.state.AD} navigation={this.props.navigation} /></View>
-                    {/* <View style={{height:10}}></View> */}
-                    <View><SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  /></View>
-                    <Hot />
-                    {/* <View style={{height:40}}></View> */}
-                    {/* <Text>主页</Text> */}
-                    {/* <View style={{height:300}}>
-                    <Text>这是Homepage！</Text>
-                    </View> */}
-                    <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>
-                    <View style={{height:200}}><Text>{JSON.stringify(this.state.ProductHot)}</Text></View>                    
+                    <ListgoodsTop navigation={this.props.navigation} />
+                    <View style={styles.ad}>
+                        <AD data={this.state.AD}  navigation={this.props.navigation}  />
+                    </View>
+                    <SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  />
+                    <Hot  
+                        ProductHot={this.state.ProductHot}  
+                        ProductBargain={this.state.ProductBargain}
+                        ProductNew={this.state.ProductNew}
+                        navigation={this.props.navigation} 
+                    />
+                    <ListgoodsAD />
+                    {/* <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>
+                    <View style={{height:200}}><Text>{JSON.stringify(this.state.ProductHot)}</Text></View>                     */}
                     {/* <Button
                         title='获取tag数据'
                         onPress={()=>{
@@ -98,18 +105,12 @@ export default class HomePage extends Component{
 
 const styles=StyleSheet.create({
     container:{
-        //height:8000,
-        // backgroundColor:'red' 
         flex:1
     },
     ad:{
         height:162
     },
     header:{
-        // top:0,
-        // left:0,
-        // right:0,
-        // position:'absolute'
         backgroundColor:'red'
     }
 })

@@ -8,119 +8,40 @@ export default class ListgoodsTop extends Component{
         const navigation=this.props.navigation
         return(
             <View style={styles.container}>
+                {/* 左侧咨询按钮 */}
                 <TouchableOpacity 
-                    style={[styles.item,{justifyContent:'center',felx:1,backgroundColor:'#f0f0f0',marginTop:0,marginBottom:0,marginLeft:0,padding:8,borderBottomRightRadius:300,borderTopRightRadius:300}]}
+                    activeOpacity={0.5}                
+                    style={[styles.item,styles.news_item]}
                     onPress={()=>{
-                        navigation.navigate('ListGoods',{id:6})
+                        navigation.navigate('News')
                     }}
                 >
                     <View style={styles.iconborder}>
                         <FontAwesome5 name='comment' size={20} color='white' />
                     </View>
                     <Text style={styles.iconfont}>资讯</Text>
-                </TouchableOpacity>              
-                <View style={{flex:10}}>
-                <View style={styles.sub_container}>
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:1})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='file' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>办公用纸</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:2})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='cut' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>办公文具</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:3})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='marker' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>办公耗材</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:4})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='box' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>办公家具</Text>
-                    </TouchableOpacity>
+                </TouchableOpacity>      
+                
+                {/* 商品八大类目录 */}
+                <View>
+                    <View style={styles.sub_container}>
+                        <ListgoodsItem id={1} iconName='file' name='办公用纸' navigation={navigation} />
+                        <ListgoodsItem id={2} iconName='cut' name='办公文具' navigation={navigation} />
+                        <ListgoodsItem id={3} iconName='marker' name='办公耗材' navigation={navigation} />
+                        <ListgoodsItem id={4} iconName='box' name='办公家具' navigation={navigation} />                                                
+                    </View>
+                    <View style={styles.sub_container}>
+                        <ListgoodsItem id={5} iconName='fax' name='办公设备' navigation={navigation} />
+                        <ListgoodsItem id={6} iconName='keyboard' name='电脑配件' navigation={navigation} />
+                        <ListgoodsItem id={7} iconName='headphones' name='数码设备' navigation={navigation} />
+                        <ListgoodsItem id={8} iconName='university' name='日常生活' navigation={navigation} />                      
+                    </View>
                 </View>
-                <View style={styles.sub_container}>
+                
+                {/* 右侧热销榜按钮 */}
                 <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:5})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='fax' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>办公设备</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:6})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='keyboard' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>电脑配件</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:7})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='headphones' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>数码设备</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={styles.item}
-                        onPress={()=>{
-                            navigation.navigate('ListGoods',{id:8})
-                        }}
-                    >
-                        <View style={styles.iconborder}>
-                            <FontAwesome5 name='university' size={20} color='white' />
-                        </View>
-                        <Text style={styles.iconfont}>日常生活</Text>
-                    </TouchableOpacity>
-                </View>
-                </View>
-                <TouchableOpacity 
-                    style={[styles.item,{justifyContent:'center',felx:1,backgroundColor:'#f0f0f0',marginTop:0,marginBottom:0,marginRight:0,padding:8,borderBottomLeftRadius:300,borderTopLeftRadius:300}]}
+                    activeOpacity={0.5}
+                    style={[styles.item,styles.toplist_item]}
                     onPress={()=>{
                         navigation.navigate('TopList')
                     }}
@@ -135,6 +56,24 @@ export default class ListgoodsTop extends Component{
     }
 }
 
+class ListgoodsItem extends Component{
+    render(){
+        return(
+            <TouchableOpacity 
+                activeOpacity={0.5}
+                style={styles.item}
+                onPress={()=>{
+                    this.props.navigation.navigate('Listgoods',{id:this.props.id})
+                }}
+            >
+                <View style={styles.iconborder}>
+                    <FontAwesome5 name={this.props.iconName} size={20} color='white' />
+                </View>
+                <Text style={styles.iconfont}>{this.props.name}</Text>
+            </TouchableOpacity>            
+        )
+    }
+}
 const styles=StyleSheet.create({
     container:{
         //flex:1,
@@ -146,13 +85,31 @@ const styles=StyleSheet.create({
     sub_container:{
         flexDirection:'row',
         justifyContent:'center',
-        // borderWidth:1,
-        // borderColor:'red'
     },
     item:{
         flexDirection:'column',
         alignItems:'center',
         margin:8
+    },
+    news_item:{
+        justifyContent:'center',
+        backgroundColor:'#f0f0f0',
+        marginTop:0,
+        marginBottom:0,
+        marginLeft:0,
+        padding:8,
+        borderBottomRightRadius:300,
+        borderTopRightRadius:300
+    },
+    toplist_item:{
+        justifyContent:'center',
+        backgroundColor:'#f0f0f0',
+        marginTop:0,
+        marginBottom:0,
+        marginRight:0,
+        padding:8,
+        borderBottomLeftRadius:300,
+        borderTopLeftRadius:300
     },
     iconborder:{
         width:34,

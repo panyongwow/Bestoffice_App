@@ -36,7 +36,7 @@ export default class AD extends Component{
 
 const styles = StyleSheet.create({
     swiper: {
-        backgroundColor:'red',
+       // backgroundColor:'red',
         height:165,
     },
     img: {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View,Text,Button,StyleSheet,ScrollView,Image} from 'react-native'
+import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity} from 'react-native'
 import Header from '../../components/header'
 import AD from './subpage/ad'
 import ListgoodsTop from './subpage/listgoodstop'
@@ -17,7 +17,8 @@ export default class HomePage extends Component{
             ViceAD:[],
             ProductHot:[],
             ProductBargain:[],
-            ProductNew:[]
+            ProductNew:[],
+            ListgoodsAD:[]
         }
     }
     componentDidMount(){
@@ -33,7 +34,8 @@ export default class HomePage extends Component{
                     ViceAD:result.vice_ad,
                     ProductHot:result.product_hot,
                     ProductBargain:result.product_bargain,
-                    ProductNew:result.product_new
+                    ProductNew:result.product_new,
+                    ListgoodsAD:result.listgoods_ad
                 })
             })
     }
@@ -51,7 +53,11 @@ export default class HomePage extends Component{
             <View  style={styles.container}>
                 <View style={styles.header}>
                     <Header tag={this.state.Tag} navigation={this.props.navigation} />
+                    
                 </View> 
+                {/* <Button title='Top' style={{height:50,width:50,backgroundColor:'red',top:100,zIndex:9999,borderRadius:25,opacity:0.5}}>
+
+                </Button> */}
                 <ScrollView>
                     <ListgoodsTop navigation={this.props.navigation} />
                     <View style={styles.ad}>
@@ -64,7 +70,13 @@ export default class HomePage extends Component{
                         ProductNew={this.state.ProductNew}
                         navigation={this.props.navigation} 
                     />
-                    <ListgoodsAD />
+                    <ListgoodsAD  data={this.state.ListgoodsAD}  navigation={this.props.navigation} />
+                    <View style={{height:50,justifyContent:'center',alignItems:'center'}}>
+                        <Text style={{fontSize:10}}>版权所有： 百思通办公 | 版权声明</Text>
+                        <Text style={{fontSize:10}}>CopyRight @ 2010-2018 bestoffice.cn All Rights Reserved</Text>
+                    </View>
+
+
                     {/* <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>
                     <View style={{height:200}}><Text>{JSON.stringify(this.state.ProductHot)}</Text></View>                     */}
                     {/* <Button
@@ -79,7 +91,7 @@ export default class HomePage extends Component{
                             this.loadAD()
                         }}
                     />                                       */}
-                    <Button
+                    {/* <Button
                         title='go to 我的'
                         onPress={()=>{
                             navigation.navigate('My')
@@ -96,7 +108,7 @@ export default class HomePage extends Component{
                         onPress={()=>{
                             navigation.navigate('ShoppingCart')
                         }}
-                    />   
+                    />    */}
                 </ScrollView>      
             </View>               
         )
@@ -105,12 +117,21 @@ export default class HomePage extends Component{
 
 const styles=StyleSheet.create({
     container:{
-        flex:1
+        //flex:1
     },
     ad:{
         height:162
     },
     header:{
         backgroundColor:'red'
+    },
+    iconborder:{
+        width:34,
+        height:34,
+        borderRadius:17,
+        backgroundColor:'red',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center'
     }
 })

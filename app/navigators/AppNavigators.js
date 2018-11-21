@@ -8,6 +8,7 @@ import ListGoods from '../containers/listgoods'
 import Welcome from '../../welcome'
 import Product from '../containers/product'
 import TopList from '../containers/toplist'
+import News from '../containers/news'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 export const RootStack=createStackNavigator({
@@ -17,6 +18,9 @@ export const RootStack=createStackNavigator({
         screen:createDrawerNavigator({
             TopList:{
                 screen:TopList
+            },
+            News:{
+                screen:News
             }
         },{
             drawerPosition:'right',
@@ -35,7 +39,7 @@ export const RootStack=createStackNavigator({
                     )
                 }
             },
-            ListGoods:{
+            Listgoods:{
                 screen:ListGoods,
                 navigationOptions:{
                     tabBarLabel:'分类',

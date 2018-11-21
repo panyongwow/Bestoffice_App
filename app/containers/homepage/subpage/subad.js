@@ -29,6 +29,7 @@ class ViceAD extends Component{
         const item=this.props.item
         return(
             <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={()=>{
                     this.props.navigation.navigate('Product',{id:1})
                 }}

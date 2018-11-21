@@ -7,6 +7,7 @@ export default class ProductMiddle extends Component{
         const item=this.props.item
         return(
             <TouchableOpacity 
+                activeOpacity={0.5}
                 style={styles.item}
                 onPress={()=>{
                     this.props.navigation.navigate('Product',{id:item.id})

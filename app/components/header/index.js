@@ -41,8 +41,9 @@ class Tag extends Component{
         let tag=this.props.tag
         return(
             <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={()=>{
-                    this.props.navigation.navigate('ListGoods',{id:tag.id})
+                    this.props.navigation.navigate('Listgoods',{id:tag.id})
                 }}
             >
                 <Text style={styles.tag}>{tag.name}</Text>

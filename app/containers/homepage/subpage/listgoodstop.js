@@ -8,6 +8,18 @@ export default class ListgoodsTop extends Component{
         const navigation=this.props.navigation
         return(
             <View style={styles.container}>
+                <TouchableOpacity 
+                    style={[styles.item,{justifyContent:'center',felx:1,backgroundColor:'#f0f0f0',marginTop:0,marginBottom:0,marginLeft:0,padding:8,borderBottomRightRadius:300,borderTopRightRadius:300}]}
+                    onPress={()=>{
+                        navigation.navigate('ListGoods',{id:6})
+                    }}
+                >
+                    <View style={styles.iconborder}>
+                        <FontAwesome5 name='comment' size={20} color='white' />
+                    </View>
+                    <Text style={styles.iconfont}>资讯</Text>
+                </TouchableOpacity>              
+                <View style={{flex:10}}>
                 <View style={styles.sub_container}>
                     <TouchableOpacity 
                         style={styles.item}
@@ -106,6 +118,18 @@ export default class ListgoodsTop extends Component{
                         <Text style={styles.iconfont}>日常生活</Text>
                     </TouchableOpacity>
                 </View>
+                </View>
+                <TouchableOpacity 
+                    style={[styles.item,{justifyContent:'center',felx:1,backgroundColor:'#f0f0f0',marginTop:0,marginBottom:0,marginRight:0,padding:8,borderBottomLeftRadius:300,borderTopLeftRadius:300}]}
+                    onPress={()=>{
+                        navigation.navigate('TopList')
+                    }}
+                >
+                    <View style={styles.iconborder}>
+                        <FontAwesome5 name='list' size={20} color='white' />
+                    </View>
+                    <Text style={styles.iconfont}>热销榜</Text>
+                </TouchableOpacity>    
             </View>
         ) 
     }
@@ -113,13 +137,17 @@ export default class ListgoodsTop extends Component{
 
 const styles=StyleSheet.create({
     container:{
-        flex:1,
+        //flex:1,
         backgroundColor:'#ffffff',
-        height:130
+        height:130,
+        flexDirection:'row',
+        justifyContent:'space-around'
     },
     sub_container:{
         flexDirection:'row',
-        justifyContent:'center'
+        justifyContent:'center',
+        // borderWidth:1,
+        // borderColor:'red'
     },
     item:{
         flexDirection:'column',

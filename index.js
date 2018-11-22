@@ -6,6 +6,7 @@ import App from './App';
 import {name as appName} from './app.json';
 //import HomePage from './app/containers/homepage'
 
-import FetchTest from './fetchtest'
+import FetchTest from './test/fetchtest'
+import {RootStack} from './test/navigation/appNavigation'
 
 AppRegistry.registerComponent(appName, () => App);

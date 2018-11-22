@@ -117,7 +117,7 @@ export default class HomePage extends Component{
 
 const styles=StyleSheet.create({
     container:{
-        //flex:1
+        flex:1
     },
     ad:{
         height:162

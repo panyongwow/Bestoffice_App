@@ -11,8 +11,61 @@ import TopList from '../containers/toplist'
 import News from '../containers/news'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
+const MainStock=createBottomTabNavigator({
+    HomePage:{
+        screen:HomePage,
+        navigationOptions:{
+            tabBarLabel:'首页',
+            tabBarIcon:({tintColor,focused})=>(
+                <AntDesign name="home" style={{color:tintColor}} size={26} />
+            )
+        }
+    },
+    Listgoods:{
+        screen:ListGoods,
+        navigationOptions:{
+            tabBarLabel:'分类',
+            tabBarIcon:({tintColor,focused})=>(
+                <AntDesign name="bars" style={{color:tintColor}} size={26} />
+            )            
+        }
+    },    
+    ShoppingCart:{
+        screen:ShoppingCart,
+        navigationOptions:{
+            tabBarLabel:'购物车',
+            tabBarIcon:({tintColor,focused})=>(
+                <AntDesign name="shoppingcart" style={{color:tintColor}} size={26} />
+            )            
+        }
+    },
+    My:{
+        screen:My,
+        navigationOptions:{
+            tabBarLabel:'我的',
+            tabBarIcon:({tintColor,focused})=>(
+                <AntDesign name="user" style={{color:tintColor}} size={26} />
+            )            
+        }
+    }
+},
+{
+    navigationOptions:{
+        tintColor:'red'
+    },
+    tabBarOptions: {
+        activeTintColor: 'red',
+        inactiveTintColor: 'gray',
+    }, 
+});
+
 export const RootStack=createStackNavigator({
-    Welcome:{screen:Welcome},
+    Welcome:{
+        screen:Welcome,
+        navigationOptions:({navigation})=>({
+            header:null
+        })
+    },
     Product:{screen:Product},
     Drawer:{
         screen:createDrawerNavigator({
@@ -29,56 +82,9 @@ export const RootStack=createStackNavigator({
         })
     },
     Main:{
-        screen:createBottomTabNavigator({
-            HomePage:{
-                screen:HomePage,
-                navigationOptions:{
-                    tabBarLabel:'首页',
-                    tabBarIcon:({tintColor,focused})=>(
-                        <AntDesign name="home" style={{color:tintColor}} size={26} />
-                    )
-                }
-            },
-            Listgoods:{
-                screen:ListGoods,
-                navigationOptions:{
-                    tabBarLabel:'分类',
-                    tabBarIcon:({tintColor,focused})=>(
-                        <AntDesign name="bars" style={{color:tintColor}} size={26} />
-                    )            
-                }
-            },    
-            ShoppingCart:{
-                screen:ShoppingCart,
-                navigationOptions:{
-                    tabBarLabel:'购物车',
-                    tabBarIcon:({tintColor,focused})=>(
-                        <AntDesign name="shoppingcart" style={{color:tintColor}} size={26} />
-                    )            
-                }
-            },
-            My:{
-                screen:My,
-                navigationOptions:{
-                    tabBarLabel:'我的',
-                    tabBarIcon:({tintColor,focused})=>(
-                        <AntDesign name="user" style={{color:tintColor}} size={26} />
-                    )            
-                }
-            }
-        },{
-            navigationOptions:{
-                tintColor:'red'
-            },
-            tabBarOptions: {
-                activeTintColor: 'red',
-                inactiveTintColor: 'gray',
-              },    
-        }),
+        screen:MainStock,
         navigationOptions:({navigation})=>({
             header:null
         })
     }
-},{navigationOptions:{
-    header:null
-}})
+})

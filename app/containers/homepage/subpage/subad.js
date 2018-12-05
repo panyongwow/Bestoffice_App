@@ -31,7 +31,7 @@ class ViceAD extends Component{
             <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={()=>{
-                    this.props.navigation.navigate('Product',{id:1})
+                    this.props.navigation.navigate('Product',{id:1,name:'id为1'})
                 }}
             >
                 <Image resizeMode="stretch" style={styles.img} source={{uri:item.picname}} />

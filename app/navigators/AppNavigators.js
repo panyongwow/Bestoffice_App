@@ -62,11 +62,19 @@ const MainStock=createBottomTabNavigator({
 export const RootStack=createStackNavigator({
     Welcome:{
         screen:Welcome,
-        navigationOptions:({navigation})=>({
+        // navigationOptions:({navigation})=>({
+        //     header:null
+        // })
+        navigationOptions:{
             header:null
+        }
+    },
+    Product:{
+        screen:Product,
+        navigationOptions:({navigation})=>({
+            title:navigation.state.params.name +'的页面'
         })
     },
-    Product:{screen:Product},
     Drawer:{
         screen:createDrawerNavigator({
             TopList:{
@@ -83,8 +91,11 @@ export const RootStack=createStackNavigator({
     },
     Main:{
         screen:MainStock,
-        navigationOptions:({navigation})=>({
+        // navigationOptions:({navigation})=>({
+        //     header:null
+        // })
+        navigationOptions:{
             header:null
-        })
+        }
     }
 })

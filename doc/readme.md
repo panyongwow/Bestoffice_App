@@ -33,12 +33,13 @@
 
 * navigation相关命令：
 
-      navigation.navigate()   跳转到指定路由，若指定路由不存在，则不会做处理；若跳转的路由是当前路由，则不会做处理
-      navigation.push()      跳转到指定路由，与navigate（）的区别是，若跳转的路由是当前路由，则会重复加载。
+      navigation.navigate(rountName)   跳转到指定路由，若指定路由不存在，则不会做处理；若跳转的路由是当前路由，则不会做处理
+      navigation.push(rountName)      跳转到指定路由，与navigate（）的区别是，若跳转的路由是当前路由，则会重复加载。
       push()的使用场景，譬如要从一个详情页跳转到另一个详情页，它们的路由名都是“detail",只是传递的参数不同，此时就不能使用navigate()，而应使用push()
 
-      navigation.goBack()    注销当前路由，返回上一个路由，如果当前页面已经是最后一个路由，则不会做处理
+      navigation.goBack(key)    注销当前路由，返回上一个路由或指定路由，如果当前页面已经是最后一个路由，则不会做处理。key不是RountName，而是通过navigation.state.key来获取
       navigation.popToTop()  注销其他路由，直接返回最初的路由
+      navigation.reset()     重置
 
 * navigation生命周期：
 
@@ -62,6 +63,10 @@
         navigation.navigate(路由名,{参数名:参数值})
       获取：
         this.props.navigate.getParam(参数名，默认值)
+      改变（当前页面）：
+        setParams()
+      改变（其他页面）：
+        NavigationActions.setParams()
 
 * 设置navigationOptions
 

@@ -1,7 +1,14 @@
 import React,{Component} from 'react'
 import {View,Text,StyleSheet,Button} from 'react-native'
 import HomePageDao from './app/dao/homepage'
+import {NavigationActions} from 'react-navigation'
 
+// const resetAction=NavigationActions.navigate({
+//     index:0,
+//     actions:[
+//         NavigationActions.navigate({routeName:'Main'})
+//     ]
+// })
 export default class Welcome extends Component{
     constructor(){
        super()
@@ -9,15 +16,10 @@ export default class Welcome extends Component{
     componentDidMount(){
         const {navigation}=this.props
         HomePageDao.init(()=>{
-            navigation.navigate("Main")
+            //navigation.navigate("Main")
+            navigation.reset([NavigationActions.navigate({ routeName: 'Main' })], 0)  
+            //navigation.reset(resetAction)
         })
-
-        // setTimeout(()=>{
-        //     // this.props.navigator.replace({
-        //     //     component:HomePage,//具体路由的板块
-        //     // });
-        //     navigation.navigate("Main")
-        // },2000)
     }
     render(){
         const {navigation}=this.props

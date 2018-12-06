@@ -63,14 +63,14 @@ export default class HomePage extends Component{
                     <View style={styles.ad}>
                         <AD data={this.state.AD}  navigation={this.props.navigation}  />
                     </View>
-                    <SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  />
-                    <Hot  
+                   <SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  />
+                    {/* <Hot  
                         ProductHot={this.state.ProductHot}  
                         ProductBargain={this.state.ProductBargain}
                         ProductNew={this.state.ProductNew}
                         navigation={this.props.navigation} 
                     />
-                    <ListgoodsAD  data={this.state.ListgoodsAD}  navigation={this.props.navigation} />
+                     <ListgoodsAD  data={this.state.ListgoodsAD}  navigation={this.props.navigation} /> */}
                     <View style={{height:50,justifyContent:'center',alignItems:'center'}}>
                         <Text style={{fontSize:10}}>版权所有： 百思通办公 | 版权声明</Text>
                         <Text style={{fontSize:10}}>CopyRight @ 2010-2018 bestoffice.cn All Rights Reserved</Text>

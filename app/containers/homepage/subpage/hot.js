@@ -5,6 +5,15 @@ import ProductMiddle from '../../../components/product/middle'
 
 //热卖商品
 export default class Hot extends Component{
+    constructor(props){
+        super(props)
+    }
+    componentWillMount(){
+        
+    }
+    componentDidMount(){
+
+    }
     render(){
         //const data=this.props.data
         return(

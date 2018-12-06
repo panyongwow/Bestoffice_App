@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity} from 'react-native'
+import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity,RefreshControl} from 'react-native'
 import Header from '../../components/header'
 import AD from './subpage/ad'
 import ListgoodsTop from './subpage/listgoodstop'
@@ -7,6 +7,7 @@ import ListgoodsAD from './subpage/listgoodsad'
 import SubAD from './subpage/subad'
 import Hot from './subpage/hot'
 import HomePageDao from '../../dao/homepage'
+import Loading from './../../components/loading'
 
 export default class HomePage extends Component{
     constructor(props){
@@ -18,7 +19,9 @@ export default class HomePage extends Component{
             ProductHot:[],
             ProductBargain:[],
             ProductNew:[],
-            ListgoodsAD:[]
+            ListgoodsAD:[],
+            IsShowHot:false,
+            IsShowListgoodsAD:false,
         }
     }
     componentDidMount(){
@@ -58,23 +61,61 @@ export default class HomePage extends Component{
                 {/* <Button title='Top' style={{height:50,width:50,backgroundColor:'red',top:100,zIndex:9999,borderRadius:25,opacity:0.5}}>
 
                 </Button> */}
-                <ScrollView>
+                {/* <View>
+                    <Text>3{this.state.ShowHotInfo}</Text>
+                </View> */}
+                <ScrollView
+                    onMomentumScrollEnd={(e)=>{
+                        let offsetY=e.nativeEvent.contentOffset.y
+                        let contentSizeHeight=e.nativeEvent.contentSize.height
+                        let scrollHeight=e.nativeEvent.layoutMeasurement.height
+
+                        if(offsetY+scrollHeight>=contentSizeHeight){
+                            if(!this.state.IsShowHot){
+                                this.setState({
+                                    IsShowHot:true
+                                })                        
+                            }else{
+                                if(!this.state.IsShowListgoodsAD){
+                                    this.setState({
+                                        IsShowListgoodsAD:true
+                                    })
+                                }
+                            }    
+                        }
+                    }}
+                    
+                >
                     <ListgoodsTop navigation={this.props.navigation} />
                     <View style={styles.ad}>
                         <AD data={this.state.AD}  navigation={this.props.navigation}  />
                     </View>
-                   <SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  />
-                    {/* <Hot  
-                        ProductHot={this.state.ProductHot}  
-                        ProductBargain={this.state.ProductBargain}
-                        ProductNew={this.state.ProductNew}
-                        navigation={this.props.navigation} 
-                    />
-                     <ListgoodsAD  data={this.state.ListgoodsAD}  navigation={this.props.navigation} /> */}
-                    <View style={{height:50,justifyContent:'center',alignItems:'center'}}>
-                        <Text style={{fontSize:10}}>版权所有： 百思通办公 | 版权声明</Text>
-                        <Text style={{fontSize:10}}>CopyRight @ 2010-2018 bestoffice.cn All Rights Reserved</Text>
-                    </View>
+                    <SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  />
+                    {
+                        this.state.IsShowHot
+                        ?<Hot  
+                            ProductHot={this.state.ProductHot}  
+                            ProductBargain={this.state.ProductBargain}
+                            ProductNew={this.state.ProductNew}
+                            navigation={this.props.navigation} 
+                        />
+                        :<Loading />  
+                    }
+                    {
+                        this.state.IsShowListgoodsAD
+                        ?<ListgoodsAD  data={this.state.ListgoodsAD}  navigation={this.props.navigation} />
+                        : this.state.IsShowHot ? <Loading />:null  
+                    }
+                    
+                    {
+                        this.state.IsShowListgoodsAD
+                        ?<View style={{height:50,justifyContent:'center',alignItems:'center'}}>
+                            <Text style={{fontSize:10}}>版权所有： 百思通办公 | 版权声明</Text>
+                            <Text style={{fontSize:10}}>CopyRight @ 2010-2018 bestoffice.cn All Rights Reserved</Text>
+                         </View>
+                        :null
+                    }
+
 
 
                     {/* <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {View,Text,Button} from 'react-native'
+import Header from '../header'
 
 export default class ListGoods extends Component{
     constructor(props){
@@ -17,6 +18,7 @@ export default class ListGoods extends Component{
         let listgoodsID =navigation.getParam('id',0)
         return(
             <View>
+                <Header navigation={navigation}/>
                 <View style={{height:300}}>
                    <Text>这是商品分类！</Text>
                    <Text>获得的参数：{listgoodsID}</Text>

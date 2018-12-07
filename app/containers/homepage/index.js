@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity,RefreshControl} from 'react-native'
-import Header from '../../components/header'
+// import Header from '../../components/header'
+import Header from '../header'
 import AD from './subpage/ad'
 import ListgoodsTop from './subpage/listgoodstop'
 import ListgoodsAD from './subpage/listgoodsad'
@@ -42,28 +43,13 @@ export default class HomePage extends Component{
                 })
             })
     }
-    loadTag(){
-        HomePageDao.get('AD')
-            .then(result=>{
-                this.setState({
-                    Tag:result.tag
-                })
-            })
-    }    
     render(){
         const {navigation}=this.props
         return(
             <View  style={styles.container}>
-                <View style={styles.header}>
-                    <Header tag={this.state.Tag} navigation={this.props.navigation} />
-                    
+                <View>
+                    <Header navigation={this.props.navigation} />
                 </View> 
-                {/* <Button title='Top' style={{height:50,width:50,backgroundColor:'red',top:100,zIndex:9999,borderRadius:25,opacity:0.5}}>
-
-                </Button> */}
-                {/* <View>
-                    <Text>3{this.state.ShowHotInfo}</Text>
-                </View> */}
                 <ScrollView
                     onMomentumScrollEnd={(e)=>{
                         let offsetY=e.nativeEvent.contentOffset.y
@@ -162,9 +148,6 @@ const styles=StyleSheet.create({
     },
     ad:{
         height:162
-    },
-    header:{
-        backgroundColor:'red'
     },
     iconborder:{
         width:34,

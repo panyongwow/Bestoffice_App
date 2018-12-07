@@ -1,27 +1,43 @@
 
-import {BSTURL} from '../config/config'
-import  Storage from '../storage'
+import { BSTURL } from '../config/config'
+import Storage from '../storage'
 
-export default class HomePageDao{
-    static init(callback){
+export default class HomePageDao {
+    static init(callback) {
         this.clear()
-        const url='/ajax/homepage/list.ashx'
+        const url = '/ajax/homepage/list.ashx'
 
         fetch(BSTURL + url)
-            .then(res=>res.json())
-            .then(result=>{
-                Storage.save('HomePage',result.details)
+            .then(res => res.json())
+            .then(result => {
+                Storage.save('HomePage', result.details)
                 callback()
             })
-            .catch(error=>{
+            .catch(error => {
                 throw error
-            })            
+            })
     }
-    static get(){
-        return Storage.get('HomePage')
-    }
+    // static get() {
+    //     return Storage.get('HomePage')
+    // }
+    static get(key) {
+        let data;
+        switch (key) {
+            case 'TAG':
+                Storage.get("HomePage")
+                    .then(result=>{
+                        data=result.tag
+                    })
+                break
+            default:
+                data= Storage.get("HomePage")
+                break
+        }
+        return data
 
-    static clear(){
+    }
+    static clear() {
         Storage.remove('HomePage')
     }
+
 }

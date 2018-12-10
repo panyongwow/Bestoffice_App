@@ -22,10 +22,12 @@ export default class Header extends Component{
         //     })
         HomePageDao.get()
             .then(result=>{
+                // alert(JSON.stringify(result.tag))
                 this.setState({
                     data:result.tag
                 })
             })
+        // alert(JSON.stringify(HomePageDao.get()))               
     }
     render(){
         return (

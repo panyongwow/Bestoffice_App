@@ -24,15 +24,20 @@ export default class HomePageDao {
         let data;
         switch (key) {
             case 'TAG':
-                Storage.get("HomePage")
-                    .then(result=>{
-                        data=result.tag
-                    })
-                //data= Storage.get("HomePage").tag
+                // Storage.get("HomePage")
+                //     .then(result=>{
+                //         data=result.tag
+                //     })
+                data= Storage.get("HomePage")
+                //alert(JSON.stringify(data))
                 break
             default:
                 data= Storage.get("HomePage")
-                break
+                // Storage.get("HomePage")
+                //     .then(result=>{
+                //         data=result
+                //     })
+                // break
         }
         return data
 

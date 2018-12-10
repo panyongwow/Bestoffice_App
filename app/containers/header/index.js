@@ -11,6 +11,15 @@ export default class Header extends Component{
         }
     }
     componentDidMount(){
+        // this.setState({
+        //     data:HomePageDao.get('TAG')
+        // })
+        // HomePageDao.get('TAG')
+        //     .then(result=>{
+        //         this.setState({
+        //             data:result
+        //         })
+        //     })
         HomePageDao.get()
             .then(result=>{
                 this.setState({
@@ -21,13 +30,19 @@ export default class Header extends Component{
     render(){
         return (
             <View style={{backgroundColor:'#f00'}}>
-                <HeaderComponent tag={this.state.data} navigation={this.props.navigation} />
+                {
+                    this.state.data.length===0
+                    ?null
+                    :<HeaderComponent tag={this.state.data} navigation={this.props.navigation} />
+                }
+                
                 <Button title='test1' onPress={()=>{
                     // HomePageDao.get('TAG')
                     //    .then(result=>{
                     //        alert(JSON.stringify(result))
                     //    })
-                    alert(JSON.stringify(HomePageDao.get('TAG')))
+                    //alert(JSON.stringify(HomePageDao.get('TAG')))
+                    alert(this.state.data.length)
                 }} />
             </View>
         )

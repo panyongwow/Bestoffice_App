@@ -28,6 +28,7 @@ export default class HomePageDao {
                     .then(result=>{
                         data=result.tag
                     })
+                //data= Storage.get("HomePage").tag
                 break
             default:
                 data= Storage.get("HomePage")

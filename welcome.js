@@ -30,7 +30,7 @@ export default class Welcome extends Component{
                     onPress={()=>{
                         navigation.navigate("Main")
                     }}
-                    title="跳转"
+                    title="跳转1"
                 />
             </View>
         )

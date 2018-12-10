@@ -9,4 +9,5 @@ import {name as appName} from './app.json';
 import FetchTest from './test/fetchtest'
 //import {RootStack} from './test/navigation/appNavigation'
 //import App from './test/navigation/appNavigation'
+//import App from './test/asyncstorage'
 AppRegistry.registerComponent(appName, () => App);

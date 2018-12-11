@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity,RefreshControl} from 'react-native'
 // import Header from '../../components/header'
-import Header from '../header'
+import Header from '../../components/header'
+import HotTag from '../hottag'
 import AD from './subpage/ad'
 import ListgoodsTop from './subpage/listgoodstop'
 import ListgoodsAD from './subpage/listgoodsad'
@@ -50,13 +51,13 @@ export default class HomePage extends Component{
                 <View>
                     <Header navigation={this.props.navigation} />
                 </View> 
+                <HotTag navigation={this.props.navigation} />
                 <ScrollView
                     onMomentumScrollEnd={(e)=>{
                         let offsetY=e.nativeEvent.contentOffset.y
                         let contentSizeHeight=e.nativeEvent.contentSize.height
                         let scrollHeight=e.nativeEvent.layoutMeasurement.height
-
-                        if(offsetY+scrollHeight>=contentSizeHeight){
+                        if(offsetY+scrollHeight>=contentSizeHeight-5){
                             if(!this.state.IsShowHot){
                                 this.setState({
                                     IsShowHot:true

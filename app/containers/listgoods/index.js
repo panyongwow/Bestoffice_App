@@ -23,7 +23,11 @@ export default class ListGoods extends Component {
             <View style={styles.container}>
                 {/* <Header navigation={navigation}/> */}
                 <Header />
+                <View style={{flexDirection:'row', justifyContent:'space-around'}}>
                 <Left />
+                
+                    <View style={{backgroundColor:'red',width:200,height:100}}><Text>12341212</Text></View>
+                </View>
                 {/* <View> */}
                 {/* <ListGoodsLeft /> */}
                 {/* </View> */}

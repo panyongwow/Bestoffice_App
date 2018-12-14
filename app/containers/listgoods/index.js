@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 // import Header from '../header'
 import Header from '../../components/header'
-import Left from'./subpage/left'
+import Left from './subpage/left'
+import Right from './subpage/right'
 
 export default class ListGoods extends Component {
     constructor(props) {
         super(props)
-        this.state={
-            selectedID:0
+        this.state = {
+            selectedID: 0
         }
     }
-    selectItem(id){
+    selectItem(id) {
         this.setState({
-            selectedID:id
+            selectedID: id
         })
     }
     render() {
@@ -26,11 +27,11 @@ export default class ListGoods extends Component {
                 {/* <Header navigation={navigation}/> */}
                 <Header />
                 {/* <Button title='test' onPress={this.selectItem()}></Button> */}
-                <View style={{flex:1,flexDirection:'row', justifyContent:'space-around'}}>
-                
-                <Left selectItem={(id)=>{this.selectItem(id)}} />
-                
-                    <View style={{backgroundColor:'red',width:200,height:100}}><Text>{this.state.selectedID}</Text></View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+
+                    <Left  selectItem={(id) => { this.selectItem(id) }} />
+                    <Right  />
+                    {/* <View style={{backgroundColor:'red',width:200,height:100}}><Text>{this.state.selectedID}</Text></View> */}
                 </View>
                 {/* <View> */}
                 {/* <ListGoodsLeft /> */}
@@ -61,6 +62,6 @@ export default class ListGoods extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'white'
+        backgroundColor: 'white'
     }
 })

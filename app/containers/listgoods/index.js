@@ -7,12 +7,14 @@ import Left from'./subpage/left'
 export default class ListGoods extends Component {
     constructor(props) {
         super(props)
-
+        this.state={
+            selectedID:0
+        }
     }
-    componentWillMount() {
-    }
-    componentDidMount() {
-
+    selectItem(id){
+        this.setState({
+            selectedID:id
+        })
     }
     render() {
         // let { navigation } = this.props
@@ -23,10 +25,12 @@ export default class ListGoods extends Component {
             <View style={styles.container}>
                 {/* <Header navigation={navigation}/> */}
                 <Header />
-                <View style={{flexDirection:'row', justifyContent:'space-around'}}>
-                <Left />
+                {/* <Button title='test' onPress={this.selectItem()}></Button> */}
+                <View style={{flex:1,flexDirection:'row', justifyContent:'space-around'}}>
                 
-                    <View style={{backgroundColor:'red',width:200,height:100}}><Text>12341212</Text></View>
+                <Left selectItem={(id)=>{this.selectItem(id)}} />
+                
+                    <View style={{backgroundColor:'red',width:200,height:100}}><Text>{this.state.selectedID}</Text></View>
                 </View>
                 {/* <View> */}
                 {/* <ListGoodsLeft /> */}
@@ -57,6 +61,6 @@ export default class ListGoods extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor:'gray'
+        backgroundColor:'white'
     }
 })

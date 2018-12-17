@@ -27,10 +27,10 @@ export default class ListGoods extends Component {
                 {/* <Header navigation={navigation}/> */}
                 <Header />
                 {/* <Button title='test' onPress={this.selectItem()}></Button> */}
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+                <View style={{flex:1, flexDirection: 'row', justifyContent:'space-around' }}>
 
                     <Left  selectItem={(id) => { this.selectItem(id) }} />
-                    <Right  />
+                    <Right   />
                     {/* <View style={{backgroundColor:'red',width:200,height:100}}><Text>{this.state.selectedID}</Text></View> */}
                 </View>
                 {/* <View> */}

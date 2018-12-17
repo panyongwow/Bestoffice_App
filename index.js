@@ -7,4 +7,7 @@ import {name as appName} from './app.json';
 import FetchTest from './test/fetchtest'
 
 import ListGoods from './app/containers/listgoods'
-AppRegistry.registerComponent(appName, () => ListGoods);
+import FlexTest from './test/flex'
+import {arrowFuc} from './test/other'
+AppRegistry.registerComponent(appName, () => App);
+

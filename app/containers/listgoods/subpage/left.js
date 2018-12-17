@@ -66,7 +66,7 @@ export default class Left extends Component {
     render() {
         let selectItem = this.props.selectItem
         return (
-            <ScrollView showsVerticalScrollIndicator={false} >
+            <ScrollView showsVerticalScrollIndicator={false} style={{width:100}}>
                 {/* <FlatList
                     style={styles.flatlist}
                     data={data}
@@ -97,13 +97,13 @@ class Item extends Component {
         return (
             <View>
                 <View style={[styles.border, { backgroundColor: item.isSelected ? '#fff' : '#f7f7f7', borderLeftColor: item.isSelected ? '#f00' : '#f7f7f7' }]}>
-                    <TouchableHighlight style={styles.touchable}
+                    <TouchableOpacity style={styles.touchable}
                         underlayColor='#fff'
                         onPress={() => this.props.pressHandle()
                         }
                     >
                         <Text style={[styles.itemtext,{backgroundColor: item.isSelected ? '#fff' : '#f7f7f7', color: item.isSelected ? '#f00' : '#000' }]}>{item.name}</Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
 
                 </View>
                 <View style={styles.separator}></View>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     //     backgroundColor: 'white'
     // },
     border:{
-        width: 70, 
+        // width: '100%', 
         height: 70, 
         flexDirection: 'row', 
         justifyContent: 'center', 
@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     touchable:{
-        width: 30,
-         flexDirection: 'row', 
+        // width: '100%',
+        flexDirection: 'row', 
         justifyContent: 'center' 
     },
     separator:{
         height: 1, 
-        width: 30, 
+        // width: '100%', 
         backgroundColor: 'white'
     }
 })

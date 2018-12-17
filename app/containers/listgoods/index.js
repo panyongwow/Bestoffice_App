@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
-// import Header from '../header'
+import { View,StyleSheet,} from 'react-native'
 import Header from '../../components/header'
 import Left from './subpage/left'
 import Right from './subpage/right'
@@ -12,47 +11,45 @@ export default class ListGoods extends Component {
             selectedID: 0
         }
     }
-    selectItem(id) {
+    //左侧一级目录已经显示完毕
+    //那么接下来就是在右侧显示该一级目录下相应的二级与三级目录
+    parentShowComplete(id) {
+        this.setState({
+            selectedID: id
+        })
+    }
+
+    //选择某个一级目录
+    //右侧二级与三级目录刷新
+    changeListgoods(id) {
         this.setState({
             selectedID: id
         })
     }
     render() {
-        // let { navigation } = this.props
-        // let { state } = navigation
-        // let { params } = state
-        // let listgoodsID = navigation.getParam('id', 0)
+        let { navigation } = this.props
+        let { state } = navigation
+        let { params } = state
+        let listgoodsID = navigation.getParam('id', 0)   //路由传递过来的已经目录ID
         return (
             <View style={styles.container}>
-                {/* <Header navigation={navigation}/> */}
                 <Header />
-                {/* <Button title='test' onPress={this.selectItem()}></Button> */}
-                <View style={{flex:1, flexDirection: 'row', justifyContent:'space-around' }}>
-
-                    <Left  selectItem={(id) => { this.selectItem(id) }} />
-                    <Right   />
-                    {/* <View style={{backgroundColor:'red',width:200,height:100}}><Text>{this.state.selectedID}</Text></View> */}
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+                    <View style={{ flex: 1 }}>
+                        <Left
+                            navigation={this.props.navigation}
+                            myID={listgoodsID}
+                            changeListgoods={(id) => { this.changeListgoods(id) }}
+                            showComplete={(id) => { this.parentShowComplete(id) }}
+                        />
+                    </View>
+                    <View style={{ flex: 4 }}>
+                        <Right
+                            parentID={this.state.selectedID}
+                            navigation={this.props.navigation}
+                        />
+                    </View>
                 </View>
-                {/* <View> */}
-                {/* <ListGoodsLeft /> */}
-                {/* </View> */}
-                {/* <View style={{height:300}}>
-                   <Text>这是商品分类！</Text>
-                   <Text>获得的参数：{listgoodsID}</Text>
-                </View>
-                <Button
-                    title='返回'
-                    onPress={()=>{
-                        navigation.goBack()
-                    }}
-                />
-                <View style={{height:20}}></View>
-                <Button
-                    title="显示ID"
-                    onPress={()=>{
-                        alert(typeof(params.id))
-                    }}
-                /> */}
             </View>
         )
     }

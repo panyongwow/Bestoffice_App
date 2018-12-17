@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {StyleSheet,Image,View,TouchableOpacity} from 'react-native'
+
 import Swiper from 'react-native-swiper'
 
 export default class AD extends Component{

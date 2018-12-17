@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {View,Button} from 'react-native'
 
+//测试箭头函数
 export class arrowFuc extends Component{
     add(){
         let a=1
@@ -39,4 +40,3 @@ export class arrowFuc extends Component{
         )
     }
 }
-

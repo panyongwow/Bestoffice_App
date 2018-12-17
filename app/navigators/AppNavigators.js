@@ -7,6 +7,7 @@ import ShoppingCart from '../containers/shoppingcart'
 import ListGoods from '../containers/listgoods'
 import Welcome from '../../welcome'
 import Product from '../containers/product'
+import ProductList from '../containers/productlist'
 import TopList from '../containers/toplist'
 import News from '../containers/news'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -74,6 +75,12 @@ export const RootStack=createStackNavigator({
         navigationOptions:({navigation})=>({
             title:navigation.state.params.name +'的页面'
         })
+    },
+    ProductList:{
+        screen:ProductList,
+        navigationOptions:{
+            header:null
+        }
     },
     Drawer:{
         screen:createDrawerNavigator({

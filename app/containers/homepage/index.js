@@ -22,7 +22,7 @@ export default class HomePage extends Component{
             ProductBargain:[],
             ProductNew:[],
             ListgoodsAD:[],
-            IsShowHot:false,
+            IsShowHot:true,
             IsShowListgoodsAD:false,
         }
     }

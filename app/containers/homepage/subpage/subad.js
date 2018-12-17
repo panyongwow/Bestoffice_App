@@ -45,7 +45,10 @@ const styles =StyleSheet.create({
         flex:1,
         flexDirection:'row',
         flexWrap:'wrap',
-        margin:5
+        justifyContent:'space-around',
+        margin:5,
+        // borderColor:'red',
+        // borderWidth:1
     },
     img:{
         height:55,        

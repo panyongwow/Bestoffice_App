@@ -8,6 +8,6 @@ import FetchTest from './test/fetchtest'
 
 import ListGoods from './app/containers/listgoods'
 import FlexTest from './test/flex'
-import {arrowFuc} from './test/other'
+import {ArgumentTransmit} from './test/other/argumentTransmit'
 AppRegistry.registerComponent(appName, () => App);
 

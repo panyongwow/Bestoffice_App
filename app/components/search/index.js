@@ -10,7 +10,7 @@ export default class Search extends Component{
                     <AntDesign name='search1' size={16} color='#00f5ff'/>
                 </Text>
                 <TextInput
-                    style={styles.textinput} 
+                    style={[styles.textinput,{width:this.props.width?this.props.width:200}]} 
                     placeholder='办公用品全网最低价' 
                 >
                 </TextInput>
@@ -37,7 +37,7 @@ const styles=StyleSheet.create({
     },
     textinput:{
         height:30,
-        width:200,
+        // width:200,
         borderTopRightRadius:15,
         borderBottomRightRadius:15,
         backgroundColor:'#fff',

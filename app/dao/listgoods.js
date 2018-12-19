@@ -1,5 +1,3 @@
-
-
 import { BSTURL } from '../config/config'
 
 export default class ListgoodsDao {

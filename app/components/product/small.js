@@ -14,7 +14,7 @@ export default class ProductSmall extends PureComponent {
                     style={styles.touchable}
                 >
                     <View style={styles.imageborder}>
-                        <Image style={styles.image} source={{ uri: item.img }} />
+                        <Image style={styles.image} source={{ uri: item.picname }} />
                     </View>
                     <View style={styles.productborder}>
                         <View>
@@ -30,16 +30,16 @@ export default class ProductSmall extends PureComponent {
                             <View style={styles.priceborder} >
                                 <Text style={styles.pricepre}>&yen;</Text>
                                 <Text style={styles.price}>{item.price}</Text>
-                                <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
+                                <Text style={styles.marketprice}>&yen;{item.price+5}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 {
-                                    item.isBargin
+                                    item.isbargainprice
                                         ? <View><Text style={styles.tag}>特价</Text></View>
                                         : null
                                 }
                                 {
-                                    item.IsDirect
+                                    item.isdirect
                                         ? <View><Text style={styles.tag}>厂家直送</Text></View>
                                         : null
                                 }

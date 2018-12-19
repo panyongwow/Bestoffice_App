@@ -1,15 +1,14 @@
 import React, { PureComponent, Component } from 'react'
 import { View, Text, Image, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 export default class ProductSmall extends PureComponent {
     render() {
         let item = this.props.item
         return (
-            <View>
+            <View style={{backgroundColor:'white'}}>
                 <TouchableOpacity
                     onPress={() => {
-                        alert(item.id)
+                        //alert(item.id)
                     }}
                     style={styles.touchable}
                 >
@@ -30,7 +29,7 @@ export default class ProductSmall extends PureComponent {
                             <View style={styles.priceborder} >
                                 <Text style={styles.pricepre}>&yen;</Text>
                                 <Text style={styles.price}>{item.price}</Text>
-                                <Text style={styles.marketprice}>&yen;{item.price+5}</Text>
+                                <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 {
@@ -43,6 +42,11 @@ export default class ProductSmall extends PureComponent {
                                         ? <View><Text style={styles.tag}>厂家直送</Text></View>
                                         : null
                                 }
+                                {
+                                    item.ownstore.length>0
+                                        ? <View><Text style={styles.tag}>{item.ownstore}</Text></View>
+                                        : null
+                                }                                
                             </View>
                         </View>
                     </View>
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
         height: 96, width: 114 
     },
     productborder:{
-        flex: 2, flexDirection: 'column', paddingLeft: 10, paddingRight: 10, justifyContent: 'space-around'
+        flex: 2, flexDirection: 'column', height:110,paddingTop:10,paddingBottom:5,paddingLeft: 10, paddingRight: 10, justifyContent: 'space-between'
     },
     productname:{
         fontSize: 14, width: '100%'

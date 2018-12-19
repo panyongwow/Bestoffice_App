@@ -11,6 +11,13 @@ export default class ListGoods extends Component {
             selectedID: 0
         }
     }
+    componentWillMount(){
+        let { navigation } = this.props
+        let listgoodsID = navigation.getParam('id', 0)   //路由传递过来的已经目录ID
+        this.setState({
+            selectedID:listgoodsID
+        })
+    }
     //左侧一级目录已经显示完毕
     //那么接下来就是在右侧显示该一级目录下相应的二级与三级目录
     parentShowComplete(id) {
@@ -27,10 +34,6 @@ export default class ListGoods extends Component {
         })
     }
     render() {
-        let { navigation } = this.props
-        let { state } = navigation
-        let { params } = state
-        let listgoodsID = navigation.getParam('id', 0)   //路由传递过来的已经目录ID
         return (
             <View style={styles.container}>
                 <Header />
@@ -38,7 +41,7 @@ export default class ListGoods extends Component {
                     <View style={{ flex: 1 }}>
                         <Left
                             navigation={this.props.navigation}
-                            myID={listgoodsID}
+                            myID={this.state.selectedID}
                             changeListgoods={(id) => { this.changeListgoods(id) }}
                             showComplete={(id) => { this.parentShowComplete(id) }}
                         />

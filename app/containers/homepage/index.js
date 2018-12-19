@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity,RefreshControl} from 'react-native'
 // import Header from '../../components/header'
 import Header from '../../components/header'
+import Foot from '../../components/foot'
 import HotTag from '../hottag'
 import AD from './subpage/ad'
 import ListgoodsTop from './subpage/listgoodstop'
@@ -96,10 +97,7 @@ export default class HomePage extends Component{
                     
                     {
                         this.state.IsShowListgoodsAD
-                        ?<View style={{height:50,justifyContent:'center',alignItems:'center'}}>
-                            <Text style={{fontSize:10}}>版权所有： 百思通办公 | 版权声明</Text>
-                            <Text style={{fontSize:10}}>CopyRight @ 2010-2018 bestoffice.cn All Rights Reserved</Text>
-                         </View>
+                        ?<Foot />
                         :null
                     }
 

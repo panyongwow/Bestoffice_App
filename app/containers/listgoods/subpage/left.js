@@ -6,6 +6,7 @@ export default class Left extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            firstRun: true,
             data: []
         }
     }
@@ -22,7 +23,15 @@ export default class Left extends Component {
         // ]
         this.didFoucsHandler = this.props.navigation.addListener(
             'didFocus',
-            () => { this.showData() }
+            () => {
+                if (this.state.firstRun) {
+                    this.showData()
+                    this.setState({
+                        firstRun: false
+                    })
+                }
+
+            }
         )
     }
     componentWillUnmount() {

@@ -28,8 +28,8 @@ export default class ProductSmall extends PureComponent {
                         <View>
                             <View style={styles.priceborder} >
                                 <Text style={styles.pricepre}>&yen;</Text>
-                                <Text style={styles.price}>{item.price}</Text>
-                                <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
+                                <Text style={styles.price}>{item.price.toFixed(1)}</Text>
+                                <Text style={styles.marketprice}>&yen;{item.marketprice.toFixed(1)}</Text>
                             </View>
                             <View style={{ flexDirection: 'row', marginTop: 5 }}>
                                 {item.isbargainprice ? <Tag title='特价' /> : null}

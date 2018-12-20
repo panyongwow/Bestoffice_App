@@ -5,27 +5,26 @@ import Foot from '../../components/foot'
 import GoTop from '../../components/gotop'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import ProductSmall from '../../components/product/small'
+import ProductMiddle from '../../components/product/middle'
 import Loading from '../../components/loading'
 import ProductDao from '../../dao/product'
 
 
-//对于回到顶部的优化，第一次加载不显示，如果有上拉加载动作后再加载，另外如果下拉刷新的话则隐藏
+//处理节流
+//处理显示结构的切换
+//商品中图的tag显示
 export default class ProductList extends Component {
     constructor(props) {
         super(props)
-        //let { height, width } = Dimensions.get('window')
-        // this.setState({
-        //     goTop: {...this.state.goTop,
-        //         top: height - 100,
-        //         left: width - 70
-        //     }
-        // })
+        //display表示商品如何显示，list为列表显示，table为表格显示
         this.state = {
             data: [],
+            data_table:[],
             isrefreshing: false,
-            isShowGoTop:false,
+            isShowGoTop: false,
             info: '未到底部',
-            y:0
+            y: 0,
+            display: 'table'
         }
         this.search = {
             nowpage: 1,
@@ -46,50 +45,68 @@ export default class ProductList extends Component {
 
         let apagenum = this.search.apagenum
         let nowpage = this.search.nowpage
-        //let listgoodsid =this.props.navigation.state.params.id
-        let listgoodsid = 299
+        let listgoodsid = this.props.navigation.state.params.id
+        //let listgoodsid = 388
 
 
         ProductDao.list(listgoodsid, nowpage, apagenum)
             .then(result => {
                 //alert(JSON.stringify(result))
                 let data = this.state.data
-                result.details.map((item, index) => {
-                    data.push(item)
-                })
+                if (this.state.display === 'list') {
+                    result.details.map((item, index) => {
+                        data.push(item)
+                    })
+                } else {
+                    let item = []
+                    for (let i = 0, j = parseInt(result.details.length / 2); i < j; i++) {
+                        item.push(result.details[i * 2])
+                        item.push(result.details[i * 2 + 1])
+                        data.push(item)
+                        item = []
+                    }
+                    if (result.details.length % 2 > 0) {
+                        item.push(result.details[result.details.length - 1])
+                        data.push(item)
+                    }
+                }
+                //alert(JSON.stringify(data))
 
                 if (apagenum * nowpage >= result.totalcount) this.search.hasdata = false
                 this.setState({
                     data: data,
                     isrefreshing: false,
-                    isShowGoTop:this.search.nowpage > 1 ? true : false,
+                    isShowGoTop: this.search.nowpage > 1 ? true : false,
                 })
-                this.search.nowpage ++
+                this.search.nowpage++
             })
             .catch(error => {
+                this.setState({
+                    hasdata: false
+                })
                 alert(error)
             })
     }
     refresh = () => {
         this.setState({
             isrefreshing: true,
-            isShowGoTop:false,
+            isShowGoTop: false,
             data: []
         })
         this.search.nowpage = 1
         this.search.hasdata = true
         this.list()
     }
-    onScroll(event){
-        let offsetY=event.nativeEvent.contentOffset.y
-        if(offsetY>200 && !this.state.isShowGoTop ){
+    onScroll(event) {
+        let offsetY = event.nativeEvent.contentOffset.y
+        if (offsetY > 200 && !this.state.isShowGoTop) {
             this.setState({
-                isShowGoTop:true
-            }) 
-        }else if(offsetY<=200 && this.state.isShowGoTop){
+                isShowGoTop: true
+            })
+        } else if (offsetY <= 200 && this.state.isShowGoTop) {
             this.setState({
-                isShowGoTop:false
-            }) 
+                isShowGoTop: false
+            })
         }
         // this.setState({
         //     y:offsetY
@@ -102,18 +119,30 @@ export default class ProductList extends Component {
                 {/* <Header isShowBack={true} /> */}
                 <ListTitle />
                 <View style={{ flex: 1 }}>
-                    <Text>test1+{this.state.y}</Text>
+                    {/* <Text>test1+{this.state.y}</Text> */}
                     <FlatList
+                        // style={{backgroundColor:'#b0c4de'}}
                         ref='ProductList'
                         data={this.state.data}
                         renderItem={({ item }) => {
                             return (
-                                <ProductSmall style={{ backgroundColor: 'white' }} item={item} />
+                                this.state.display === 'list'
+                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} />
+                                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: 220, width: '100%',borderColor:'red',borderWidth:0 }}>
+                                        {/* <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '90%',borderColor:'blue',borderWidth:1 }}> */}
+                                            <ProductMiddle style={{backgroundColor:'white'}} item={item[0]} />
+                                            {
+                                                item.length > 1 ? <ProductMiddle item={item[1]} /> : null
+                                            }
+                                        {/* </View> */}
+                                    </View>
                             )
                         }}
                         keyExtractor={(item, index) => item + index}
                         ItemSeparatorComponent={() =>
-                            <View style={{ height: 4, backgroundColor: '#f3f3f3' }}></View>
+                            this.state.display === 'list'
+                                ? <View style={{ height: 4, backgroundColor: '#f3f3f3' }}></View>
+                                : null
                         }
                         onEndReachedThreshold={0.2}
                         onEndReached={() => {
@@ -125,7 +154,10 @@ export default class ProductList extends Component {
                                     return (
                                         this.search.hasdata
                                             ? <Loading />
-                                            : <Foot />
+                                            : <View style={{height:50,flexDirection:'column',justifyContent:'center' ,alignItems: 'center' }}>
+                                                <Text style={{fontSize:14,color:'gray'}}>抱歉，没有更多商品啦~</Text>
+                                                {/* <Foot /> */}
+                                              </View>  
                                     )
                                 } else {
                                     return null
@@ -139,16 +171,19 @@ export default class ProductList extends Component {
                                 colors={['red']}
                             />
                         }
-                        getItemLayout={(param, index) => ({ length: 114, offset: 114 * index, index })}
+                        getItemLayout={(param, index) => (
+                            this.state.display === 'list'
+                                ? { length: 114, offset: 114 * index, index }
+                                : { length: 220, offset: 220 * index, index }
+                        )}
                         onScroll={this.onScroll.bind(this)}
                     />
                     {/* <Button
-                        title='test12'
+                        title='test'
                         onPress={() => {
-                            // this.refs.ProductList.scrollToIndex({viewPosition:0,index:0})
-                            //this.mytest+=1
-                            //alert(this.mytest)
-                            this.refs.ProductList.scrollToOffset({ offset: 0 })
+                            this.setState({
+                                display:this.state.display==='list'?'table':'list'
+                            })
                         }}
                     /> */}
 

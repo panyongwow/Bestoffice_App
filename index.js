@@ -10,5 +10,5 @@ import ListGoods from './app/containers/listgoods'
 import ProductList from './app/containers/productlist'
 import FlexTest from './test/flex'
 import {ArgumentTransmit} from './test/other/argumentTransmit'
-AppRegistry.registerComponent(appName, () =>ProductList);
+AppRegistry.registerComponent(appName, () =>App);
 

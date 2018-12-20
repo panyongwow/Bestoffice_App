@@ -16,7 +16,7 @@ export default class ProductMiddle extends Component{
                 <Image style={styles.image} resizeMode='stretch' source={{uri:item.picname}} />
                 <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
                 <View style={styles.priceborder}>
-                    <Text style={styles.pricepre}>¥</Text>
+                    <Text style={styles.pricepre}>&yen;</Text>
                     <Text style={styles.price}>{item.price.toFixed(1)}</Text>
                 </View>
             </TouchableOpacity>
@@ -26,13 +26,15 @@ export default class ProductMiddle extends Component{
 
 const styles=StyleSheet.create({
     item:{
-        margin:5
+        margin:5,
+        //height:160
     },
     image:{
         height:150,
         width:150,
         borderTopLeftRadius:3,
         borderTopRightRadius:3,
+        backgroundColor:'white'
     },    
     name:{
         width:150,

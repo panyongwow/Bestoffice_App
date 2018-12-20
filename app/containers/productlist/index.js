@@ -10,7 +10,6 @@ import Loading from '../../components/loading'
 import ProductDao from '../../dao/product'
 
 
-//处理节流
 //处理显示结构的切换
 //商品中图的tag显示
 export default class ProductList extends Component {
@@ -19,7 +18,7 @@ export default class ProductList extends Component {
         //display表示商品如何显示，list为列表显示，table为表格显示
         this.state = {
             data: [],
-            data_table:[],
+            data_table: [],
             isrefreshing: false,
             isShowGoTop: false,
             info: '未到底部',
@@ -31,6 +30,7 @@ export default class ProductList extends Component {
             apagenum: 20,
             hasdata: true
         }
+        this.timeoutId
     }
     componentDidMount() {
         this.list()
@@ -46,7 +46,7 @@ export default class ProductList extends Component {
         let apagenum = this.search.apagenum
         let nowpage = this.search.nowpage
         let listgoodsid = this.props.navigation.state.params.id
-        //let listgoodsid = 388
+        //let listgoodsid = 299
 
 
         ProductDao.list(listgoodsid, nowpage, apagenum)
@@ -98,19 +98,22 @@ export default class ProductList extends Component {
         this.list()
     }
     onScroll(event) {
-        let offsetY = event.nativeEvent.contentOffset.y
-        if (offsetY > 200 && !this.state.isShowGoTop) {
-            this.setState({
-                isShowGoTop: true
-            })
-        } else if (offsetY <= 200 && this.state.isShowGoTop) {
-            this.setState({
-                isShowGoTop: false
-            })
-        }
-        // this.setState({
-        //     y:offsetY
-        // })
+        //节流
+        if (this.timeoutId) clearTimeout(this.timeoutId)
+        event.persist()
+        this.timeoutId = setTimeout(() => {
+            let offsetY = event.nativeEvent.contentOffset.y
+            if (offsetY > 200 && !this.state.isShowGoTop) {
+                this.setState({
+                    isShowGoTop: true
+                })
+            } else if (offsetY <= 200 && this.state.isShowGoTop) {
+                this.setState({
+                    isShowGoTop: false
+                })
+            }
+        }, 100)
+
     }
     render() {
         return (
@@ -119,7 +122,7 @@ export default class ProductList extends Component {
                 {/* <Header isShowBack={true} /> */}
                 <ListTitle />
                 <View style={{ flex: 1 }}>
-                    {/* <Text>test1+{this.state.y}</Text> */}
+                    {/* <Text>test123+{this.state.y}</Text> */}
                     <FlatList
                         // style={{backgroundColor:'#b0c4de'}}
                         ref='ProductList'
@@ -128,12 +131,12 @@ export default class ProductList extends Component {
                             return (
                                 this.state.display === 'list'
                                     ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} />
-                                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: 220, width: '100%',borderColor:'red',borderWidth:0 }}>
+                                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: 220, width: '100%', borderColor: 'red', borderWidth: 0 }}>
                                         {/* <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '90%',borderColor:'blue',borderWidth:1 }}> */}
-                                            <ProductMiddle style={{backgroundColor:'white'}} item={item[0]} />
-                                            {
-                                                item.length > 1 ? <ProductMiddle item={item[1]} /> : null
-                                            }
+                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]} />
+                                        {
+                                            item.length > 1 ? <ProductMiddle item={item[1]} /> : null
+                                        }
                                         {/* </View> */}
                                     </View>
                             )
@@ -154,10 +157,10 @@ export default class ProductList extends Component {
                                     return (
                                         this.search.hasdata
                                             ? <Loading />
-                                            : <View style={{height:50,flexDirection:'column',justifyContent:'center' ,alignItems: 'center' }}>
-                                                <Text style={{fontSize:14,color:'gray'}}>抱歉，没有更多商品啦~</Text>
+                                            : <View style={{ height: 50, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                                <Text style={{ fontSize: 14, color: 'gray' }}>抱歉，没有更多商品啦~</Text>
                                                 {/* <Foot /> */}
-                                              </View>  
+                                            </View>
                                     )
                                 } else {
                                     return null

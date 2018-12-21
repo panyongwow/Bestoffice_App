@@ -17,17 +17,18 @@ export default class ProductList extends Component {
         super(props)
         //display表示商品如何显示，list为列表显示，table为表格显示
         this.state = {
-            data: [],
+            data_list: [],
             data_table: [],
-            isrefreshing: false,
+            // isrefreshing: false,
             isShowGoTop: false,
             info: '未到底部',
             y: 0,
-            display: 'table'
+            display: 'list'
         }
         this.search = {
             nowpage: 1,
             apagenum: 20,
+            orderby: 0,
             hasdata: true
         }
         this.timeoutId
@@ -45,36 +46,57 @@ export default class ProductList extends Component {
 
         let apagenum = this.search.apagenum
         let nowpage = this.search.nowpage
+        let orderby = this.search.orderby
         let listgoodsid = this.props.navigation.state.params.id
-        //let listgoodsid = 299
+        //let listgoodsid = 29900
 
 
-        ProductDao.list(listgoodsid, nowpage, apagenum)
+        ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
             .then(result => {
                 //alert(JSON.stringify(result))
-                let data = this.state.data
-                if (this.state.display === 'list') {
-                    result.details.map((item, index) => {
-                        data.push(item)
-                    })
-                } else {
-                    let item = []
-                    for (let i = 0, j = parseInt(result.details.length / 2); i < j; i++) {
-                        item.push(result.details[i * 2])
-                        item.push(result.details[i * 2 + 1])
-                        data.push(item)
-                        item = []
-                    }
-                    if (result.details.length % 2 > 0) {
-                        item.push(result.details[result.details.length - 1])
-                        data.push(item)
-                    }
+                let data_list = this.state.data_list
+                let data_table = this.state.data_table
+
+                result.details.map((item, index) => {
+                    data_list.push(item)
+                })
+
+                let item = []
+                for (let i = 0, j = parseInt(result.details.length / 2); i < j; i++) {
+                    item.push(result.details[i * 2])
+                    item.push(result.details[i * 2 + 1])
+                    data_table.push(item)
+                    item = []
                 }
-                //alert(JSON.stringify(data))
+                if (result.details.length % 2 > 0) {
+                    item.push(result.details[result.details.length - 1])
+                    data_table.push(item)
+                }
+
+
+                // if (this.state.display === 'list') {
+                //     result.details.map((item, index) => {
+                //         data.push(item)
+                //     })
+                // } else {
+                //     let item = []
+                //     for (let i = 0, j = parseInt(result.details.length / 2); i < j; i++) {
+                //         item.push(result.details[i * 2])
+                //         item.push(result.details[i * 2 + 1])
+                //         data.push(item)
+                //         item = []
+                //     }
+                //     if (result.details.length % 2 > 0) {
+                //         item.push(result.details[result.details.length - 1])
+                //         data.push(item)
+                //     }
+                // }
+
 
                 if (apagenum * nowpage >= result.totalcount) this.search.hasdata = false
                 this.setState({
-                    data: data,
+                    data_list: data_list,
+                    data_table: data_table,
                     isrefreshing: false,
                     isShowGoTop: this.search.nowpage > 1 ? true : false,
                 })
@@ -87,14 +109,16 @@ export default class ProductList extends Component {
                 alert(error)
             })
     }
-    refresh = () => {
+    refresh = (orderby) => {
         this.setState({
-            isrefreshing: true,
+            //isrefreshing: true,
             isShowGoTop: false,
-            data: []
+            data_list: [],
+            data_table: []
         })
         this.search.nowpage = 1
         this.search.hasdata = true
+        if (orderby != undefined) this.search.orderby = orderby
         this.list()
     }
     onScroll(event) {
@@ -120,18 +144,32 @@ export default class ProductList extends Component {
             <View style={{ flex: 1 }}>
                 <Header isShowBack={true} navigation={this.props.navigation} />
                 {/* <Header isShowBack={true} /> */}
-                <ListTitle />
+                <ListTitle
+                    display={this.state.display}
+                    displaychange={
+                        (display) => {
+                            this.setState({
+                                display: display
+                            })
+                        }
+                    }
+                    orderbychange={
+                        (orderby) => {
+                            this.refresh(orderby)
+                        }
+                    }
+                />
                 <View style={{ flex: 1 }}>
                     {/* <Text>test123+{this.state.y}</Text> */}
                     <FlatList
                         // style={{backgroundColor:'#b0c4de'}}
                         ref='ProductList'
-                        data={this.state.data}
+                        data={this.state.display === 'list' ? this.state.data_list : this.state.data_table}
                         renderItem={({ item }) => {
                             return (
                                 this.state.display === 'list'
                                     ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} />
-                                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: 220, width: '100%', borderColor: 'red', borderWidth: 0 }}>
+                                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: 240, width: '100%', borderColor: 'red', borderWidth: 0 }}>
                                         {/* <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '90%',borderColor:'blue',borderWidth:1 }}> */}
                                         <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]} />
                                         {
@@ -153,23 +191,24 @@ export default class ProductList extends Component {
                         }}
                         ListFooterComponent={
                             () => {
-                                if (!this.state.isrefreshing) {
+                                // if (!this.state.isrefreshing) {
                                     return (
                                         this.search.hasdata
                                             ? <Loading />
-                                            : <View style={{ height: 50, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: 14, color: 'gray' }}>抱歉，没有更多商品啦~</Text>
-                                                {/* <Foot /> */}
+                                            : <View style={{ height: 100, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f3f3f3' }}>
+                                                <Text style={{ fontSize: 14, color: 'gray' ,backgroundColor:'white',width:'100%',height:42,textAlign:'center',textAlignVertical:'center'}}>抱歉，没有更多商品啦~</Text>
+                                                <Foot />
                                             </View>
                                     )
-                                } else {
-                                    return null
-                                }
+                                // } else {
+                                //     return null
+                                // }
                             }
                         }
                         refreshControl={
                             <RefreshControl
-                                refreshing={this.state.isrefreshing}
+                                // refreshing={this.state.isrefreshing}
+                                refreshing={false}
                                 onRefresh={this.refresh}
                                 colors={['red']}
                             />
@@ -177,7 +216,7 @@ export default class ProductList extends Component {
                         getItemLayout={(param, index) => (
                             this.state.display === 'list'
                                 ? { length: 114, offset: 114 * index, index }
-                                : { length: 220, offset: 220 * index, index }
+                                : { length: 240, offset: 240 * index, index }
                         )}
                         onScroll={this.onScroll.bind(this)}
                     />
@@ -204,21 +243,78 @@ export default class ProductList extends Component {
 }
 
 class ListTitle extends Component {
+    constructor(props) {
+        super(props)
+
+        //orderby:排序模式，0 综合，1 销量，2 价格由高到低，3 价格由低到高
+        this.state = {
+            display: 'list',
+            orderby: 0
+        }
+    }
+    componentDidMount() {
+        this.setState({
+            display: this.props.display
+        })
+    }
     render() {
         return (
             <View style={styles.lt_container}>
-                <View>
-                    <Text style={{ fontWeight: 'bold', color: 'red' }}>综合</Text>
-                </View>
-                <View>
-                    <Text style={{ fontWeight: 'bold' }}>销量</Text>
-                </View>
-                <View style={styles.lt_price}>
-                    <View><Text style={{ fontWeight: 'bold' }}>价格</Text></View>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                        this.setState({
+                            orderby: 0
+                        })
+                        this.props.orderbychange(0)
+                    }}
+                >
+                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 0 ? '#f00' : '#000' }}>综合</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                        this.setState({
+                            orderby: 1
+                        })
+                        this.props.orderbychange(1)
+                    }}
+                >
+                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 1 ? '#f00' : '#000' }}>销量</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.lt_price}
+                    onPress={() => {
+                        let orderby = this.state.orderby === 2 ? 3 : 2
+                        this.setState({
+                            orderby: orderby
+                        })
+                        this.props.orderbychange(orderby)
+                    }}
+                >
+                    <View><Text style={{ fontWeight: 'bold', color: this.state.orderby === 2 || this.state.orderby === 3 ? '#f00' : '#000' }}>价格</Text></View>
                     <View style={styles.lt_arrowborder}>
-                        <FontAwesome5 name='caret-up' size={9} color='black' style={{ height: 7 }} />
-                        <FontAwesome5 name='caret-down' size={9} color='black' style={{ height: 7 }} />
+                        <FontAwesome5 name='caret-up' size={9} color={this.state.orderby === 2 ? '#f00' : '#000'} style={{ height: 7 }} />
+                        <FontAwesome5 name='caret-down' size={9} color={this.state.orderby === 3 ? '#f00' : '#000'} style={{ height: 7 }} />
                     </View>
+                </TouchableOpacity>
+                <View style={{ width: 20 }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            let display = this.state.display === 'list' ? 'table' : 'list'
+                            this.setState({
+                                display: display
+                            })
+                            this.props.displaychange(display)
+                        }}
+                    >
+                        {
+                            this.state.display === "list"
+                                ? <FontAwesome5 name='grip-vertical' size={20} color='gray' />
+                                : <FontAwesome5 name='align-justify' size={22} color='gray' />
+                        }
+
+                    </TouchableOpacity>
                 </View>
                 {/* <View>
                     <Text style={{ fontWeight: 'bold' }}>上架时间</Text>

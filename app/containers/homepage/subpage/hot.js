@@ -8,14 +8,7 @@ export default class Hot extends Component{
     constructor(props){
         super(props)
     }
-    componentWillMount(){
-        
-    }
-    componentDidMount(){
-
-    }
     render(){
-        //const data=this.props.data
         return(
             <View>
             <View style={styles.container}>
@@ -74,7 +67,7 @@ const styles=StyleSheet.create({
         borderRadius:5,
         borderWidth:1,
         margin:6,
-        height:910,
+        height:1000,
         flex:1,
         flexDirection:'column',
         justifyContent:'flex-start'

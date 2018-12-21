@@ -44,7 +44,7 @@ export default class ProductSmall extends PureComponent {
     }
 }
 
-class Tag extends Component {
+export class Tag extends Component {
     render() {
         return (
             <View>
@@ -55,7 +55,7 @@ class Tag extends Component {
 }
 const styles = StyleSheet.create({
     touchable: {
-        height: 110,
+        height: 116,
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center'

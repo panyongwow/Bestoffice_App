@@ -94,7 +94,7 @@ const styles=StyleSheet.create({
         borderRadius:5,
         borderWidth:1,
         margin:6,
-        height:860,
+        height:930,
         flex:1,
         flexDirection:'column',
         justifyContent:'flex-start',
@@ -118,7 +118,7 @@ const styles=StyleSheet.create({
     tagsborder:{
         padding:5,
         width:150,
-        height:208,
+        height:230,
         backgroundColor:'white', 
         borderWidth:0,
         borderRadius:5,

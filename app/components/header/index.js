@@ -39,11 +39,11 @@ export default class Header extends Component {
                             <FontAwesome5 name='grip-vertical' size={22} color='white' style={{ paddingTop: 3 }} />
                         </TouchableHighlight>
                     </View> */}
-                    <View>
+                    {/* <View>
                         <TouchableHighlight>
                             <FontAwesome5 name='align-justify' size={22} color='white' style={{ paddingTop: 3 }} />
                         </TouchableHighlight>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         )

@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {View,Text,Button,StyleSheet,ScrollView,Image,TouchableOpacity,RefreshControl} from 'react-native'
+import React, { Component } from 'react'
+import { View, Text, Button, StyleSheet, ScrollView, Image, TouchableOpacity, RefreshControl, StatusBar } from 'react-native'
 // import Header from '../../components/header'
 import Header from '../../components/header'
 import Foot from '../../components/foot'
@@ -12,93 +12,100 @@ import Hot from './subpage/hot'
 import HomePageDao from '../../dao/homepage'
 import Loading from './../../components/loading'
 
-export default class HomePage extends Component{
-    constructor(props){
+export default class HomePage extends Component {
+    constructor(props) {
         super(props)
-        this.state={
-            Tag:[],
-            AD:[],
-            ViceAD:[],
-            ProductHot:[],
-            ProductBargain:[],
-            ProductNew:[],
-            ListgoodsAD:[],
-            IsShowHot:true,
-            IsShowListgoodsAD:false,
+        this.state = {
+            Tag: [],
+            AD: [],
+            ViceAD: [],
+            ProductHot: [],
+            ProductBargain: [],
+            ProductNew: [],
+            ListgoodsAD: [],
+            IsShowHot: true,
+            IsShowListgoodsAD: false,
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         this.loadData()
     }
     //获取首页相关数据
-    loadData(){
+    loadData() {
         HomePageDao.get()
-            .then(result=>{
+            .then(result => {
                 this.setState({
-                    Tag:result.tag,
-                    AD:result.ad,
-                    ViceAD:result.vice_ad,
-                    ProductHot:result.product_hot,
-                    ProductBargain:result.product_bargain,
-                    ProductNew:result.product_new,
-                    ListgoodsAD:result.listgoods_ad
+                    Tag: result.tag,
+                    AD: result.ad,
+                    ViceAD: result.vice_ad,
+                    ProductHot: result.product_hot,
+                    ProductBargain: result.product_bargain,
+                    ProductNew: result.product_new,
+                    ListgoodsAD: result.listgoods_ad
                 })
             })
     }
-    render(){
-        const {navigation}=this.props
-        return(
-            <View  style={styles.container}>
+    render() {
+        const { navigation } = this.props
+        return (
+            <View style={styles.container}>
+                <StatusBar
+                    //translucent={true}
+                    backgroundColor='rgba(255,0,0,1)'
+                    barStyle='dark-content'
+
+                />
+                {/* <Button title='123'></Button> */}
                 <View>
                     <Header navigation={this.props.navigation} />
-                </View> 
+                </View>
                 <HotTag navigation={this.props.navigation} />
                 <ScrollView
-                    onMomentumScrollEnd={(e)=>{
-                        let offsetY=e.nativeEvent.contentOffset.y
-                        let contentSizeHeight=e.nativeEvent.contentSize.height
-                        let scrollHeight=e.nativeEvent.layoutMeasurement.height
-                        if(offsetY+scrollHeight>=contentSizeHeight-5){
-                            if(!this.state.IsShowHot){
+                    onMomentumScrollEnd={(e) => {
+                        let offsetY = e.nativeEvent.contentOffset.y
+                        let contentSizeHeight = e.nativeEvent.contentSize.height
+                        let scrollHeight = e.nativeEvent.layoutMeasurement.height
+                        if (offsetY + scrollHeight >= contentSizeHeight - 5) {
+                            if (!this.state.IsShowHot) {
                                 this.setState({
-                                    IsShowHot:true
-                                })                        
-                            }else{
-                                if(!this.state.IsShowListgoodsAD){
+                                    IsShowHot: true
+                                })
+                            } else {
+                                if (!this.state.IsShowListgoodsAD) {
                                     this.setState({
-                                        IsShowListgoodsAD:true
+                                        IsShowListgoodsAD: true
                                     })
                                 }
-                            }    
+                            }
                         }
                     }}
-                    
+
                 >
                     <ListgoodsTop navigation={this.props.navigation} />
                     <View style={styles.ad}>
-                        <AD data={this.state.AD}  navigation={this.props.navigation}  />
+                        <AD data={this.state.AD} navigation={this.props.navigation} />
                     </View>
-                    <SubAD data={this.state.ViceAD}  navigation={this.props.navigation}  />
+                    <SubAD data={this.state.ViceAD} navigation={this.props.navigation} />
                     {
                         this.state.IsShowHot
-                        ?<Hot  
-                            ProductHot={this.state.ProductHot}  
-                            ProductBargain={this.state.ProductBargain}
-                            ProductNew={this.state.ProductNew}
-                            navigation={this.props.navigation} 
-                        />
-                        :<Loading />  
+                            ? <Hot
+                                ProductHot={this.state.ProductHot}
+                                ProductBargain={this.state.ProductBargain}
+                                ProductNew={this.state.ProductNew}
+                                navigation={this.props.navigation}
+                            />
+                            : <Loading />
                     }
                     {
                         this.state.IsShowListgoodsAD
-                        ?<ListgoodsAD  data={this.state.ListgoodsAD}  navigation={this.props.navigation} />
-                        : this.state.IsShowHot ? <Loading />:null  
+                            ? <ListgoodsAD data={this.state.ListgoodsAD} navigation={this.props.navigation} />
+                            : this.state.IsShowHot ? <Loading /> : null
                     }
-                    
+
                     {
                         this.state.IsShowListgoodsAD
-                        ?<Foot />
-                        :null
+                            ? <Foot />
+                            : null
                     }
 
 
@@ -135,26 +142,26 @@ export default class HomePage extends Component{
                             navigation.navigate('ShoppingCart')
                         }}
                     />    */}
-                </ScrollView>      
-            </View>               
+                </ScrollView>
+            </View>
         )
     }
 }
 
-const styles=StyleSheet.create({
-    container:{
-        flex:1
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
     },
-    ad:{
-        height:162
+    ad: {
+        height: 162
     },
-    iconborder:{
-        width:34,
-        height:34,
-        borderRadius:17,
-        backgroundColor:'red',
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center'
+    iconborder: {
+        width: 34,
+        height: 34,
+        borderRadius: 17,
+        backgroundColor: 'red',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

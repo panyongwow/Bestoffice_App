@@ -1,5 +1,6 @@
 import React, { PureComponent, Component } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 export default class ProductSmall extends PureComponent {
     render() {
@@ -26,16 +27,28 @@ export default class ProductSmall extends PureComponent {
                             </Text>
                         </View>
                         <View>
-                            <View style={styles.priceborder} >
-                                <Text style={styles.pricepre}>&yen;</Text>
-                                <Text style={styles.price}>{item.price.toFixed(1)}</Text>
-                                <Text style={styles.marketprice}>&yen;{item.marketprice.toFixed(1)}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                            <View style={styles.tagborder }>
                                 {item.isbargainprice ? <Tag title='特价' /> : null}
-                                {item.isdirect ? <Tag title='厂家直送' /> : null}
-                                {item.ownstore.length > 0 ? <Tag title={item.ownstore} /> : null}
+                                {item.isdirect ? <Tag title='直送' /> : null}
+                                {item.ownstore ? <Tag title={item.ownstore} /> : null}
+                                {item.giftnum > 0 ? <Tag title='好礼' /> : null}
                             </View>
+                            <View style={styles.border} >
+                                <View style={styles.priceborder} >
+                                    <Text style={styles.pricepre}>&yen;</Text>
+                                    <Text style={styles.price}>{item.price}</Text>
+                                    <Text style={styles.measurement}>/{item.measurement}</Text>
+                                    {
+                                        item.isbargainprice
+                                            ? <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
+                                            : null
+                                    }
+                                </View>
+                                <TouchableOpacity style={styles.shoppingcart}>
+                                    <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />
+                                </TouchableOpacity>
+                            </View>
+
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -83,6 +96,15 @@ const styles = StyleSheet.create({
         fontSize: 14,
         width: '100%'
     },
+    tagborder:{
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        marginTop: 5 
+    },
+    border:{
+        flexDirection: 'row', 
+        justifyContent: 'space-between' 
+    },
     priceborder: {
         flexDirection: 'row',
         alignItems: 'baseline',
@@ -99,11 +121,16 @@ const styles = StyleSheet.create({
         marginLeft: 3
     },
     marketprice: {
-        color: 'black',
         fontSize: 12,
         paddingBottom: 2,
         marginLeft: 6,
-        textDecorationLine: 'line-through'
+        textDecorationLine: 'line-through',
+        color: '#bebebe'
+    },
+    measurement:{
+        fontSize: 12, 
+        color: '#bebebe', 
+        paddingBottom: 2 
     },
     tag: {
         fontSize: 10,
@@ -116,6 +143,16 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         textAlign: 'center',
         textAlignVertical: 'center',
-        marginRight: 5
+        marginRight: 3
+    },
+    shoppingcart:{
+        marginTop:12, 
+        width: 24, 
+        height: 24, 
+        borderRadius: 12, 
+        backgroundColor: '#2aadfb',
+         flexDirection: 'row', 
+         justifyContent: 'center', 
+         alignItems: 'center' 
     }
 })

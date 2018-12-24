@@ -73,9 +73,18 @@ export default class Right extends Component {
                         }
                     }
                     renderSectionHeader={
-                        ({ section: { name } }) => {
+                        ({ section: { name,id } }) => {
                             return (
-                                <Text style={styles.section}>{name}</Text>
+                                <TouchableOpacity
+                                activeOpacity={0.6}
+                                style={styles.section}
+                                onPress={() => {
+                                    this.props.navigation.navigate('ProductList',{id:id})
+                                }}
+                            >
+                                <Text style={styles.sectionname}>{name}</Text>
+                            </TouchableOpacity>                                
+                                // <Text style={styles.section}>{name+','+ id}</Text>
                             )
                         }
                     }
@@ -126,7 +135,10 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         paddingLeft: 15,
         paddingTop: 15,
+
+    },
+    sectionname:{
         fontSize: 12,
-        fontWeight: 'bold'
+        fontWeight: 'bold'        
     }
 })

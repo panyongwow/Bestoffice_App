@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Image, Button, FlatList, StyleSheet, TouchableOpacity, RefreshControl, Dimensions } from 'react-native'
+import {createStackNavigator,createDrawerNavigator,createBottomTabNavigator,createTabNavigator,StackNavigator, DrawerItems, SafeAreaView} from 'react-navigation'
 import Header from '../../components/header'
 import Foot from '../../components/foot'
 import GoTop from '../../components/gotop'
@@ -12,7 +13,20 @@ import ProductDao from '../../dao/product'
 
 //处理显示结构的切换
 //商品中图的tag显示
+class DrawerContent extends Component {
+    render() {
+        return (
+            <View>
+                <Text>你好！</Text>
+            </View>
+        )
+    }
+}
 export default class ProductList extends Component {
+    static navigationOptions = {
+        contentComponent: DrawerContent,
+        header:null
+    }
     constructor(props) {
         super(props)
         //display表示商品如何显示，list为列表显示，table为表格显示
@@ -32,9 +46,12 @@ export default class ProductList extends Component {
             hasdata: true
         }
         this.timeoutId
+
+        
     }
     componentDidMount() {
         this.list()
+        this.props.navigation.openDrawer()
     }
     list() {
 
@@ -192,14 +209,14 @@ export default class ProductList extends Component {
                         ListFooterComponent={
                             () => {
                                 // if (!this.state.isrefreshing) {
-                                    return (
-                                        this.search.hasdata
-                                            ? <Loading />
-                                            : <View style={{ height: 100, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f3f3f3' }}>
-                                                <Text style={{ fontSize: 14, color: 'gray' ,backgroundColor:'white',width:'100%',height:42,textAlign:'center',textAlignVertical:'center'}}>抱歉，没有更多商品啦~</Text>
-                                                <Foot />
-                                            </View>
-                                    )
+                                return (
+                                    this.search.hasdata
+                                        ? <Loading />
+                                        : <View style={{ height: 100, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f3f3f3' }}>
+                                            <Text style={{ fontSize: 14, color: 'gray', backgroundColor: 'white', width: '100%', height: 42, textAlign: 'center', textAlignVertical: 'center' }}>抱歉，没有更多商品啦~</Text>
+                                            <Foot />
+                                        </View>
+                                )
                                 // } else {
                                 //     return null
                                 // }

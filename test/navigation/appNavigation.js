@@ -1,6 +1,6 @@
-import {createStackNavigator,createDrawerNavigator,createBottomTabNavigator,createTabNavigator,StackNavigator} from 'react-navigation'
+import {createStackNavigator,createDrawerNavigator,createBottomTabNavigator,createTabNavigator,StackNavigator, DrawerItems, SafeAreaView} from 'react-navigation'
 import React from 'react'
-import {View,Button,Text} from 'react-native'
+import {View,Button,Text,StyleSheet,ScrollView} from 'react-native'
 import HomePage from './HomePage'
 import Details from './Page1'
 import Setting from './Page2'
@@ -42,7 +42,8 @@ import Setting from './Page2'
 
 class InfoPage extends React.Component{
     static navigationOptions={
-        drawerLabel:'Info'
+        drawerLabel:'Info',
+        contentComponent:DrawerContent
     };
     constructor(){
        super()
@@ -77,6 +78,32 @@ class PointPage extends React.Component{
         )
     }
 }
+
+class DrawerContent extends React.Component{
+    render(){
+        return(
+            <SafeAreaView >
+                <Text>你好a 12112aaaaaaa！</Text>
+            </SafeAreaView >
+        )
+    }
+}
+
+const CustomDrawerContentComponent = (props) => (
+    // <ScrollView>
+    //   <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
+    //     {/* <DrawerItems {...props} /> */}
+    //     <Text>123</Text>
+    //   </SafeAreaView>
+    // </ScrollView>
+    <SafeAreaView ><Text>你好</Text></SafeAreaView >
+  );
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });
 
 const MyStack=createDrawerNavigator({
     Info:InfoPage,

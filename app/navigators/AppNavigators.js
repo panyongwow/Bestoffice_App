@@ -60,6 +60,10 @@ const MainStock=createBottomTabNavigator({
     }, 
 });
 
+const DrawerStock=createDrawerNavigator({
+    ProductList:ProductList
+})
+
 export const RootStack=createStackNavigator({
     Welcome:{
         screen:Welcome,
@@ -76,25 +80,26 @@ export const RootStack=createStackNavigator({
             title:navigation.state.params.name +'的页面'
         })
     },
-    ProductList:{
-        screen:ProductList,
-        navigationOptions:{
-            header:null
-        }
-    },
+    // ProductList:{
+    //     screen:ProductList,
+    //     navigationOptions:{
+    //         header:null
+    //     }
+    // },
     Drawer:{
-        screen:createDrawerNavigator({
-            TopList:{
-                screen:TopList
-            },
-            News:{
-                screen:News
-            }
-        },{
-            drawerPosition:'right',
-            drawerWidth:200,
-            useNativeAnimations:true
-        })
+        // screen:createDrawerNavigator({
+        //     TopList:{
+        //         screen:TopList
+        //     },
+        //     News:{
+        //         screen:News
+        //     }
+        // },{
+        //     drawerPosition:'right',
+        //     drawerWidth:200,
+        //     useNativeAnimations:true
+        // })
+        screen:DrawerStock
     },
     Main:{
         screen:MainStock,

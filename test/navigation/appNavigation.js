@@ -41,10 +41,10 @@ import Setting from './Page2'
 // })
 
 class InfoPage extends React.Component{
-    static navigationOptions={
-        drawerLabel:'Info',
-        contentComponent:DrawerContent
-    };
+    // static navigationOptions={
+    //     //drawerLabel:'Info',
+    //     contentComponent:<DrawerContent />
+    // };
     constructor(){
        super()
     }
@@ -56,7 +56,7 @@ class InfoPage extends React.Component{
             <View>
                 <Text>这是我的信息</Text>
                 <Button 
-                    title='打开' 
+                    title='打开12345' 
                     onPress={()=>{
                         this.props.navigation.openDrawer()
                     }}
@@ -90,13 +90,13 @@ class DrawerContent extends React.Component{
 }
 
 const CustomDrawerContentComponent = (props) => (
-    // <ScrollView>
-    //   <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
-    //     {/* <DrawerItems {...props} /> */}
-    //     <Text>123</Text>
-    //   </SafeAreaView>
-    // </ScrollView>
-    <SafeAreaView ><Text>你好</Text></SafeAreaView >
+    <ScrollView>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
+        {/* <DrawerItems {...props} /> */}
+        <Text>123</Text>
+      </SafeAreaView>
+    </ScrollView>
+    // <SafeAreaView><Text>你好</Text></SafeAreaView >
   );
   
   const styles = StyleSheet.create({
@@ -106,7 +106,13 @@ const CustomDrawerContentComponent = (props) => (
   });
 
 const MyStack=createDrawerNavigator({
-    Info:InfoPage,
+    Info:{
+        screen:InfoPage,
+        navigationOptions:{
+            contentComponent:DrawerContent 
+        }
+            
+    },
     Point:PointPage
 })
 

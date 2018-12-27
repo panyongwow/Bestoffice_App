@@ -57,8 +57,19 @@ class InfoPage extends React.Component{
                 <Text>这是我的信息</Text>
                 <Button 
                     title='打开12345' 
+                    // onPress={()=>{
+                    //     this.props.navigation.openDrawer()
+                    // }}
+                />
+                <View style={{height:30}}></View>
+                <Button
+                    title='test123'
                     onPress={()=>{
-                        this.props.navigation.openDrawer()
+                        let { navigation } = this.props
+                        navigation.setParams({
+                            contentComponent:DrawerContent
+                        })
+                        alert('ok')
                     }}
                 />
             </View>
@@ -84,6 +95,12 @@ class DrawerContent extends React.Component{
         return(
             <SafeAreaView >
                 <Text>你好a 12112aaaaaaa！</Text>
+                <Button
+                    title='test123'
+                    onPress={()=>{
+                        this.props.myPress('ok')
+                    }}
+                />
             </SafeAreaView >
         )
     }
@@ -108,13 +125,17 @@ const CustomDrawerContentComponent = (props) => (
 const MyStack=createDrawerNavigator({
     Info:{
         screen:InfoPage,
-        navigationOptions:{
-            contentComponent:DrawerContent 
-        }
+        // navigationOptions:{
+        //     contentComponent:DrawerContent 
+        // }
             
     },
-    Point:PointPage
-})
+    //Point:PointPage
+},
+{
+    contentComponent:props=>(<DrawerContent items={props}  />)
+}
+)
 
 export default createBottomTabNavigator({
     Home:HomePage,

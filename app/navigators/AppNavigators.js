@@ -99,7 +99,10 @@ export const RootStack=createStackNavigator({
         //     drawerWidth:200,
         //     useNativeAnimations:true
         // })
-        screen:DrawerStock
+        screen:DrawerStock,
+            navigationOptions:{
+                header:null
+            }
     },
     Main:{
         screen:MainStock,

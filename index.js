@@ -13,6 +13,6 @@ import {ArgumentTransmit} from './test/other/argumentTransmit'
 
 import App from './test/navigation/appNavigation'
 
-import SideMenuTest from './test/sidemenu'
-AppRegistry.registerComponent(appName, () =>SideMenuTest);
+//import SideMenuTest from './test/sidemenu'
+AppRegistry.registerComponent(appName, () =>App);
 

@@ -33,8 +33,8 @@ export default class SideMenuTest extends Component {
     render() {
         // const menu = <View style={{ flex: 1, backgroundColor: 'yellow' }}><Text style={{ marginTop: 22 }}>aaa</Text></View>
         const { width, heihgt } = Dimensions.get('window')
-        const offset=120
-        const slidwidth=width-120
+        const offset=50
+        const slidwidth=width-offset
         const menu = <Menu
             menuOpen={() => {
                 this.menuOpen()
@@ -48,9 +48,8 @@ export default class SideMenuTest extends Component {
                     hiddenMenuOffset={offset}
                     edgeHitWidth={0}
                     openMenuOffset={width}
-                    style={{ height: 300, backgroundColor: 'gray' }}
                 >
-                    <View style={{ flex: 1,width:slidwidth, backgroundColor: 'gray',borderWidth:3,borderColor:'red' }}>
+                    <View style={{ flex: 1,width:slidwidth, backgroundColor: 'gray',borderWidth:0,borderColor:'red' }}>
                         <Button
                             title='close1'
                             onPress={() => {

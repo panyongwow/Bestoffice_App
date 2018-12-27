@@ -1,35 +1,66 @@
 import React, { Component } from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native'
+import { View, Text, Button, StyleSheet, Dimensions } from 'react-native'
 import SideMenu from 'react-native-side-menu'
 
+class Menu extends Component {
+    render() {
+        return (
+            <View style={{ flex: 1, backgroundColor: 'yellow' }}>
+                <Text style={{ marginTop: 22 }}>aaa1</Text>
+                <Button
+                    title='open12'
+                    onPress={() => {
+                        this.props.menuOpen()
+                    }}
+                />
+            </View>
+        )
+    }
+}
 export default class SideMenuTest extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false
+            isOpen: true
         }
-    }    
+    }
+    menuOpen() {
+        this.setState({
+            isOpen: false
+        })
+        //alert('ok123')
+    }
     render() {
-        const menu = <View style={{flex:1,backgroundColor:'yellow'}}><Text style={{ marginTop: 22 }}>aaa</Text></View>
+        // const menu = <View style={{ flex: 1, backgroundColor: 'yellow' }}><Text style={{ marginTop: 22 }}>aaa</Text></View>
+        const { width, heihgt } = Dimensions.get('window')
+        const offset=120
+        const slidwidth=width-120
+        const menu = <Menu
+            menuOpen={() => {
+                this.menuOpen()
+            }}
+        />
         return (
-            <View style={{flex:1}}>
-            <SideMenu
-                menu={menu}                    //抽屉内的组件
-                isOpen={this.state.isOpen}     //抽屉打开/关闭
-                style={{height:300,backgroundColor:'gray'}}
-            >
-                {/* <View style={{flex:1,backgroundColor:'gray'}}>
-                    <Text style={{color:'red'}} onPress={() => { this.setState({ isOpen: true }) }}>
-                        Open Draw!
-         </Text>
-                    <Text style={{color:'blue'}}>
-                        To get started, edit App.js
-         </Text>
-                </View> */}
-                <Button title='open' onPress={()=>{
-    this.setState({isOpen:true})
-}}></Button>
-            </SideMenu>
+            <View style={{ flex: 1 }}>
+                <SideMenu
+                    menu={menu}                    //抽屉内的组件
+                    isOpen={this.state.isOpen}     //抽屉打开/关闭
+                    hiddenMenuOffset={offset}
+                    edgeHitWidth={0}
+                    openMenuOffset={width}
+                    style={{ height: 300, backgroundColor: 'gray' }}
+                >
+                    <View style={{ flex: 1,width:slidwidth, backgroundColor: 'gray',borderWidth:3,borderColor:'red' }}>
+                        <Button
+                            title='close1'
+                            onPress={() => {
+                                this.setState({
+                                    isOpen:true
+                                })
+                            }}
+                        />
+                    </View>
+                </SideMenu>
 
             </View>
         )

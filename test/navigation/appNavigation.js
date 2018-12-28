@@ -98,7 +98,7 @@ class DrawerContent extends React.Component{
                 <Button
                     title='test123'
                     onPress={()=>{
-                        this.props.myPress('ok')
+                        this.props.onPress('ok')
                     }}
                 />
             </SafeAreaView >

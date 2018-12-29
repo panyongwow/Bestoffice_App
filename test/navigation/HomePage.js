@@ -8,23 +8,35 @@ export default class HomePage extends Component{
     //         header:null
     //     })
     // }
-    
+
+    static navigationOptions={
+        title:'首页'
+    }
+
     render(){
         return(
             <View>
                 <Text>这是主页</Text>
                 <Button 
-                    title='Go Settings' 
+                    title='返回' 
                     onPress={()=>{
-                        this.props.navigation.navigate('Settings')
+                        this.props.navigation.goBack()
+                    }}
+                />    
+                <View style={{height:50}} />                    
+                <Button 
+                    title='Go Page1' 
+                    onPress={()=>{
+                        this.props.navigation.navigate('Page1')
                     }}
                 />
-                {/* <Button 
-                    title='Go Page2' 
+                <View style={{height:50}} />
+                <Button 
+                    title='Go Page22' 
                     onPress={()=>{
-                        this.props.navigation.navigate('Page2')
+                        this.props.navigation.navigate('Page2',{title:'页面21',mode:'edit'})
                     }}
-                />                 */}
+                />                
             </View>
         )
     }

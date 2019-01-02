@@ -34,7 +34,7 @@ export default class HomePage extends Component{
                 <Button 
                     title='Go Page22' 
                     onPress={()=>{
-                        this.props.navigation.navigate('Page2',{title:'页面21',mode:'edit'})
+                        this.props.navigation.navigate('Page2',{title:'页面211',mode1:'edit'})
                     }}
                 />                
             </View>

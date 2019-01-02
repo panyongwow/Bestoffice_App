@@ -9,7 +9,7 @@ export default class Page2 extends Component{
         const showText=this.props.navigation.state.params.mode==='edit'?'正在编辑':'编辑完成'
         return(
             <View>
-                <Text>这是Page22</Text>
+                <Text>这是Page2</Text>
                 <Button 
                     title='返回' 
                     onPress={()=>{

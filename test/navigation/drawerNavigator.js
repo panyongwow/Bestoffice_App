@@ -24,7 +24,7 @@ class My extends Component{
         return(
             <View style={{flex:1,backgroundColor:'white'}}>
                 <Text>This is My...</Text>
-                <Button title='test123456'
+                <Button title='test1'
                     onPress={()=>{
                          this.props.navigation.dispatch(DrawerActions.toggleDrawer())
                         // this.props.navigation.setParams({
@@ -47,13 +47,14 @@ class My extends Component{
 }
 export default DrawerStack=createDrawerNavigator({
     My:{
-        screen:My
+        screen:My,
+        contentComponent:DrawerComponent
     }
 },
 // {
 //     ref:'myStack'
 // }
-// ,{
+// {
 //    contentComponent:DrawerComponent
 // }
 )

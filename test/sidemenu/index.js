@@ -8,7 +8,7 @@ class Menu extends Component {
             <View style={{ flex: 1, backgroundColor: 'yellow' }}>
                 <Text style={{ marginTop: 22 }}>aaa1</Text>
                 <Button
-                    title='open12'
+                    title='open'
                     onPress={() => {
                         this.props.menuOpen()
                     }}
@@ -33,7 +33,7 @@ export default class SideMenuTest extends Component {
     render() {
         // const menu = <View style={{ flex: 1, backgroundColor: 'yellow' }}><Text style={{ marginTop: 22 }}>aaa</Text></View>
         const { width, heihgt } = Dimensions.get('window')
-        const offset=50
+        const offset=0
         const slidwidth=width-offset
         const menu = <Menu
             menuOpen={() => {
@@ -46,10 +46,11 @@ export default class SideMenuTest extends Component {
                     menu={menu}                    //抽屉内的组件
                     isOpen={this.state.isOpen}     //抽屉打开/关闭
                     hiddenMenuOffset={offset}
-                    edgeHitWidth={0}
-                    openMenuOffset={width}
+                    // edgeHitWidth={0}
+                    openMenuOffset={width-10}
+                    // disableGestures={false}
                 >
-                    <View style={{ flex: 1,width:slidwidth, backgroundColor: 'gray',borderWidth:0,borderColor:'red' }}>
+                    <View style={{marginTop:50, width:slidwidth,height:300,backgroundColor: 'yellow',borderWidth:1,borderColor:'red' }}>
                         <Button
                             title='close1'
                             onPress={() => {

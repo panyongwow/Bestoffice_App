@@ -15,6 +15,6 @@ import App from './test/navigation/appNavigation'
 import DrawerStack from './test/navigation/drawerNavigator'
 import Stack from './test/navigation/stackNavigation'
 import TestDrawer from './test/navigation/drawerpage'
-//import SideMenuTest from './test/sidemenu'
-AppRegistry.registerComponent(appName, () =>TestDrawer );
+import SideMenuTest from './test/sidemenu'
+AppRegistry.registerComponent(appName, () =>SideMenuTest );
 

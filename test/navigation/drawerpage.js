@@ -1,6 +1,6 @@
-import {NavigationActions,createDrawerNavigator,DrawerActions} from 'react-navigation'
+import {NavigationActions,createDrawerNavigator,DrawerActions,StackActions} from 'react-navigation'
 import React,{Component} from 'react'
-import {View,Text,Button} from 'react-native'
+import {View,Text,Button,TouchableOpacity} from 'react-native'
 import Page1 from './Page1'
 class DrawerComponent extends Component{
     render(){
@@ -9,7 +9,7 @@ class DrawerComponent extends Component{
                 <Text>MyDrawerComponent1233456</Text>
                 <Button title='Drawer'
                     onPress={()=>{
-                        alert('Drawer!')
+                        alert(JSON.stringify(this.props))
                        
                     }}
                 />
@@ -21,29 +21,43 @@ class DrawerComponent extends Component{
 
 export default class TestDrawer extends Component{
     drawer(){
+        //alert('ok')
+        this.refs.MyDrawer.info='aaaaaaaa'
         this.refs.MyDrawer.dispatch(
             DrawerActions.toggleDrawer()
+            //DrawerActions.openDrawer()
         )
+
     }
     render(){
         return(
-            <View >
+            <View style={{height:300,backgroundColor:'gray'}}>
+                <View style={{height:300,width:'80%',position:'absolute',zIndex:99,backgroundColor:'yellow'}}>
+                    <DrawerStack  ref='MyDrawer' info='my12345' />
+                </View>            
             {/* <View style={{flex:1, justifyContent:'center',alignItems:'center'}}> */}
-                <Button style={{width:50,height:50}}
+                {/* <Button style={{width:50,height:50,zIndex:999}}
                     title='弹出1'
                     onPress={()=>{
                         this.drawer()
                     }}
-                />
+                /> */}
+                <View style={{flexDirection:'row-reverse'}}>
+                <TouchableOpacity onPress={()=>{
+                    this.drawer()
+                }}>
+                    <Text style={{height:50,width:100,backgroundColor:'red'}}>你好1</Text>
+                </TouchableOpacity>
+                </View>
                 <View style={{height:50}}></View>
-                 <Button style={{width:50,height:50}}
-                    title='弹出2'
+                 <Button style={{width:50,height:50,zIndex:999}}
+                    title='弹出11234'
                     onPress={()=>{
                         this.drawer()
                     }}
                 />               
             {/* </View> */}
-            <DrawerStack style={{height:300,width:300,position:'absolute',top:1,left:1}} ref='MyDrawer' />
+
             </View>
         )
     }
@@ -56,8 +70,10 @@ class Blank extends Component{
         )
     }
 }
+
 const DrawerStack=createDrawerNavigator({
     My:Blank
 },{
+    //contentComponent:props=>(<DrawerComponent info={props}  />)
     contentComponent:DrawerComponent
 })

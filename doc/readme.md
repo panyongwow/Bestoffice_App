@@ -117,6 +117,12 @@
        };
 
        也可以使用Redux之类的状态管理来实现导航栏与页面之间的组件通信
+
+* 抽屉导航器（DrawerNavigation）
+
+      抽屉导航器用this.props.navigation.toggleDrawer()打开或关闭，或者仅用openDrawer()打开，或者仅用closeDrawer()关闭。
+      也可以使用DrawerActions来完成：this.props.navigation.dispatch(DrawerActions.toggleDrawer())
+      抽屉导航器不能被TabNavigation包裹，否则将无法通过上面的命令将其打开。
      
 # 4.1 ListView
 * ListView的数据源DataSource创建时，必须要有rowHasChanged函数声明 ？？？

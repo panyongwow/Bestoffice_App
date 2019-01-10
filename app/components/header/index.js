@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Image, TouchableHighlight, Text, StyleSheet } from 'react-native'
+import {StackActions} from 'react-navigation'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Search from '../search'
 
@@ -17,7 +18,8 @@ export default class Header extends Component {
                                     activeOpacity={0.5}
                                     underlayColor='red'
                                     onPress={() => {
-                                        this.props.navigation.goBack()
+                                       // this.props.navigation.goBack()
+                                        this.props.navigation.dispatch(StackActions.pop())
                                     }}
                                 >
                                     <FontAwesome5 name='angle-left' size={25} color='white' style={{ paddingTop: 3 }} />

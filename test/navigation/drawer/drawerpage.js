@@ -1,16 +1,10 @@
 import React,{Component} from 'react'
-import {View,Text,Button} from 'react-native'
-import {DrawerActions} from 'react-navigation'
+import {View,Text,Button,ScrollView,StyleSheet} from 'react-native'
+import {DrawerActions,DrawerItems, SafeAreaView,StackActions} from 'react-navigation'
 
 export class OwnComponent extends Component{
-    //static ownData=''
-
     constructor(props){
         super(props)
-        this.ownData='ownData初始值'
-    }
-    static setData(data){
-        ownData=data
     }
     render(){
         return(
@@ -19,30 +13,40 @@ export class OwnComponent extends Component{
                 <Button
                     title='确定'
                     onPress={()=>{
-                        DrawerPage.test(ownData)
+                        this.props.navigation.state.routes[0].params.callback('你好，123')
                     }}
                 />
                 <View style={{height:50}}></View>
                 <Button
                     title='关闭'
                     onPress={()=>{
-                        DrawerPage.closeDrawer()
+                        this.props.navigation.closeDrawer()
                     }}
-                />                
+                />       
+                {/* <View style={{height:50}}></View>
+                <Button
+                    title='返回'
+                    onPress={()=>{
+                        this.props.navigation.goBack()
+                    }}
+                />                              */}
             </View>
         )
     }
 }
+
 export default class DrawerPage extends Component{
-    static test(a){
+    test(a){
         alert(a)
-    }
-    static closeDrawer(){
-        this.props.navigation.dispatch(DrawerActions.closeDrawer())
     }
     constructor(props){
         super(props)
-       // alert(JSON.stringify(this.props.navigation))
+        this.props.navigation.setParams({
+            title:'myTitle',
+            callback:(a)=>{
+                this.test(a)
+            }
+        })
     }
     render(){
         return(
@@ -60,7 +64,63 @@ export default class DrawerPage extends Component{
                         
                     }}
                 />
+                <View style={{height:50}}></View>
+                <Button
+                    title='返回1'
+                    onPress={()=>{
+                        // let routes=this.props.navigation.state.routes;
+                        // let currentPageKey=routes[routes.length-1].key;
+                       alert(this.props.navigation.dispatch(StackActions.pop()))
+                      // alert(JSON.stringify(actionCreators))
+                       // alert(JSON.stringify(this.props.navigation))
+                    }}
+                />                
             </View>
         )
     }
 }
+
+
+
+// export const OwnComponent = (props) => (
+//     <ScrollView>
+//       <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
+//         <DrawerItems {...props} />
+//         <Button 
+//             title='test'
+//             onPress={()=>{
+//                 alert(JSON.stringify(props))
+//             }}
+//         />
+//         <View style={{height:30}} />
+//         <Button 
+//             title='关闭'
+//             onPress={()=>{
+//                 props.navigation.closeDrawer()
+//             }}
+//         />    
+//         <View style={{height:30}} />        
+//         <Button 
+//             title='显示'
+//             onPress={()=>{
+//                 //alert(props.navigation.state.routes.params('title'))
+//                 alert(props.navigation.state.routes[0].params.callback)
+//             }}
+//         />            
+//         <View style={{height:30}} />        
+//         <Button 
+//             title='执行'
+//             onPress={()=>{
+//                 //alert(props.navigation.state.routes.params('title'))
+//                 props.navigation.state.routes[0].params.callback('你好，123')
+//             }}
+//         />           
+//       </SafeAreaView>
+//     </ScrollView>
+//   );
+  
+//   const styles = StyleSheet.create({
+//     container: {
+//       flex: 1,
+//     },
+//   });

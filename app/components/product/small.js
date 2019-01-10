@@ -38,11 +38,11 @@ export default class ProductSmall extends PureComponent {
                                     <Text style={styles.pricepre}>&yen;</Text>
                                     <Text style={styles.price}>{item.price}</Text>
                                     <Text style={styles.measurement}>/{item.measurement}</Text>
-                                    {
+                                    {/* {
                                         item.isbargainprice
                                             ? <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
                                             : null
-                                    }
+                                    } */}
                                 </View>
                                 <TouchableOpacity style={styles.shoppingcart}>
                                     <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />

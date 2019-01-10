@@ -7,7 +7,7 @@ import ShoppingCart from '../containers/shoppingcart'
 import ListGoods from '../containers/listgoods'
 import Welcome from '../../welcome'
 import Product from '../containers/product'
-import ProductList from '../containers/productlist'
+import ProductList,{ProductSearch} from '../containers/productlist'
 import TopList from '../containers/toplist'
 import News from '../containers/news'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -60,8 +60,11 @@ const MainStock=createBottomTabNavigator({
     }, 
 });
 
-const DrawerStock=createDrawerNavigator({
+export const ProductListStock=createDrawerNavigator({
     ProductList:ProductList
+},{
+    contentComponent:ProductSearch,
+    drawerPosition:'right'
 })
 
 export const RootStack=createStackNavigator({
@@ -99,7 +102,7 @@ export const RootStack=createStackNavigator({
         //     drawerWidth:200,
         //     useNativeAnimations:true
         // })
-        screen:DrawerStock,
+        screen:ProductListStock,
             navigationOptions:{
                 header:null
             }

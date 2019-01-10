@@ -55,7 +55,7 @@ export default class HomePage extends Component {
                     barStyle='dark-content'
 
                 />
-                <Text>12121212555666</Text>
+                {/* <Text>12121212555666</Text> */}
                 <View>
                     <Header navigation={this.props.navigation} />
                 </View>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, Button, TextInput, FlatList, StyleSheet, TouchableOpacity, RefreshControl, ScrollView, Dimensions,Platform,NativeModules } from 'react-native'
+import { View, Text, Image, Button, TextInput, FlatList, StyleSheet, TouchableOpacity, RefreshControl, ScrollView, Dimensions, Platform, NativeModules } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 import Header from '../../components/header'
 import Foot from '../../components/foot'
@@ -17,9 +17,24 @@ export class ProductSearch extends Component {
         let { height } = Dimensions.get('window');
         let { StatusBarManager } = NativeModules;
         const StatusBarHeight = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
-        this.screenHeight = height -StatusBarHeight- 41;
-        //this.screenHeight = 574 - 41;
-        //this.screenHeight=400;
+        this.screenHeight = height - StatusBarHeight - 41;
+
+        this.state = {
+            searchData: {
+                name: '',
+                mixPrice: 0,
+                MaxPrice: 0
+            },
+            testInfo: 'test'
+        }
+    }
+    searchDataChange(data) {
+        this.setState({
+            //testInfo:this.state.searchData[data.key]
+            searchData: {
+                ...this.state.searchData, ...data
+            }
+        })
     }
     render() {
         return (
@@ -28,24 +43,54 @@ export class ProductSearch extends Component {
                     <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
                         <View>
                             <Text>商品名称/型号</Text>
-                            <View style={{ flexDirection: 'row',justifyContent:'center' }}>
-                                <TextInput style={{width:'80%',height:30,borderColor:'#f3f3f3',borderWidth:1, borderRadius:15,fontSize:14}} />
+                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                <TextInput
+                                    style={[styles.search_input, { width: '80%' }]}
+                                    onChangeText={(text) => {
+                                        this.searchDataChange({ name: text })
+                                    }}
+                                />
                             </View>
-                        </View>                       
+                            <Text>{JSON.stringify(this.state.searchData)}</Text>
+                        </View>
                         <View>
                             <Text>价格区间</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <TextInput placeholder='最低价' />
-                                <Text>-</Text>
-                                <TextInput placeholder='最高价' />
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                <TextInput
+                                    placeholder='最低价'
+                                    keyboardType='numeric'
+                                    value={this.state.searchData.minPrice}
+                                    style={[styles.search_input, { width: '30%' }]}
+                                    onChangeText={(text) => {
+                                        this.searchDataChange({ minPrice: text.replace(/[^\d|.]+/, '') })
+                                    }}
+                                />
+                                <Text style={{ width: 20, textAlign: 'center' }}>-</Text>
+                                <TextInput
+                                    placeholder='最高价'
+                                    keyboardType='numeric'
+                                    value={this.state.searchData.maxPrice}
+                                    style={[styles.search_input, { width: '30%' }]}
+                                    onChangeText={(text) => {
+                                        this.searchDataChange({ maxPrice: text.replace(/[^\d|.]+/, '') })
+                                    }}
+                                />
                             </View>
                         </View>
-                     
+
                     </SafeAreaView>
                 </ScrollView>
-                <View style={{ flexDirection: 'row', borderTopColor: 'gray', borderTopWidth: 1, height: 40 }}>
-                    <Text style={{ width: '45%', height: 40, fontSize: 16, textAlign: 'center', textAlign: 'center' }}>重置</Text>
-                    <Text style={{ width: '55%', height: 40, backgroundColor: 'red', fontSize: 16, textAlign: 'center', textAlign: 'center' }}>确定</Text>
+                <View style={{ flexDirection: 'row', borderTopColor: '#f3f3f3', borderTopWidth: 1, height: 40 }}>
+                    <Text style={{ width: '45%', height: 40, fontSize: 16, textAlign: 'center', lineHeight: 40 }}>重置</Text>
+                    <TouchableOpacity
+                        style={{ width: '55%', height: 40 }}
+                        onPress={() => {
+                            this.props.navigation.closeDrawer()
+                            this.props.navigation.state.routes[0].params.list(this.state.searchData)
+                        }}
+                    >
+                        <Text style={{ height: 40, backgroundColor: 'red', fontSize: 16, textAlign: 'center', textAlignVertical: 'center' }}>确定</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -66,17 +111,30 @@ export default class ProductList extends Component {
             nowpage: 1,        //第几页
             apagenum: 20,      //每页显示多少条数据
             orderby: 0,        //排序方式，0 综合，1 销量，2 价格由高到低，3 价格由低到高
-            hasdata: true      //是否还有数据，以便控制底部
+            hasdata: true,      //是否还有数据，以便控制底部
+            minprice:0,
+            maxprice:0,
+            name:''
+
         }
         this.timeoutId         //滚动节流控制ID，处理“回到顶端”图标的显隐  
+
+        this.props.navigation.setParams({
+            list:(searchData)=>{
+                this.refresh(0,searchData)
+            }
+        })
+    }
+    test(searchdata){
+        alert(JSON.stringify(searchdata))
     }
     componentDidMount() {
-        // this.list()
-        this.props.navigation.toggleDrawer()
+        this.list()
+        //this.props.navigation.toggleDrawer()
     }
 
     //查找显示数据
-    list() {
+    list(searchData) {
         if (!this.search.hasdata) return
 
         let apagenum = this.search.apagenum
@@ -84,8 +142,10 @@ export default class ProductList extends Component {
         let orderby = this.search.orderby
         //let listgoodsid = this.props.navigation.state.params.id
         let listgoodsid = 29900
+        this.search={...this.search,...searchData,listgoodsid:299}
 
-        ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
+        //ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
+        ProductDao.list(this.search)
             .then(result => {
                 //alert(JSON.stringify(result))
                 let data_list = this.state.data_list
@@ -121,12 +181,12 @@ export default class ProductList extends Component {
                 this.setState({
                     hasdata: false
                 })
-                alert(error)
+                //alert(error)
             })
     }
 
     //刷新，重新显示数据
-    refresh = (orderby) => {
+    refresh = (orderby,searchData) => {
         this.setState({
             //isrefreshing: true,
             isShowGoTop: false,
@@ -136,7 +196,7 @@ export default class ProductList extends Component {
         this.search.nowpage = 1
         this.search.hasdata = true
         if (orderby != undefined) this.search.orderby = orderby
-        this.list()
+        this.list(searchData)
     }
 
     //滚动监听，滚动距离超过200后才显示“回到顶部”的图标，进行了节流处理
@@ -293,7 +353,7 @@ class ListTitle extends Component {
                         this.props.orderbychange(0)
                     }}
                 >
-                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 0 ? '#f00' : '#000' }}>综合</Text>
+                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 0 ? '#f00' : '#000' }}>综合12</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -358,5 +418,8 @@ const styles = StyleSheet.create({
     },
     lt_arrowborder: {
         flexDirection: 'column', marginBottom: 2
+    },
+    search_input: {
+        height: 30, borderColor: '#f3f3f3', borderWidth: 1, borderRadius: 15, fontSize: 14, paddingLeft: 10, paddingTop: 0, paddingBottom: 0, paddingRight: 10
     }
 })

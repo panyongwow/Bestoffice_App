@@ -96,6 +96,7 @@ export class ProductSearch extends Component {
         )
     }
 }
+
 export default class ProductList extends Component {
     constructor(props) {
         super(props)
@@ -228,6 +229,9 @@ export default class ProductList extends Component {
                     }}
                 /> */}
                 {/* <Header isShowBack={true} /> */}
+                <View>
+                    <Text>测试123</Text>
+                </View>
                 <ListTitle
                     display={this.state.display}
                     displaychange={

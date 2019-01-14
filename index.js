@@ -18,5 +18,6 @@ import TestDrawer from './test/navigation/drawerpage'
 import SideMenuTest from './test/sidemenu'
 import RootStack from './test/navigation/drawer/appNaigation'
 import IconTest from './test/icon'
-AppRegistry.registerComponent(appName, () =>IconTest);
+//import App from './test/navigation/test1'
+AppRegistry.registerComponent(appName, () =>App);
 

@@ -1,1 +1,1 @@
-export const BSTURL='http://www.bestoffice.cn:8805'
+export const BSTURL='http://login.bestoffice.cn'

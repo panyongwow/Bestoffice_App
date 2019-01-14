@@ -7,7 +7,7 @@ export default class IconTest extends Component{
     render(){
         return(
             <View>
-                <Text>12334556</Text>
+                <Text>123345567788</Text>
                 <FontAwesome5 name='accessible-icon' size={40} color='red' />
                 <AntDesign name='caretright' size={40} color='blue' />
             </View>

@@ -28,25 +28,6 @@ export class ProductSearch extends Component {
             testInfo: 'test',
             companys: '123[]'
         }
-        // this.props.navigation.setParams({
-        //     showCompanys: (data) => {
-        //         alert(JSON.stringify(data))
-        //     }
-        // })
-    }
-    componentDidMount() {
-        this.didFocusHandler = this.props.navigation.addListener(
-            'didFocus',
-            (data) => {
-                //alert(data)
-                this.props.navigation.state.routes[0].params.showCompanys = (data) => {
-                    this.getCompanys(data)
-                }
-            }
-        )
-    }
-    componentWillUnmount() {
-        this.didFocusHandler.remove()
     }
     getCompanys(data) {
         //alert(data)
@@ -54,6 +35,37 @@ export class ProductSearch extends Component {
             companys: data
         })
     }
+    // componentDidMount() {
+    //     alert('ok')
+    //     this.props.navigation.state.routes[0].params.showCompanys = (data) => {
+    //         this.getCompanys(data)
+    //     }
+    // }
+    // componentDidMount() {
+    //     this.didFocusHandler = this.props.navigation.addListener(
+    //         'didFocus',
+    //         (a) => {
+    //             this.props.navigation.state.routes[0].params.showCompanys = (a) => {
+    //                 this.getCompanys(a)
+    //             }
+    //         }
+    //     )
+    // }
+    componentDidMount() {
+        this.didFocusHandler = this.props.navigation.addListener(
+            'didFocus',
+            (a) => {
+                // this.props.navigation.state.routes[0].params.title = (a) => {
+                //     this.myTest(a)
+                // }
+                alert('didFocus123!')
+            }
+        )
+    }
+    componentWillUnmount() {
+        this.didFocusHandler.remove()
+    }
+
     searchDataChange(data) {
         this.setState({
             //testInfo:this.state.searchData[data.key]
@@ -70,15 +82,15 @@ export class ProductSearch extends Component {
                         <View>
                             <View style={{ height: 20 }}></View>
                             <Button
-                                title='显示12'
+                                title='显示showCompanys'
                                 onPress={() => {
                                     alert(this.props.navigation.state.routes[0].params.showCompanys)
-                                    //alert('你好呀，王尔琪！！！')
                                     //alert(JSON.stringify(this.props.navigation))
                                 }}
                             />
+                            <View style={{ height: 20 }}></View>
                             <Button
-                                title='赋值12'
+                                title='绑定showCompanys'
                                 onPress={() => {
                                     this.props.navigation.state.routes[0].params.showCompanys = (data) => {
                                         this.getCompanys(data)
@@ -86,7 +98,15 @@ export class ProductSearch extends Component {
                                     }
                                     alert('ok')
                                 }}
-                            />                            
+                            />
+                            <View style={{ height: 20 }}></View>
+                            <Button
+                                title='赋值showCompanys'
+                                onPress={() => {
+                                    this.props.navigation.state.routes[0].params.showCompanys('你好啊！')
+                                    alert('ok')
+                                }}
+                            />
                             <Text>商品名称/型号</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <TextInput
@@ -282,10 +302,11 @@ export default class ProductList extends Component {
                     <Text>测试</Text>
                 </View>
                 <Button
-                    title='测试123456'
+                    title='设置Companys1234'
                     onPress={() => {
-                        alert(JSON.stringify(this.props.navigation))
-                        //alert('ok')
+                        //alert(JSON.stringify(this.props.navigation))
+                        this.props.navigation.state.params.showCompanys('这是新的title')
+                        alert('ok')
                     }}
                 />
                 <ListTitle

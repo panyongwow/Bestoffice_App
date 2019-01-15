@@ -25,14 +25,15 @@ const MainStock=  createBottomTabNavigator({
 })
 
 export default createStackNavigator({
-    Main:{
-        screen:MainStock
-    },
     Drawer:{
-        screen:DrawerStock
-    } 
-},{
-    navigationOptions:{
-        //header:null
+        screen:DrawerStock,
+        navigationOptions:{
+            header:null
+        }
     }
+    // ,     
+    // Main:{
+    //     screen:MainStock
+    // }
+
 })

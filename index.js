@@ -19,5 +19,7 @@ import SideMenuTest from './test/sidemenu'
 import RootStack from './test/navigation/drawer/appNaigation'
 import IconTest from './test/icon'
 //import App from './test/navigation/test1'
+
+import  {ProductListStock} from './app/navigators/AppNavigators'
 AppRegistry.registerComponent(appName, () =>App);
 

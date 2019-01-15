@@ -22,6 +22,7 @@ export class OwnComponent extends Component {
                 this.props.navigation.state.routes[0].params.title = (a) => {
                     this.myTest(a)
                 }
+                alert('didFocus123!')
             }
         )
     }
@@ -119,6 +120,7 @@ export default class DrawerPage extends Component {
                     title='触发'
                     onPress={() => {
                         this.props.navigation.state.params.title('这是新的title')
+                        alert('ok')
                     }}
                 />
                 <View style={{ height: 50 }}></View>

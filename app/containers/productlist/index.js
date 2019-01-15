@@ -25,8 +25,34 @@ export class ProductSearch extends Component {
                 mixPrice: 0,
                 MaxPrice: 0
             },
-            testInfo: 'test'
+            testInfo: 'test',
+            companys: '123[]'
         }
+        // this.props.navigation.setParams({
+        //     showCompanys: (data) => {
+        //         alert(JSON.stringify(data))
+        //     }
+        // })
+    }
+    componentDidMount() {
+        this.didFocusHandler = this.props.navigation.addListener(
+            'didFocus',
+            (data) => {
+                //alert(data)
+                this.props.navigation.state.routes[0].params.showCompanys = (data) => {
+                    this.getCompanys(data)
+                }
+            }
+        )
+    }
+    componentWillUnmount() {
+        this.didFocusHandler.remove()
+    }
+    getCompanys(data) {
+        //alert(data)
+        this.setState({
+            companys: data
+        })
     }
     searchDataChange(data) {
         this.setState({
@@ -42,6 +68,25 @@ export class ProductSearch extends Component {
                 <ScrollView style={{ height: this.screenHeight }}>
                     <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
                         <View>
+                            <View style={{ height: 20 }}></View>
+                            <Button
+                                title='显示12'
+                                onPress={() => {
+                                    alert(this.props.navigation.state.routes[0].params.showCompanys)
+                                    //alert('你好呀，王尔琪！！！')
+                                    //alert(JSON.stringify(this.props.navigation))
+                                }}
+                            />
+                            <Button
+                                title='赋值12'
+                                onPress={() => {
+                                    this.props.navigation.state.routes[0].params.showCompanys = (data) => {
+                                        this.getCompanys(data)
+                                        //alert('test')
+                                    }
+                                    alert('ok')
+                                }}
+                            />                            
                             <Text>商品名称/型号</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <TextInput
@@ -51,7 +96,7 @@ export class ProductSearch extends Component {
                                     }}
                                 />
                             </View>
-                            <Text>{JSON.stringify(this.state.searchData)}</Text>
+                            {/* <Text>{JSON.stringify(this.state.searchData)}</Text> */}
                         </View>
                         <View>
                             <Text>价格区间</Text>
@@ -77,6 +122,7 @@ export class ProductSearch extends Component {
                                 />
                             </View>
                         </View>
+                        <Text>{JSON.stringify(this.state.companys)}</Text>
 
                     </SafeAreaView>
                 </ScrollView>
@@ -103,6 +149,7 @@ export default class ProductList extends Component {
         this.state = {
             data_list: [],        //存放以列表形式展现的数据
             data_table: [],       //存放以块状形式展现的数据
+            //data_company: [],      //该商品目录下所属的品牌
             isShowGoTop: false,   //是否显示“回到顶端”的图标
             display: 'list'       //商品如何显示，list为列表显示，table为表格块状显示
         }
@@ -113,20 +160,20 @@ export default class ProductList extends Component {
             apagenum: 20,      //每页显示多少条数据
             orderby: 0,        //排序方式，0 综合，1 销量，2 价格由高到低，3 价格由低到高
             hasdata: true,      //是否还有数据，以便控制底部
-            minprice:0,
-            maxprice:0,
-            name:''
+            minprice: 0,
+            maxprice: 0,
+            name: ''
 
         }
         this.timeoutId         //滚动节流控制ID，处理“回到顶端”图标的显隐  
 
         this.props.navigation.setParams({
-            list:(searchData)=>{
-                this.refresh(0,searchData)
+            list: (searchData) => {
+                this.refresh(0, searchData)
             }
         })
     }
-    test(searchdata){
+    test(searchdata) {
         alert(JSON.stringify(searchdata))
     }
     componentDidMount() {
@@ -143,12 +190,12 @@ export default class ProductList extends Component {
         let orderby = this.search.orderby
         //let listgoodsid = this.props.navigation.state.params.id
         let listgoodsid = 29900
-        this.search={...this.search,...searchData,listgoodsid:299}
+        this.search = { ...this.search, ...searchData, listgoodsid: 299 }
 
         //ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
         ProductDao.list(this.search)
             .then(result => {
-                //alert(JSON.stringify(result))
+                //alert(JSON.stringify(result.companys))
                 let data_list = this.state.data_list
                 let data_table = this.state.data_table
 
@@ -173,9 +220,11 @@ export default class ProductList extends Component {
                 this.setState({
                     data_list: data_list,
                     data_table: data_table,
+                    //data_company: result.companys,
                     isrefreshing: false,
                     isShowGoTop: this.search.nowpage > 1 ? true : false,
                 })
+                this.props.navigation.state.params.showCompanys('result.companys')   //传递品牌数据给抽屉页
                 this.search.nowpage++
             })
             .catch(error => {
@@ -187,7 +236,7 @@ export default class ProductList extends Component {
     }
 
     //刷新，重新显示数据
-    refresh = (orderby,searchData) => {
+    refresh = (orderby, searchData) => {
         this.setState({
             //isrefreshing: true,
             isShowGoTop: false,
@@ -230,8 +279,15 @@ export default class ProductList extends Component {
                 /> */}
                 {/* <Header isShowBack={true} /> */}
                 <View>
-                    <Text>测试123</Text>
+                    <Text>测试</Text>
                 </View>
+                <Button
+                    title='测试123456'
+                    onPress={() => {
+                        alert(JSON.stringify(this.props.navigation))
+                        //alert('ok')
+                    }}
+                />
                 <ListTitle
                     display={this.state.display}
                     displaychange={
@@ -244,6 +300,11 @@ export default class ProductList extends Component {
                     orderbychange={
                         (orderby) => {
                             this.refresh(orderby)
+                        }
+                    }
+                    openDrawer={    //打开抽屉，显示查找详情
+                        () => {
+                            this.props.navigation.toggleDrawer()
                         }
                     }
                 />
@@ -357,7 +418,7 @@ class ListTitle extends Component {
                         this.props.orderbychange(0)
                     }}
                 >
-                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 0 ? '#f00' : '#000' }}>综合12</Text>
+                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 0 ? '#f00' : '#000' }}>综合</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -386,6 +447,14 @@ class ListTitle extends Component {
                         <FontAwesome5 name='caret-down' size={9} color={this.state.orderby === 3 ? '#f00' : '#000'} style={{ height: 7 }} />
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                        this.props.openDrawer()
+                    }}
+                >
+                    <Text style={{ fontWeight: 'bold', color: this.state.orderby === 1 ? '#f00' : '#000' }}>筛选</Text>
+                </TouchableOpacity>
                 <View style={{ width: 20 }}>
                     <TouchableOpacity
                         onPress={() => {
@@ -404,6 +473,7 @@ class ListTitle extends Component {
 
                     </TouchableOpacity>
                 </View>
+
                 {/* <View>
                     <Text style={{ fontWeight: 'bold' }}>上架时间</Text>
                 </View> */}

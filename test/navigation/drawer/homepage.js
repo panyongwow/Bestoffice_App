@@ -8,7 +8,7 @@ export default class HomePage extends Component{
                 <Text>这是HomePage</Text>
                 <View style={{height:50}}></View>
                 <Button
-                    title='跳转到Drawer'
+                    title='跳转到Drawer12345'
                     onPress={()=>{
                         this.props.navigation.navigate('Drawer')
                     }}

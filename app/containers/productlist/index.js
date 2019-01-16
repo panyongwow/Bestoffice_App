@@ -10,159 +10,6 @@ import ProductMiddle from '../../components/product/middle'
 import Loading from '../../components/loading'
 import ProductDao from '../../dao/product'
 
-
-export class ProductSearch extends Component {
-    constructor(props) {
-        super(props)
-        let { height } = Dimensions.get('window');
-        let { StatusBarManager } = NativeModules;
-        const StatusBarHeight = Platform.OS === 'ios' ? 20 : StatusBarManager.HEIGHT;
-        this.screenHeight = height - StatusBarHeight - 41;
-
-        this.state = {
-            searchData: {
-                name: '',
-                mixPrice: 0,
-                MaxPrice: 0
-            },
-            testInfo: 'test',
-            companys: '123[]'
-        }
-    }
-    getCompanys(data) {
-        //alert(data)
-        this.setState({
-            companys: data
-        })
-    }
-    // componentDidMount() {
-    //     alert('ok')
-    //     this.props.navigation.state.routes[0].params.showCompanys = (data) => {
-    //         this.getCompanys(data)
-    //     }
-    // }
-    // componentDidMount() {
-    //     this.didFocusHandler = this.props.navigation.addListener(
-    //         'didFocus',
-    //         (a) => {
-    //             this.props.navigation.state.routes[0].params.showCompanys = (a) => {
-    //                 this.getCompanys(a)
-    //             }
-    //         }
-    //     )
-    // }
-    componentDidMount() {
-        this.didFocusHandler = this.props.navigation.addListener(
-            'didFocus',
-            (a) => {
-                // this.props.navigation.state.routes[0].params.title = (a) => {
-                //     this.myTest(a)
-                // }
-                alert('didFocus123!')
-            }
-        )
-    }
-    componentWillUnmount() {
-        this.didFocusHandler.remove()
-    }
-
-    searchDataChange(data) {
-        this.setState({
-            //testInfo:this.state.searchData[data.key]
-            searchData: {
-                ...this.state.searchData, ...data
-            }
-        })
-    }
-    render() {
-        return (
-            <View>
-                <ScrollView style={{ height: this.screenHeight }}>
-                    <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
-                        <View>
-                            <View style={{ height: 20 }}></View>
-                            <Button
-                                title='显示showCompanys'
-                                onPress={() => {
-                                    alert(this.props.navigation.state.routes[0].params.showCompanys)
-                                    //alert(JSON.stringify(this.props.navigation))
-                                }}
-                            />
-                            <View style={{ height: 20 }}></View>
-                            <Button
-                                title='绑定showCompanys'
-                                onPress={() => {
-                                    this.props.navigation.state.routes[0].params.showCompanys = (data) => {
-                                        this.getCompanys(data)
-                                        //alert('test')
-                                    }
-                                    alert('ok')
-                                }}
-                            />
-                            <View style={{ height: 20 }}></View>
-                            <Button
-                                title='赋值showCompanys'
-                                onPress={() => {
-                                    this.props.navigation.state.routes[0].params.showCompanys('你好啊！')
-                                    alert('ok')
-                                }}
-                            />
-                            <Text>商品名称/型号</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <TextInput
-                                    style={[styles.search_input, { width: '80%' }]}
-                                    onChangeText={(text) => {
-                                        this.searchDataChange({ name: text })
-                                    }}
-                                />
-                            </View>
-                            {/* <Text>{JSON.stringify(this.state.searchData)}</Text> */}
-                        </View>
-                        <View>
-                            <Text>价格区间</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                <TextInput
-                                    placeholder='最低价'
-                                    keyboardType='numeric'
-                                    value={this.state.searchData.minPrice}
-                                    style={[styles.search_input, { width: '30%' }]}
-                                    onChangeText={(text) => {
-                                        this.searchDataChange({ minPrice: text.replace(/[^\d|.]+/, '') })
-                                    }}
-                                />
-                                <Text style={{ width: 20, textAlign: 'center' }}>-</Text>
-                                <TextInput
-                                    placeholder='最高价'
-                                    keyboardType='numeric'
-                                    value={this.state.searchData.maxPrice}
-                                    style={[styles.search_input, { width: '30%' }]}
-                                    onChangeText={(text) => {
-                                        this.searchDataChange({ maxPrice: text.replace(/[^\d|.]+/, '') })
-                                    }}
-                                />
-                            </View>
-                        </View>
-                        <Text>{JSON.stringify(this.state.companys)}</Text>
-
-                    </SafeAreaView>
-                </ScrollView>
-                <View style={{ flexDirection: 'row', borderTopColor: '#f3f3f3', borderTopWidth: 1, height: 40 }}>
-                    <Text style={{ width: '45%', height: 40, fontSize: 16, textAlign: 'center', lineHeight: 40 }}>重置</Text>
-                    <TouchableOpacity
-                        style={{ width: '55%', height: 40 }}
-                        onPress={() => {
-                            this.props.navigation.closeDrawer()
-                            this.props.navigation.state.routes[0].params.list(this.state.searchData)
-                        }}
-                    >
-                        <Text style={{ height: 40, backgroundColor: 'red', fontSize: 16, textAlign: 'center', textAlignVertical: 'center' }}>确定</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-    }
-}
-
 export default class ProductList extends Component {
     constructor(props) {
         super(props)
@@ -180,9 +27,10 @@ export default class ProductList extends Component {
             apagenum: 20,      //每页显示多少条数据
             orderby: 0,        //排序方式，0 综合，1 销量，2 价格由高到低，3 价格由低到高
             hasdata: true,      //是否还有数据，以便控制底部
-            minprice: 0,
-            maxprice: 0,
-            name: ''
+            minprice: 0,        //最低价 
+            maxprice: 0,        //最高价
+            name: '',           //关键字（名称、编码） 
+            company:''          //所属品牌
 
         }
         this.timeoutId         //滚动节流控制ID，处理“回到顶端”图标的显隐  
@@ -192,9 +40,6 @@ export default class ProductList extends Component {
                 this.refresh(0, searchData)
             }
         })
-    }
-    test(searchdata) {
-        alert(JSON.stringify(searchdata))
     }
     componentDidMount() {
         this.list()
@@ -209,8 +54,8 @@ export default class ProductList extends Component {
         let nowpage = this.search.nowpage
         let orderby = this.search.orderby
         //let listgoodsid = this.props.navigation.state.params.id
-        let listgoodsid = 29900
-        this.search = { ...this.search, ...searchData, listgoodsid: 299 }
+        let listgoodsid = 299
+        this.search = { ...this.search, ...searchData, listgoodsid: listgoodsid }
 
         //ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
         ProductDao.list(this.search)
@@ -244,8 +89,16 @@ export default class ProductList extends Component {
                     isrefreshing: false,
                     isShowGoTop: this.search.nowpage > 1 ? true : false,
                 })
-                this.props.navigation.state.params.showCompanys('result.companys')   //传递品牌数据给抽屉页
                 this.search.nowpage++
+
+                //以下代码经过反复测试，得出一个比较奇怪的结论：
+                //必须经过一个异步延时处理，这样才能保证在调用showCompanys的时候，抽屉页面的didFocus已经将showCompanys绑定好了，
+                //否则不做异步延时处理，showComoanys会在didFocus之前执行，导致数据传递失败。
+                //另外，如果在在导航器中将该抽屉导航放在第一顺位的话，就不会出现该情况。
+                setTimeout(() => {
+                    this.props.navigation.state.params.showCompanys(result.companys)   //传递品牌数据给抽屉页,showCompanys方法的实现是在search.js中
+                })
+                //this.props.navigation.state.params.showCompanys(result.companys)   //如果直接这样写，那么第一次调用将失败
             })
             .catch(error => {
                 this.setState({
@@ -298,17 +151,17 @@ export default class ProductList extends Component {
                     }}
                 /> */}
                 {/* <Header isShowBack={true} /> */}
-                <View>
+                {/* <View>
                     <Text>测试</Text>
                 </View>
                 <Button
-                    title='设置Companys1234'
+                    title='设置Companys'
                     onPress={() => {
                         //alert(JSON.stringify(this.props.navigation))
                         this.props.navigation.state.params.showCompanys('这是新的title')
                         alert('ok')
                     }}
-                />
+                /> */}
                 <ListTitle
                     display={this.state.display}
                     displaychange={
@@ -513,8 +366,5 @@ const styles = StyleSheet.create({
     },
     lt_arrowborder: {
         flexDirection: 'column', marginBottom: 2
-    },
-    search_input: {
-        height: 30, borderColor: '#f3f3f3', borderWidth: 1, borderRadius: 15, fontSize: 14, paddingLeft: 10, paddingTop: 0, paddingBottom: 0, paddingRight: 10
     }
 })

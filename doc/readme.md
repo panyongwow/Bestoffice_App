@@ -56,7 +56,7 @@
       componentWillUnMount(){
           this.didFoucsHandler.remove()
       }
-
+      注意，如果之间创建的抽屉导航的话(DrawerNavigation)，则不会触发didFocus，必须将抽屉导航包裹在StackNavigation中。
 * 参数：
 
       传递：      

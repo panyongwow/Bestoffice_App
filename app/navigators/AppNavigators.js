@@ -7,8 +7,8 @@ import ShoppingCart from '../containers/shoppingcart'
 import ListGoods from '../containers/listgoods'
 import Welcome from '../../welcome'
 import Product from '../containers/product'
-//import ProductList,{ProductSearch} from '../containers/productlist'
-import ProductListTemp,{ProductDrawer}  from '../containers/productlisttemp'
+import ProductList from '../containers/productlist'
+import ProductSearch from '../containers/productlist/search'
 import TopList from '../containers/toplist'
 import News from '../containers/news'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -62,14 +62,20 @@ const MainStock=createBottomTabNavigator({
 });
 
 export const ProductListStock=createDrawerNavigator({
-   //ProductList:ProductList
-   ProductList:ProductListTemp
+   ProductList:ProductList
+   //ProductList:ProductListTemp
 },{
-    contentComponent:ProductDrawer,
+    contentComponent:ProductSearch,
     drawerPosition:'right'
 })
 
 export const RootStack=createStackNavigator({
+    Drawer:{
+        screen:ProductListStock,
+            navigationOptions:{
+                header:null
+            }
+    },   
     Welcome:{
         screen:Welcome,
         // navigationOptions:({navigation})=>({
@@ -85,30 +91,8 @@ export const RootStack=createStackNavigator({
             title:navigation.state.params.name +'的页面'
         })
     },
-    // ProductList:{
-    //     screen:ProductList,
-    //     navigationOptions:{
-    //         header:null
-    //     }
-    // },
-    Drawer:{
-        // screen:createDrawerNavigator({
-        //     TopList:{
-        //         screen:TopList
-        //     },
-        //     News:{
-        //         screen:News
-        //     }
-        // },{
-        //     drawerPosition:'right',
-        //     drawerWidth:200,
-        //     useNativeAnimations:true
-        // })
-        screen:ProductListStock,
-            navigationOptions:{
-                header:null
-            }
-    },
+
+
     Main:{
         screen:MainStock,
         // navigationOptions:({navigation})=>({

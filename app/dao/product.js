@@ -28,6 +28,7 @@ export default class ProductDao {
             '&minprice=' + s.minprice +
             '&maxprice=' + s.maxprice +
             '&name=' + s.name +
+            '&company=' + s.company + 
             '&orderby=' + s.orderby
         //alert(url)
         return new Promise((resolve, reject) => {

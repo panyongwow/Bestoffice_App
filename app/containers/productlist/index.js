@@ -30,14 +30,15 @@ export default class ProductList extends Component {
             minprice: 0,        //最低价 
             maxprice: 0,        //最高价
             name: '',           //关键字（名称、编码） 
-            company:''          //所属品牌
+            company: ''          //所属品牌
 
         }
         this.timeoutId         //滚动节流控制ID，处理“回到顶端”图标的显隐  
 
         this.props.navigation.setParams({
             list: (searchData) => {
-                this.refresh(0, searchData)
+               // this.refresh(0, searchData)
+                this.list(searchData)
             }
         })
     }
@@ -46,8 +47,13 @@ export default class ProductList extends Component {
         //this.props.navigation.toggleDrawer()
     }
 
+    //重置，显示全部数据
+    listAll() {
+        this.list({ nowpage: 1, minprice: 0, maxprice: 0, name: '', company: '', hasdata: true })
+    }
     //查找显示数据
     list(searchData) {
+        //alert(JSON.stringify(searchData))
         if (!this.search.hasdata) return
 
         let apagenum = this.search.apagenum
@@ -56,7 +62,7 @@ export default class ProductList extends Component {
         //let listgoodsid = this.props.navigation.state.params.id
         let listgoodsid = 299
         this.search = { ...this.search, ...searchData, listgoodsid: listgoodsid }
-
+        // alert(JSON.stringify(this.search))
         //ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
         ProductDao.list(this.search)
             .then(result => {
@@ -115,11 +121,14 @@ export default class ProductList extends Component {
             isShowGoTop: false,
             data_list: [],
             data_table: []
-        })
-        this.search.nowpage = 1
-        this.search.hasdata = true
-        if (orderby != undefined) this.search.orderby = orderby
-        this.list(searchData)
+        },
+            this.listAll()
+        )
+
+        // this.search.nowpage = 1
+        // this.search.hasdata = true
+        // if (orderby != undefined) this.search.orderby = orderby
+        // this.list(searchData)
     }
 
     //滚动监听，滚动距离超过200后才显示“回到顶部”的图标，进行了节流处理
@@ -144,6 +153,7 @@ export default class ProductList extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header isShowBack={true} navigation={this.props.navigation} />
+                <Text>测试12</Text>
                 {/* <Button 
                     title='返回1'
                     onPress={()=>{
@@ -228,7 +238,7 @@ export default class ProductList extends Component {
                                 // }
                             }
                         }
-                        refreshControl={
+                        refreshControl={    //下拉刷新
                             <RefreshControl
                                 // refreshing={this.state.isrefreshing}
                                 refreshing={false}

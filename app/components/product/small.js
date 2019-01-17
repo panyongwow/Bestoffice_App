@@ -9,7 +9,7 @@ export default class ProductSmall extends PureComponent {
             <View style={{ backgroundColor: 'white' }}>
                 <TouchableOpacity
                     onPress={() => {
-                        alert(item.id)
+                        this.props.navigation.navigate('Product', { id: item.id })
                     }}
                     style={styles.touchable}
                 >

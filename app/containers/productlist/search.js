@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, Button, TextInput, FlatList, StyleSheet, TouchableOpacity, RefreshControl, ScrollView, Dimensions, Platform, NativeModules } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Platform, NativeModules } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
 
 export default class ProductSearch extends Component {
@@ -12,7 +12,6 @@ export default class ProductSearch extends Component {
 
         this.state = {
             searchData: {},
-            //companys: [{ "id": 35, "name": "传美", "selected": false }, { "id": 171, "name": "Double A" }, { "id": 180, "name": "富士施乐" }, { "id": 188, "name": "多林" }, { "id": 189, "name": "凡星" }, { "id": 191, "name": "红歌柏" }, { "id": 192, "name": "紫大地" }, { "id": 193, "name": "汇东" }, { "id": 236, "name": "金旗舰" }, { "id": 238, "name": "经典佳印" }, { "id": 366, "name": "天章" }, { "id": 375, "name": "施乐" }, { "id": 376, "name": "益思" }, { "id": 377, "name": "高品乐" }, { "id": 536, "name": "金铭洋" }, { "id": 629, "name": "纸尊宝" }, { "id": 650, "name": "全通" }, { "id": 651, "name": "新好" }, { "id": 666, "name": "海龙" }, { "id": 698, "name": "NATURAL" }]
             companys: []
 
         }
@@ -43,7 +42,7 @@ export default class ProductSearch extends Component {
             }
         })
     }
-    componyClick(index) {
+    componyClick(index) {    //单击了品牌
         let data = []
         let item
         let selectedID = ''
@@ -73,6 +72,7 @@ export default class ProductSearch extends Component {
                                 <TextInput
                                     style={[styles.search_input, { width: '90%', marginLeft: 10 }]}
                                     placeholder='商品名称、型号、编码'
+                                    value={this.state.searchData.name}
                                     onChangeText={(text) => {
                                         this.searchDataChange({ name: text })
                                     }}
@@ -121,13 +121,8 @@ export default class ProductSearch extends Component {
                                         )
                                     })
                                 }
-
-                                {/* <Text style={styles.company} ellipsizeMode='tail' numberOfLines={1}>Double A</Text>
-                                <Text style={styles.company} ellipsizeMode='tail' numberOfLines={1}>富士施乐/FUJI XEROX</Text> */}
                             </View>
                         </View>
-                        {/* <Text>{JSON.stringify(this.state.companys)}</Text> */}
-
                     </SafeAreaView>
                 </ScrollView>
                 <View style={{ flexDirection: 'row', borderTopColor: '#f3f3f3', borderTopWidth: 1, height: 40 }}>
@@ -143,27 +138,22 @@ export default class ProductSearch extends Component {
                                     name:''
                                 }
                             },
-                                this.props.navigation.state.routes[0].params.list({
-                                    maxprice:0,
-                                    minprice:0,
-                                    company:'',
-                                    name:''
-                                })
+                                this.props.navigation.state.routes[0].params.reset()
                             )
 
                         }}
                     >
-                        <Text style={{ fontSize: 16, textAlign: 'center', lineHeight: 40 }}>重置</Text>
+                        <Text style={styles.button}>重置</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={{ width: '55%', height: 40 }}
                         onPress={() => {
                             this.props.navigation.closeDrawer()
-                            this.props.navigation.state.routes[0].params.list(this.state.searchData)
+                            this.props.navigation.state.routes[0].params.search(this.state.searchData)
                         }}
                     >
-                        <Text style={{ height: 40, backgroundColor: 'red', fontSize: 16, textAlign: 'center', textAlignVertical: 'center' }}>确定</Text>
+                        <Text style={[styles.button, {backgroundColor: 'red'}]}>确定</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -204,5 +194,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginBottom: 10,
         borderWidth: 1
+    },
+    button:{
+        fontSize: 16, textAlign: 'center', lineHeight: 40 
     }
 })

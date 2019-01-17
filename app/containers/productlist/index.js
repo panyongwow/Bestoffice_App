@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, Button, TextInput, FlatList, StyleSheet, TouchableOpacity, RefreshControl, ScrollView, Dimensions, Platform, NativeModules } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native'
 import Header from '../../components/header'
 import Foot from '../../components/foot'
 import GoTop from '../../components/gotop'
@@ -25,6 +24,7 @@ export default class ProductList extends Component {
         this.search = {
             nowpage: 1,        //第几页
             apagenum: 20,      //每页显示多少条数据
+            listgoodsid: 0,     //所属商品目录，即navigation传入的商品目录ID
             orderby: 0,        //排序方式，0 综合，1 销量，2 价格由高到低，3 价格由低到高
             hasdata: true,      //是否还有数据，以便控制底部
             minprice: 0,        //最低价 
@@ -35,38 +35,64 @@ export default class ProductList extends Component {
         }
         this.timeoutId         //滚动节流控制ID，处理“回到顶端”图标的显隐  
 
-        this.props.navigation.setParams({
-            list: (searchData) => {
-               // this.refresh(0, searchData)
-                this.list(searchData)
+        this.props.navigation.setParams({   //绑定给抽屉页面的查询方法
+            search: (searchData) => {
+                this.searchData(searchData)
             }
         })
+        this.props.navigation.setParams({   //绑定给抽屉页面的重置方法
+            reset: () => {
+                this.listAll()
+            }
+        })        
     }
     componentDidMount() {
+        let listgoodsid = this.props.navigation.state.params.id
+       // let listgoodsid = 299
+        this.search.listgoodsid = listgoodsid
         this.list()
         //this.props.navigation.toggleDrawer()
     }
 
-    //重置，显示全部数据
-    listAll() {
-        this.list({ nowpage: 1, minprice: 0, maxprice: 0, name: '', company: '', hasdata: true })
+    //重置、下拉刷新，显示全部数据
+    listAll(){
+        this.search = { ...this.search, nowpage: 1, minprice: 0, maxprice: 0, name: '', company: '', hasdata: true }
+        this.setState({
+            isShowGoTop: false,
+            data_list: [],
+            data_table: []
+        },
+            this.list()
+        )
     }
+    //查询，抽屉页调用
+    searchData(search) {
+        this.search = { ...this.search, ...search, nowpage: 1, hasdata: true }
+        this.setState({
+            isShowGoTop: false,
+            data_list: [],
+            data_table: []
+        },
+            this.list()
+        )
+    }
+    //排序更改
+    orderbychange(orderby) {
+        this.search = { ...this.search, nowpage: 1, orderby: orderby, hasdata: true }
+        this.setState({
+            isShowGoTop: false,
+            data_list: [],
+            data_table: []
+        },
+            this.list()
+        )
+    }
+
     //查找显示数据
     list(searchData) {
-        //alert(JSON.stringify(searchData))
-        if (!this.search.hasdata) return
-
-        let apagenum = this.search.apagenum
-        let nowpage = this.search.nowpage
-        let orderby = this.search.orderby
-        //let listgoodsid = this.props.navigation.state.params.id
-        let listgoodsid = 299
-        this.search = { ...this.search, ...searchData, listgoodsid: listgoodsid }
-        // alert(JSON.stringify(this.search))
-        //ProductDao.list(listgoodsid, nowpage, apagenum, orderby)
+        if (!this.search.hasdata) return     //没有数据了，已经显示到了数据的最后一页
         ProductDao.list(this.search)
             .then(result => {
-                //alert(JSON.stringify(result.companys))
                 let data_list = this.state.data_list
                 let data_table = this.state.data_table
 
@@ -85,13 +111,12 @@ export default class ProductList extends Component {
                     item.push(result.details[result.details.length - 1])
                     data_table.push(item)
                 }
-                if (apagenum * nowpage >= result.totalcount) {
+                if (this.search.apagenum * this.search.nowpage >= result.totalcount) {
                     this.search.hasdata = false   //已经到数据的末尾了，后面没有数据了
                 }
                 this.setState({
                     data_list: data_list,
                     data_table: data_table,
-                    //data_company: result.companys,
                     isrefreshing: false,
                     isShowGoTop: this.search.nowpage > 1 ? true : false,
                 })
@@ -112,23 +137,6 @@ export default class ProductList extends Component {
                 })
                 //alert(error)
             })
-    }
-
-    //刷新，重新显示数据
-    refresh = (orderby, searchData) => {
-        this.setState({
-            //isrefreshing: true,
-            isShowGoTop: false,
-            data_list: [],
-            data_table: []
-        },
-            this.listAll()
-        )
-
-        // this.search.nowpage = 1
-        // this.search.hasdata = true
-        // if (orderby != undefined) this.search.orderby = orderby
-        // this.list(searchData)
     }
 
     //滚动监听，滚动距离超过200后才显示“回到顶部”的图标，进行了节流处理
@@ -153,37 +161,18 @@ export default class ProductList extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header isShowBack={true} navigation={this.props.navigation} />
-                <Text>测试12</Text>
-                {/* <Button 
-                    title='返回1'
-                    onPress={()=>{
-                        alert(JSON.stringify(this.props.navigation)) 
-                    }}
-                /> */}
-                {/* <Header isShowBack={true} /> */}
-                {/* <View>
-                    <Text>测试</Text>
-                </View>
-                <Button
-                    title='设置Companys'
-                    onPress={() => {
-                        //alert(JSON.stringify(this.props.navigation))
-                        this.props.navigation.state.params.showCompanys('这是新的title')
-                        alert('ok')
-                    }}
-                /> */}
                 <ListTitle
                     display={this.state.display}
-                    displaychange={
+                    displaychange={          //显示方式发生改变
                         (display) => {
                             this.setState({
                                 display: display
                             })
                         }
                     }
-                    orderbychange={
+                    orderbychange={    //排序发生改变
                         (orderby) => {
-                            this.refresh(orderby)
+                            this.orderbychange(orderby)
                         }
                     }
                     openDrawer={    //打开抽屉，显示查找详情
@@ -193,22 +182,18 @@ export default class ProductList extends Component {
                     }
                 />
                 <View style={{ flex: 1 }}>
-                    {/* <Text>test123+{this.state.y}</Text> */}
                     <FlatList
-                        // style={{backgroundColor:'#b0c4de'}}
                         ref='ProductList'
                         data={this.state.display === 'list' ? this.state.data_list : this.state.data_table}
                         renderItem={({ item }) => {
                             return (
                                 this.state.display === 'list'
-                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} />
-                                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: 240, width: '100%', borderColor: 'red', borderWidth: 0 }}>
-                                        {/* <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '90%',borderColor:'blue',borderWidth:1 }}> */}
-                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]} />
+                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item}  navigation={this.props.navigation}/>
+                                    : <View style={styles.productmiddleborder}>
+                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]}  navigation={this.props.navigation}/>
                                         {
-                                            item.length > 1 ? <ProductMiddle item={item[1]} /> : null
+                                            item.length > 1 ? <ProductMiddle item={item[1]}  navigation={this.props.navigation}/> : null
                                         }
-                                        {/* </View> */}
                                     </View>
                             )
                         }}
@@ -219,30 +204,25 @@ export default class ProductList extends Component {
                                 : null
                         }
                         onEndReachedThreshold={0.2}
-                        onEndReached={() => {
+                        onEndReached={() => {    //列表滑动到底部继续加载更多
                             this.list()
                         }}
                         ListFooterComponent={
                             () => {
-                                // if (!this.state.isrefreshing) {
                                 return (
                                     this.search.hasdata
                                         ? <Loading />
-                                        : <View style={{ height: 100, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f3f3f3' }}>
-                                            <Text style={{ fontSize: 14, color: 'gray', backgroundColor: 'white', width: '100%', height: 42, textAlign: 'center', textAlignVertical: 'center' }}>抱歉，没有更多商品啦~</Text>
+                                        : <View style={styles.footborder}>
+                                            <Text style={styles.foot}>抱歉，没有更多商品啦~</Text>
                                             <Foot />
                                         </View>
                                 )
-                                // } else {
-                                //     return null
-                                // }
                             }
                         }
                         refreshControl={    //下拉刷新
                             <RefreshControl
-                                // refreshing={this.state.isrefreshing}
                                 refreshing={false}
-                                onRefresh={this.refresh}
+                                onRefresh={()=>{this.listAll()}}
                                 colors={['red']}
                             />
                         }
@@ -253,15 +233,6 @@ export default class ProductList extends Component {
                         )}
                         onScroll={this.onScroll.bind(this)}
                     />
-                    {/* <Button
-                        title='test'
-                        onPress={() => {
-                            this.setState({
-                                display:this.state.display==='list'?'table':'list'
-                            })
-                        }}
-                    /> */}
-
                 </View>
                 {
                     this.state.isShowGoTop
@@ -357,10 +328,6 @@ class ListTitle extends Component {
 
                     </TouchableOpacity>
                 </View>
-
-                {/* <View>
-                    <Text style={{ fontWeight: 'bold' }}>上架时间</Text>
-                </View> */}
             </View>
         )
     }
@@ -368,13 +335,45 @@ class ListTitle extends Component {
 
 
 const styles = StyleSheet.create({
+    productmiddleborder:{
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        height: 240, 
+        width: '100%'
+    },
+    footborder:{
+        height: 100, 
+        flexDirection: 'column', 
+        justifyContent: 'center', 
+        alignItems: 'center',
+         backgroundColor: '#f3f3f3' 
+    },
+    foot:{
+        fontSize: 14, 
+        color: 'gray', 
+        backgroundColor: 'white', 
+        width: '100%', 
+        height: 42, 
+        textAlign: 'center', 
+        textAlignVertical: 'center'
+    },
     lt_container: {
-        height: 40, backgroundColor: 'white', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#f3f3f3'
+        height: 40, 
+        backgroundColor: 'white', 
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+        alignItems: 'center', 
+        borderBottomWidth: 1, 
+        borderBottomColor: '#f3f3f3'
     },
     lt_price: {
-        flexDirection: 'row', width: 40, justifyContent: 'space-around', alignItems: 'center'
+        flexDirection: 'row', 
+        width: 40, 
+        justifyContent: 'space-around', 
+        alignItems: 'center'
     },
     lt_arrowborder: {
-        flexDirection: 'column', marginBottom: 2
+        flexDirection: 'column', 
+        marginBottom: 2
     }
 })

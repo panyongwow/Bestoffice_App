@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, Image, Button, WebView, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Platform, NativeModules } from 'react-native'
 import Swiper from 'react-native-swiper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import Entypo from 'react-native-vector-icons/Entypo'
 
 export default class Product extends Component {
     constructor(props) {
@@ -43,40 +44,68 @@ export default class Product extends Component {
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{ color: 'red', fontSize: 18 }}>
                                     &yen;&nbsp;
-                                <Text style={{ color: 'red', fontSize: 22, fontWeight: 'bold' }}>6.41</Text>
+                                    <Text style={{ color: 'red', fontSize: 22, fontWeight: 'bold' }}>6.41</Text>
                                 </Text>
 
-                                <View>
+                                <View  style={{flexDirection:'row'}}>
                                     <TouchableOpacity
+                                        style={{marginRight:10}}
                                         onPress={() => { alert('收藏') }}
                                     >
                                         <AntDesign name='hearto' size={18} color='red' />
                                         <Text style={{ fontSize: 10, color: 'red' }}>收藏</Text>
                                     </TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => { alert('售后') }}
+                                    >
+                                        <Entypo name='tools' size={18} color='red' />
+                                        <Text style={{ fontSize: 10, color: 'red' }}>售后</Text>
+                                    </TouchableOpacity>                                    
                                 </View>
                             </View>
-                            <Text style={{ fontSize: 15, fontWeight: 'bold'}}>3M 思高 胶带座 进口 H-127</Text>
+                            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>3M 思高 胶带座 进口 H-127</Text>
+                            <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                                <Text style={styles.tag}>特价</Text>
+                                <Text style={styles.tag}>协议价</Text>
+                                <Text style={styles.tag}>厂家直送</Text>
+                            </View>
                         </View>
-                        {/* <View> */}
-                        
-                        {/* </View> */}
-                        <View style={[styles.viewborder, { flexDirection: 'row', justifyContent: 'space-between',alignItems:'center' }]}>
-                            <Text style={{ fontSize: 12}}>编码:&nbsp;1030025682</Text>
-                            <Text style={{ fontSize: 12}}>品牌:&nbsp;3M</Text>
-                            <Text style={{ fontSize: 12}}>单位:&nbsp;个</Text>
+                        <TouchableOpacity style={[styles.viewborder, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}
+                            onPress={() => {
+                                alert('赠品！')
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 13, color: '#adadad', marginRight: 15 }}>促销</Text>
+                                <Text style={styles.tag}>赠品</Text>
+                                <Text style={{ fontSize: 12 }}>&nbsp;购买该商品有<Text style={{ fontSize: 13, fontWeight: 'bold' }}>1</Text>个赠品</Text>
+                            </View>
+                            <Text style={{ textAlignVertical: 'center', fontSize: 12 }}>详情&gt;</Text>
+                        </TouchableOpacity>
+                        <View style={[styles.viewborder, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }]}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 13, color: '#adadad', marginRight: 15 }}>参数</Text>
+                                <Text style={{ fontSize: 12,marginRight:10 }}>编码:1030025682&nbsp;&nbsp;&nbsp;</Text>
+                                <Text style={{ fontSize: 12,marginRight:10 }}>品牌:3M&nbsp;&nbsp;&nbsp;</Text>
+                                <Text style={{ fontSize: 12 }}>单位:个</Text>
+                            </View>
+                            <Text style={{ textAlignVertical: 'center', fontSize: 12 }}>更多&gt;</Text>
                         </View>
-                        <View style={styles.viewborder}>
-                            <Text style={{ fontSize: 12 }}>促销:</Text>
-                        </View>
-                        <View style={[styles.viewborder, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50 }]}>
-                            <Text style={{ fontSize: 12 }}>已选:&nbsp;
-                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>1件</Text>
-                            </Text>
-                            <Text style={{ textAlignVertical: 'center' }}>&gt;</Text>
-                            {/* <AntDesign name='minuscircleo' size={18} style={{marginLeft:10}} />
-                        <TextInput value='1' style={{color:'red',fontSize:20, fontWeight:'bold', borderColor:'#f3f3f3',borderWidth:0,textAlign:'center'}} />
-                        <AntDesign name='pluscircleo' size={18} style={{marginLeft:0}} /> */}
-                        </View>
+                        <TouchableOpacity style={[styles.viewborder, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50 }]}
+                            onPress={() => {
+                                alert('已选1件！')
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ fontSize: 13, color: '#adadad', marginRight: 15 }}>已选</Text>
+                                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>1个</Text>
+                            </View>
+                            <Text style={{ textAlignVertical: 'center', fontSize: 12 }}>更改&gt;</Text>
+                        </TouchableOpacity>
+
+
+
+
                     </View>
                     {/* <WebView style={{ height: 600 }}
                     originWhitelist={['*']}
@@ -130,5 +159,9 @@ const styles = StyleSheet.create({
     },
     button: {
         fontSize: 16, textAlign: 'center', lineHeight: 50
+    },
+    tag: {
+        fontSize: 12, color: 'red', borderColor: 'red', borderWidth: 1, borderRadius: 10, height: 20, paddingLeft: 5, paddingRight: 5, textAlign: 'center', lineHeight: 20, marginRight: 5
     }
+
 })

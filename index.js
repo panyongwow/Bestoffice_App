@@ -21,5 +21,9 @@ import IconTest from './test/icon'
 //import App from './test/navigation/test1'
 
 import  {ProductListStock} from './app/navigators/AppNavigators'
-AppRegistry.registerComponent(appName, () =>App);
+import AnimatedTest from './test/animated'
+import ModalExample from './test/modal'
+
+// AppRegistry.registerComponent(appName, () =>App);
+AppRegistry.registerComponent(appName, () =>ModalExample);
 

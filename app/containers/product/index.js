@@ -4,6 +4,7 @@ import AutoHeightWebView from 'react-native-webview-autoheight'
 import Swiper from 'react-native-swiper'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
+import Tools from '../../util/tools'
 
 export default class Product extends Component {
     constructor(props) {
@@ -102,9 +103,10 @@ export default class Product extends Component {
                             </View>
                             <Text style={{ textAlignVertical: 'center', fontSize: 12 }}>更改&gt;</Text>
                         </TouchableOpacity>
-                        <View style={styles.viewborder}>
+                    </View>
+                    <View style={styles.viewborder}>
                             {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}> */}
-                                <Text style={{ fontSize: 13, color: '#adadad', marginRight: 15 }}>商品介绍</Text>
+                                <Text style={{ fontSize: 13, color: '#adadad', marginLeft: 10 }}>商品介绍</Text>
                             {/* </View> */}
                             <AutoHeightWebView
                                 originWhitelist={['*']}
@@ -113,16 +115,15 @@ export default class Product extends Component {
                             />
                             <AutoHeightWebView
                                 originWhitelist={['*']}
-                                //source={{html:'<div style="font-size:0.8rem><p><img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/25224/30/2405/306629/5c1c7abcE20119d2c/fb55f6107a23c920.jpg" align="absmiddle" /> </p></div>'}}
+                                //source={{html: Tools.imgHTMLAddWidth('<img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/25224/30/2405/306629/5c1c7abcE20119d2c/fb55f6107a23c920.jpg" align="absmiddle" />')}}
 
-                                source={{html:'<div style="font-size:0.8rem><p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/25224/30/2405/306629/5c1c7abcE20119d2c/fb55f6107a23c920.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/24030/18/2483/132267/5c1c7abcE6d90720b/8ca7a2a054c43cdc.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/29095/19/2399/186720/5c1c7abcEef845f14/9e772372b41f6878.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/20851/33/2417/177570/5c1c7abcE5ce1ee3f/2d0a311c05e4c055.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/28725/18/2371/186295/5c1c7abcEf44330f7/7c77f10e245e43ba.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/26621/9/2438/200861/5c1c7abcEf980b06a/2887575669250aaf.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/14789/33/2419/263276/5c1c7abcE090de2f1/3e29ca4fd7171697.jpg" align="absmiddle" /> </p></div>'}}
+                                source={{html:Tools.imgHTMLAddWidth('<div style="font-size:0.8rem><p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/25224/30/2405/306629/5c1c7abcE20119d2c/fb55f6107a23c920.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/24030/18/2483/132267/5c1c7abcE6d90720b/8ca7a2a054c43cdc.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/29095/19/2399/186720/5c1c7abcEef845f14/9e772372b41f6878.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/20851/33/2417/177570/5c1c7abcE5ce1ee3f/2d0a311c05e4c055.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/28725/18/2371/186295/5c1c7abcEf44330f7/7c77f10e245e43ba.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/26621/9/2438/200861/5c1c7abcEf980b06a/2887575669250aaf.jpg" align="absmiddle" /> </p> <p>  <img class="" src="https://img10.360buyimg.com/imgzone/jfs/t1/14789/33/2419/263276/5c1c7abcE090de2f1/3e29ca4fd7171697.jpg" align="absmiddle" /> </p></div>')}}
                             />    
                             {/* <AutoHeightWebView
                                 originWhitelist={['*']}
                                 source={{html:'<div style="font-size:0.8rem"><table>  <tbody>   <tr>    <td class="de-feature">     型号    </td>    <td class="de-value">     B22AA3s    </td>    <td class="de-feature">     产品规格    </td>    <td class="de-value">     10卷/提，10提/箱，245段/卷,3层    </td>    <td class="de-feature">     纸巾尺寸（cm）    </td>    <td class="de-value">     11.0 X 10.0    </td>   </tr>   <tr>    <td class="de-feature">     保质期    </td>    <td class="de-value">     3年    </td>    <td class="de-feature">     材质    </td>    <td class="de-value">     100% 原木浆    </td>    <td class="de-feature">     香型    </td>    <td class="de-value">     无香    </td>   </tr>   <tr>    <td class="de-feature">     纸品等级    </td>    <td class="de-value">     合格品    </td>    <td class="de-feature">     加工定制    </td>    <td class="de-value">     是    </td>    <td class="de-feature">     货号    </td>    <td class="de-value">     B22AA3s    </td>   </tr>   <tr>    <td class="de-feature">     层数    </td>    <td class="de-value">     3层    </td>    <td class="de-feature">     是否含香味    </td>    <td class="de-value">     否    </td>    <td class="de-feature">     片数    </td>    <td class="de-value">     10    </td>   </tr>  </tbody> </table> <br /></div>'}}
                             />                                                     */}
-                        </View>
-                    </View>
+                        </View>                    
                 </ScrollView>
                 <View style={{ flexDirection: 'row', borderTopColor: '#f3f3f3', borderTopWidth: 1 }}>
                     <TouchableOpacity

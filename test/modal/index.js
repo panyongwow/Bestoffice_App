@@ -20,9 +20,9 @@ export default class ModalExample extends Component {
                     onRequestClose={() => {
                         alert("Modal has been closed.");
                     }}
-                    style={{backgroundColor:'gray'}}
+                    // style={{backgroundColor:'gray'}}
                 >
-                    <View style={{flex:1, backgroundColor:'gray',opacity:0.5 }}>
+                    <View style={{flex:1,backgroundColor:'rgba(0, 0, 0, 0.5)'}}>
                         <View>
                             <Text>Hello World!</Text>
 

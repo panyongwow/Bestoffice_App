@@ -23,7 +23,8 @@ import IconTest from './test/icon'
 import  {ProductListStock} from './app/navigators/AppNavigators'
 import AnimatedTest from './test/animated'
 import ModalExample from './test/modal'
+import {ModalDemo} from './test/modal/index1'
 
-// AppRegistry.registerComponent(appName, () =>App);
-AppRegistry.registerComponent(appName, () =>ModalExample);
+ AppRegistry.registerComponent(appName, () =>App);
+//AppRegistry.registerComponent(appName, () =>ModalDemo);
 

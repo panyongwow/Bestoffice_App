@@ -71,7 +71,7 @@ export default class Product extends Component {
                                         : null
                                 }
                                 <Property data={this.state.data} style={styles.viewborder} />
-                                <BuyNum data={this.state.data}  changeBuyNum={(num) => {
+                                <BuyNum buyNum={this.state.buyNum} data={this.state.data}  changeBuyNum={(num) => {
                                     this.changeBuyNum(num)
                                 }}
                                     style={styles.viewborder}

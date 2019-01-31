@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Modal, Image, TextInput, TouchableHighlight, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, Image, TextInput, StyleSheet } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 //商品单页-购买数量区域
@@ -7,18 +7,19 @@ export default class BuyNum extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            buyNum: 2,
-            buyNumModalVisible: false
+            buyNum: props.buyNum,
+            modalVisible: false
         }
     }
     showBuyNumModal() {
         this.setState({
-            buyNumModalVisible: true
+            modalVisible: true
         })
     }
     changeBuyNum(num) {
         this.setState({
-            buyNum: num
+            buyNum: num,
+            modalVisible:false
         })
         this.props.changeBuyNum(num)   //传递购买数量给父组件
     }
@@ -26,7 +27,7 @@ export default class BuyNum extends Component {
         return (
             <View>
                 <BuyNumModal
-                    showModal={this.state.buyNumModalVisible}
+                    showModal={this.state.modalVisible}
                     buyNum={this.state.buyNum}
                     data={this.props.data}
                     changeBuyNum={(num) => {
@@ -34,22 +35,40 @@ export default class BuyNum extends Component {
                     }}
                 />
 
-                <TouchableOpacity style={[this.props.style, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50 }]}
+                <TouchableOpacity style={[this.props.style, styles.container]}
                     onPress={() => {
                         this.showBuyNumModal()
                     }
                     }
                 >
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 13, color: '#adadad', marginRight: 15 }}>已选</Text>
-                        <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{this.state.buyNum}个</Text>
+                    <View style={styles.inner}>
+                        <Text style={styles.title}>已选</Text>
+                        <Text style={styles.buynum}>{this.state.buyNum}{this.props.data.measurement}</Text>
                     </View>
-                    <Text style={{ textAlignVertical: 'center', fontSize: 12 }}>更改&gt;</Text>
+                    <Text style={styles.changenum}>更改&gt;</Text>
                 </TouchableOpacity>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50
+    },
+    inner: {
+        flexDirection: 'row', alignItems: 'center'
+    },
+    title: {
+        fontSize: 13, color: '#adadad', marginRight: 15
+    },
+    buynum: {
+        fontSize: 14, fontWeight: 'bold'
+    },
+    changenum: {
+        textAlignVertical: 'center', fontSize: 12
+    }
+})
 
 //购买数量弹出框
 class BuyNumModal extends Component {
@@ -85,8 +104,19 @@ class BuyNumModal extends Component {
                 modalVisible: false
             })
         });
-        //this.props.changeBuyNum(this.state.buyNum)
-
+        this.props.changeBuyNum(this.state.buyNum)
+    }
+    addBuyNum() {
+        this.setState({
+            buyNum: parseInt(this.state.buyNum) + 1
+        })
+    }
+    reduceBuyNum() {
+        this.setState({
+            buyNum: this.state.buyNum == 1
+                ? 1
+                : this.state.buyNum - 1
+        })
     }
     render() {
         //let pic_s = this.props.data.pic_detail[0].picname.replace(/_l.jpg/g, '_s.jpg')
@@ -100,24 +130,8 @@ class BuyNumModal extends Component {
                     console.log('close')
                 }}
             >
-                <View style={{ flex: 1, flexDirection: 'column-reverse', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
-                    <View style={{ justifyContent: 'space-between', backgroundColor: '#fff', height: 350 }}>
-                        {/* <Text
-                            onPress={() => {
-                                this.closeModal()
-                            }}
-                            style={{ fontSize: 20, marginTop: 10 }}>
-                            关闭
-                        </Text>
-                        <TextInput
-                            style={{ height: 30, width: 100, borderColor: 'red', borderWidth: 1, padding: 5 }}
-                            value={this.state.buyNum.toString()}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    buyNum: text
-                                })
-                            }}
-                        /> */}
+                <View style={modalstyles.container}>
+                    <View style={modalstyles.container_inner}>
                         <View style={{ height: 250 }}>
                             <TouchableOpacity style={{ flexDirection: 'row-reverse' }}
                                 activeOpacity={0.7}
@@ -125,31 +139,37 @@ class BuyNumModal extends Component {
                                     this.closeModal()
                                 }}
                             >
-                                <AntDesign name='close' size={22} color='gray' style={{ marginTop: 10, marginRight: 10 }} />
+                                <AntDesign name='close' size={22} color='gray' style={modalstyles.close} />
                             </TouchableOpacity>
                             <View style={{ flexDirection: 'row' }}>
                                 <Image
-                                    style={{ height: 75, width: 75, marginLeft: 10 }}
+                                    style={modalstyles.product_image}
                                     source={{ uri: p.pic_detail[0].picname }}
                                 />
-                                <View style={{ flex: 1, justifyContent: 'space-around', height: 75, paddingLeft: 10, paddingRight: 10 }}>
-                                    <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{p.name}</Text>
-                                    <Text style={{ fontSize: 12}}>商品编码:&nbsp;{p.innercode}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位:&nbsp;{p.measurement}</Text>
-                                    <Text style={{ color: 'red', fontSize: 14 }}>
+                                <View style={modalstyles.product_info}>
+                                    <Text style={modalstyles.product_name}>{p.name}</Text>
+                                    <Text style={modalstyles.product_innercode}>商品编码:&nbsp;{p.innercode}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位:&nbsp;{p.measurement}</Text>
+                                    <Text style={modalstyles.product_price_pre}>
                                         &yen;&nbsp;
-                                        <Text style={{ color: 'red', fontSize: 18, fontWeight: 'bold' }}>{p.price}</Text>
+                                        <Text style={modalstyles.product_price}>{p.price}</Text>
                                     </Text>
 
                                 </View>
                             </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent:'space-between', margin: 10,marginTop:20,paddingTop:10,paddingBottom:10, borderBottomColor:'#f3f3f3',borderBottomWidth:1,borderTopColor:'#f3f3f3',borderTopWidth:1 }}>
+                            <View style={modalstyles.buynum_container}>
                                 <Text style={{ fontSize: 16 }}>购买数量</Text>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <TouchableOpacity  style={{backgroundColor:'#f3f3f3',width:36,height:36}}>
-                                        <AntDesign name='minus' size={20} color='gray' style={{lineHeight:36,marginLeft:8}} />
+                                <View style={modalstyles.buynum_inner}>
+                                    <TouchableOpacity
+                                        style={modalstyles.buynum_button}
+                                        onPress={() => {
+                                            this.reduceBuyNum()
+                                        }}
+                                    >
+                                        <AntDesign name='minus' size={20} color='gray' style={modalstyles.buynum_icon} />
                                     </TouchableOpacity>
                                     <TextInput
-                                        style={{ height: 30, width: 50, padding:0,textAlign: 'center',fontSize:20,fontWeight:'bold', lineHeight:30}}
+                                        style={modalstyles.buynum_input}
+                                        keyboardType='numeric'
                                         value={this.state.buyNum.toString()}
                                         onChangeText={(text) => {
                                             this.setState({
@@ -157,8 +177,13 @@ class BuyNumModal extends Component {
                                             })
                                         }}
                                     />
-                                    <TouchableOpacity  style={{backgroundColor:'#f3f3f3',width:36,height:36}}>
-                                        <AntDesign name='plus' size={20} color='gray' style={{lineHeight:36,marginLeft:8}} />
+                                    <TouchableOpacity
+                                        style={modalstyles.buynum_button}
+                                        onPress={() => {
+                                            this.addBuyNum()
+                                        }}
+                                    >
+                                        <AntDesign name='plus' size={20} color='gray' style={modalstyles.buynum_icon} />
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -169,7 +194,7 @@ class BuyNumModal extends Component {
                                 alert('加入购物车！')
                             }}
                         >
-                            <Text style={{ backgroundColor: '#f00', color: '#fff', textAlign: 'center', lineHeight: 50, height: 50, fontSize: 16, fontWeight: 'bold' }}>加入购物车</Text>
+                            <Text style={modalstyles.shoppingcart}>加入购物车</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -185,3 +210,51 @@ class BuyNumModal extends Component {
         )
     }
 }
+
+const modalstyles = StyleSheet.create({
+    container: {
+        flex: 1, flexDirection: 'column-reverse', backgroundColor: 'rgba(0, 0, 0, 0.3)'
+    },
+    container_inner: {
+        justifyContent: 'space-between', backgroundColor: '#fff', height: 350
+    },
+    close: {
+        marginTop: 10, marginRight: 10
+    },
+    product_image: {
+        height: 75, width: 75, marginLeft: 10
+    },
+    product_info: {
+        flex: 1, justifyContent: 'space-around', height: 75, paddingLeft: 10, paddingRight: 10
+    },
+    product_name: {
+        fontSize: 14, fontWeight: 'bold'
+    },
+    product_innercode: {
+        fontSize: 12
+    },
+    product_price_pre: {
+        color: 'red', fontSize: 14
+    },
+    product_price: {
+        color: 'red', fontSize: 18, fontWeight: 'bold'
+    },
+    buynum_container: {
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 10, marginTop: 30, paddingTop: 10, paddingBottom: 10, borderBottomColor: '#f3f3f3', borderBottomWidth: 1, borderTopColor: '#f3f3f3', borderTopWidth: 1
+    },
+    buynum_inner: {
+        flexDirection: 'row', alignItems: 'center'
+    },
+    buynum_button: {
+        backgroundColor: '#f3f3f3', width: 36, height: 36
+    },
+    buynum_icon: {
+        lineHeight: 36, marginLeft: 8
+    },
+    buynum_input: {
+        height: 30, width: 50, padding: 0, textAlign: 'center', fontSize: 20, fontWeight: 'bold', lineHeight: 30
+    },
+    shoppingcart: {
+        backgroundColor: '#f00', color: '#fff', textAlign: 'center', lineHeight: 50, height: 50, fontSize: 16, fontWeight: 'bold'
+    }
+})

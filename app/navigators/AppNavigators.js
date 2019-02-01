@@ -70,15 +70,7 @@ export const ProductListStock=createDrawerNavigator({
 })
 
 export const RootStack=createStackNavigator({
-    Product:{
-        screen:Product,
-        // navigationOptions:({navigation})=>({
-        //     title:navigation.state.params.name +'的页面'
-        // })
-        navigationOptions:{
-            header:null
-        }
-    },  
+
     Welcome:{
         screen:Welcome,
         // navigationOptions:({navigation})=>({
@@ -104,5 +96,11 @@ export const RootStack=createStackNavigator({
         navigationOptions:{
             header:null
         }
-    }
+    },
+    Product:{
+        screen:Product,
+        navigationOptions:{
+            header:null
+        }
+    }, 
 })

@@ -27,13 +27,15 @@ export default class Product extends Component {
         }
     }
     componentDidMount() {
-        //let id=this.props.navigation.state.params.id
-        //let id =28188
+         let id=this.props.navigation.state.params.id
+
+        //let id = 28188
         //let id=25682
         //let id=26461
-        let id = 27237
-        id = 2734
-       // id=29823
+        // let id = 27237
+        //id = 2734
+        //id = 12885
+
         this.productGet(id)
     }
 
@@ -49,7 +51,7 @@ export default class Product extends Component {
                 this.setState({
                     data: result
                 })
-               // alert(JSON.stringify(result))
+                // alert(JSON.stringify(result))
             })
             .catch(error => {
                 alert(error)
@@ -58,7 +60,6 @@ export default class Product extends Component {
     render() {
         return (
             <View style={{ backgroundColor: 'white' }}>
-
                 {
                     this.state.data.count > 0
                         ? <ScrollView style={{ height: this.screenHeight }}>
@@ -71,11 +72,19 @@ export default class Product extends Component {
                                         : null
                                 }
                                 <Property data={this.state.data} style={styles.viewborder} />
-                                <BuyNum buyNum={this.state.buyNum} data={this.state.data}  changeBuyNum={(num) => {
-                                    this.changeBuyNum(num)
-                                }}
-                                    style={styles.viewborder}
-                                />
+                                {
+                                    this.state.data.isgift
+                                        ? null
+                                        : <BuyNum
+                                            buyNum={this.state.buyNum}
+                                            data={this.state.data}
+                                            changeBuyNum={(num) => {
+                                                this.changeBuyNum(num)
+                                            }}
+                                            style={styles.viewborder}
+                                        />
+                                }
+
                             </View>
                             {
                                 this.state.data.description.length > 0 || this.state.data.imgdes.length > 0 || this.state.data.detaildes.length > 0 || this.state.data.featuredes.length > 0
@@ -95,23 +104,29 @@ export default class Product extends Component {
                             >
                                 <ShoppingCart />
                             </TouchableOpacity>
+                            {
+                                this.state.data.isgift
+                                    ? <Text style={[styles.button, {flex:1, backgroundColor: '#fe9402' }]}>此商品作为赠品不能单独购买</Text>
+                                    : <View style={{ flex: 1, flexDirection: 'row' }}>
+                                        <TouchableOpacity
+                                            style={{ flex: 1, height: 50 }}
+                                            onPress={() => {
+                                            }}
+                                        >
+                                            <Text style={[styles.button, { backgroundColor: '#fe9402' }]}>加入购物车</Text>
+                                        </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={{ width: '35%', height: 50 }}
-                                onPress={() => {
-                                }}
-                            >
-                                <Text style={[styles.button, { backgroundColor: '#fe9402', color: '#fff' }]}>加入购物车</Text>
-                            </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ flex: 1, height: 50 }}
+                                            onPress={() => {
+                                                alert(this.state.buyNum)
+                                            }}
+                                        >
+                                            <Text style={[styles.button, { backgroundColor: 'red' }]}>立即购买</Text>
+                                        </TouchableOpacity>
+                                    </View>
 
-                            <TouchableOpacity
-                                style={{ width: '35%', height: 50 }}
-                                onPress={() => {
-                                    alert(this.state.buyNum)
-                                }}
-                            >
-                                <Text style={[styles.button, { backgroundColor: 'red', color: '#fff' }]}>立即购买</Text>
-                            </TouchableOpacity>
+                            }
                         </View>
                         : null
                 }
@@ -125,8 +140,8 @@ export default class Product extends Component {
 class ShoppingCart extends Component {
     render() {
         return (
-            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 50, width: 70, borderWidth: 0, borderColor: 'red' }}>
-                <Text style={{ width: 20, height: 20, borderRadius: 10, borderWidth: 1, borderColor: 'red', color: 'red', position: 'absolute', fontSize: 10, textAlign: 'center', lineHeight: 20, top: 4, left: 50 }}>1</Text>
+            <View style={styles.shoppingcart_container}>
+                <Text style={styles.shoppingcart_num}>1</Text>
                 <AntDesign name="shoppingcart" color='red' size={28} />
                 <Text style={{ fontSize: 10 }}>购物车</Text>
             </View>
@@ -138,10 +153,16 @@ const styles = StyleSheet.create({
         paddingTop: 10, paddingBottom: 10, borderBottomColor: '#f3f3f3', borderBottomWidth: 2
     },
     button: {
-        fontSize: 16, textAlign: 'center', lineHeight: 50
+        fontSize: 16, textAlign: 'center', lineHeight: 50, color: '#fff'
     },
     tag: {
         fontSize: 12, color: 'red', borderColor: 'red', borderWidth: 1, borderRadius: 10, height: 20, paddingLeft: 5, paddingRight: 5, textAlign: 'center', lineHeight: 20, marginRight: 5
+    },
+    shoppingcart_container:{
+        flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 50, width: 70
+    },
+    shoppingcart_num:{
+        width: 20, height: 20, borderRadius: 10, borderWidth: 1, borderColor: 'red', color: 'red', position: 'absolute', fontSize: 10, textAlign: 'center', lineHeight: 20, top: 4, left: 50 
     }
 
 })

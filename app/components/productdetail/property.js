@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 //商品单页-参数区域
@@ -89,6 +89,8 @@ class PropertyModal extends Component {
     }
 
     render() {
+        let p = this.props.data.attribute_detail
+
         return (
             <Modal
                 animationType='fade'
@@ -109,6 +111,19 @@ class PropertyModal extends Component {
                             >
                                 <AntDesign name='close' size={22} color='gray' style={modalstyles.close} />
                             </TouchableOpacity>
+                            <ScrollView style={{ height: 370 }}>
+                                {
+                                    p.map((item, index) => {
+                                        return (
+                                            <View key={index} style={modalstyles.detailborder}>
+                                                <Text style={modalstyles.title}>{item.name}</Text>
+                                                <Text style={modalstyles.info}>{item.value}</Text>
+                                            </View>
+                                        )
+                                    })
+                                }
+                            </ScrollView>
+
                         </View>
                     </View>
                     <TouchableOpacity
@@ -129,15 +144,18 @@ const modalstyles = StyleSheet.create({
         flex: 1, flexDirection: 'column-reverse', backgroundColor: 'rgba(0, 0, 0, 0.3)'
     },
     container_inner: {
-        justifyContent: 'space-between', backgroundColor: '#fff', height: 390
+        justifyContent: 'space-between', backgroundColor: '#fff', height: 400
     },
     close: {
         marginTop: 10
     },
+    detailborder:{
+        flexDirection:'row',marginTop:5
+    },
     title: {
-        fontSize: 13, fontWeight: 'bold', textAlign: 'center', color: 'gray'
+        width:90,fontSize: 12, color: '#adadad',textAlign:'right',paddingRight:7
     },
     info: {
-        fontSize: 12, marginTop: 5
+        flex:1,fontSize: 12
     }
 })

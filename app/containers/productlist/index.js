@@ -50,6 +50,7 @@ export default class ProductList extends Component {
         let listgoodsid = this.props.navigation.state.params.id
        // let listgoodsid = 299
         this.search.listgoodsid = listgoodsid
+        //alert(JSON.stringify(this.search))
         this.list()
         //this.props.navigation.toggleDrawer()
     }
@@ -128,7 +129,7 @@ export default class ProductList extends Component {
                 //另外，如果在在导航器中将该抽屉导航放在第一顺位的话，就不会出现该情况。
                 setTimeout(() => {
                     this.props.navigation.state.params.showCompanys(result.companys)   //传递品牌数据给抽屉页,showCompanys方法的实现是在search.js中
-                })
+                },1000)
                 //this.props.navigation.state.params.showCompanys(result.companys)   //如果直接这样写，那么第一次调用将失败
             })
             .catch(error => {

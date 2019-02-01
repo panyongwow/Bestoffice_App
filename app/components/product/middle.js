@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
-import { Tag } from './small'
+import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 //商品展示(中等大小)
@@ -22,7 +22,7 @@ export default class ProductMiddle extends Component {
                         {item.isbargainprice ? <Tag title='特价' /> : null}
                         {item.isdirect ? <Tag title='直送' /> : null}
                         {item.ownstore ? <Tag title={item.ownstore} /> : null}
-                        {item.giftnum > 0 ? <Tag title='好礼' /> : null}
+                        {item.giftnum > 0 ? <Tag title='赠品' /> : null}
                     </View>
                     <View style={{height: 26, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={styles.priceborder}>

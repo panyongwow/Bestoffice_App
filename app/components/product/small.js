@@ -1,5 +1,6 @@
 import React, { PureComponent, Component } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 export default class ProductSmall extends PureComponent {
@@ -31,7 +32,7 @@ export default class ProductSmall extends PureComponent {
                                 {item.isbargainprice ? <Tag title='特价' /> : null}
                                 {item.isdirect ? <Tag title='直送' /> : null}
                                 {item.ownstore ? <Tag title={item.ownstore} /> : null}
-                                {item.giftnum > 0 ? <Tag title='好礼' /> : null}
+                                {item.giftnum > 0 ? <Tag title='赠品' /> : null}
                             </View>
                             <View style={styles.border} >
                                 <View style={styles.priceborder} >
@@ -57,15 +58,7 @@ export default class ProductSmall extends PureComponent {
     }
 }
 
-export class Tag extends Component {
-    render() {
-        return (
-            <View>
-                <Text style={styles.tag}>{this.props.title}</Text>
-            </View>
-        )
-    }
-}
+
 const styles = StyleSheet.create({
     touchable: {
         height: 116,
@@ -131,19 +124,6 @@ const styles = StyleSheet.create({
         fontSize: 12, 
         color: '#bebebe', 
         paddingBottom: 2 
-    },
-    tag: {
-        fontSize: 10,
-        color: 'red',
-        borderColor: 'red',
-        borderWidth: 1,
-        borderRadius: 9,
-        height: 16,
-        paddingLeft: 5,
-        paddingRight: 5,
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        marginRight: 3
     },
     shoppingcart:{
         marginTop:12, 

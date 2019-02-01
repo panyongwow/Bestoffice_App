@@ -147,7 +147,13 @@ class BuyNumModal extends Component {
                                     source={{ uri: p.pic_detail[0].picname }}
                                 />
                                 <View style={modalstyles.product_info}>
-                                    <Text style={modalstyles.product_name}>{p.name}</Text>
+                                    <Text 
+                                        style={modalstyles.product_name}
+                                        numberOfLines={2}
+                                        ellipsizeMode='tail'
+                                    >
+                                        {p.name}
+                                    </Text>
                                     <Text style={modalstyles.product_innercode}>商品编码:&nbsp;{p.innercode}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位:&nbsp;{p.measurement}</Text>
                                     <Text style={modalstyles.product_price_pre}>
                                         &yen;&nbsp;

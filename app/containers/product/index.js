@@ -23,7 +23,8 @@ export default class Product extends Component {
         this.screenHeight = height - StatusBarHeight - 51;
         this.state = {
             buyNum: 1,
-            data: []
+            data: [],
+            id:0
         }
     }
     componentDidMount() {
@@ -35,7 +36,9 @@ export default class Product extends Component {
         // let id = 27237
         //id = 2734
         //id = 12885
-
+        this.setState({
+            id
+        })
         this.productGet(id)
     }
 
@@ -60,6 +63,7 @@ export default class Product extends Component {
     render() {
         return (
             <View style={{ backgroundColor: 'white' }}>
+                <Text>{this.state.id}</Text>
                 {
                     this.state.data.count > 0
                         ? <ScrollView style={{ height: this.screenHeight }}>

@@ -60,7 +60,7 @@ export default class ListgoodsAD extends Component{
                                                             activeOpacity={0.5} 
                                                             key={index}
                                                             onPress={()=>{
-                                                                this.props.navigation.navigate('Listgoods',{id:tag.tagid})
+                                                                this.props.navigation.navigate('ProductList',{id:tag.tagid})
                                                             }}
                                                         >
                                                             <Text style={styles.tag}>{tag.name}</Text>

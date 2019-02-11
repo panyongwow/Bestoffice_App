@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {StyleSheet,Image,View,TouchableOpacity} from 'react-native'
+import Tools,{adType} from '../../../util/tools'
 
 //副广告区
 export default class SubAD extends Component{
@@ -31,7 +32,18 @@ class ViceAD extends Component{
             <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={()=>{
-                    this.props.navigation.navigate('Product',{id:1,name:'id为1'})
+                    let adData=Tools.analyzeURL(item.picurl)
+                    if(adData.type===adType.product){
+                        //该广告的链接指向商品单页
+                        this.props.navigation.navigate('Product',{id:adData.productID})
+                    }
+                    else if(adData.type===adType.productList){
+                        //该广告的链接指向商品列表页
+                        this.props.navigation.navigate('ProductList',{id:adData.listgoodsID,companyID:adData.companyID})
+                    }
+                    else{
+                        alert(JSON.stringify(adData))
+                    }                    
                 }}
             >
                 <Image resizeMode="stretch" style={styles.img} source={{uri:item.picname}} />

@@ -30,7 +30,7 @@ export default class ProductList extends Component {
             minprice: 0,        //最低价 
             maxprice: 0,        //最高价
             name: '',           //关键字（名称、编码） 
-            company: ''          //所属品牌
+            company: ''          //所属品牌ID，可以多个ID排列，如'3,24,56'
 
         }
         this.timeoutId         //滚动节流控制ID，处理“回到顶端”图标的显隐  
@@ -48,11 +48,10 @@ export default class ProductList extends Component {
     }
     componentDidMount() {
         let listgoodsid = this.props.navigation.state.params.id
-       // let listgoodsid = 299
+        let companyID=this.props.navigation.state.params.companyID
         this.search.listgoodsid = listgoodsid
-        //alert(JSON.stringify(this.search))
+        this.search.company=companyID
         this.list()
-        //this.props.navigation.toggleDrawer()
     }
 
     //重置、下拉刷新，显示全部数据

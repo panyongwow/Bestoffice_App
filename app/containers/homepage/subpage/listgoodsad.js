@@ -1,8 +1,23 @@
 import React, {Component} from 'React'
 import {View,Text,Image,StyleSheet,TouchableOpacity} from 'react-native'
 import ProductMiddle from '../../../components/product/middle'
+import Tools,{adType} from '../../../util/tools'
 
 export default class ListgoodsAD extends Component{
+    adClick(URL){
+        let adData=Tools.analyzeURL(URL)
+        if(adData.type===adType.product){
+            //该广告的链接指向商品单页
+            this.props.navigation.navigate('Product',{id:adData.productID})
+        }
+        else if(adData.type===adType.productList){
+            //该广告的链接指向商品列表页
+            this.props.navigation.navigate('ProductList',{id:adData.listgoodsID,companyID:adData.companyID})
+        }
+        else{
+            alert(JSON.stringify(adData))
+        }          
+    }
     render(){
         return (
             <View>
@@ -25,7 +40,7 @@ export default class ListgoodsAD extends Component{
                                     <TouchableOpacity
                                         activeOpacity={0.5}
                                         onPress={()=>{
-                                            this.props.navigation.navigate('Product',{id:item.image_left.id})
+                                            this.adClick(item.image_left.picurl)
                                         }}
                                     >
                                         <Image resizeMode='stretch' style={styles.image} source={{uri:item.image_left.picname}}/>
@@ -34,7 +49,7 @@ export default class ListgoodsAD extends Component{
                                     <TouchableOpacity
                                         activeOpacity={0.5}
                                         onPress={()=>{
-                                            this.props.navigation.navigate('Product',{id:item.image_right.id})
+                                            this.adClick(item.image_right.picurl)  
                                         }}                                    
                                     >
                                         <Image resizeMode='stretch' style={styles.image} source={{uri:item.image_right.picname}}/>                

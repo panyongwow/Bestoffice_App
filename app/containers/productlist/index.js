@@ -47,8 +47,12 @@ export default class ProductList extends Component {
         })        
     }
     componentDidMount() {
-        let listgoodsid = this.props.navigation.state.params.id
-        let companyID=this.props.navigation.state.params.companyID
+        // let { navigation } = this.props
+        // let listgoodsID = navigation.getParam('id', 0)   //路由传递过来的已经目录ID
+
+        //let listgoodsid = this.props.navigation.state.params.id
+        let listgoodsid=this.props.navigation.getParam('id',0)
+        let companyID=this.props.navigation.getParam('companyID',0)
         this.search.listgoodsid = listgoodsid
         this.search.company=companyID
         this.list()

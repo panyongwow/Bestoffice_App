@@ -63,7 +63,7 @@ export default class Product extends Component {
     render() {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                <Text>{this.state.id}</Text>
+                {/* <Text>{this.state.id}</Text> */}
                 {
                     this.state.data.count > 0
                         ? <ScrollView style={{ height: this.screenHeight }}>

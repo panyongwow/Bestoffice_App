@@ -26,7 +26,7 @@ class Tag extends Component {
             <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
-                    this.props.navigation.navigate('Listgoods', { id: tag.id })
+                    this.props.navigation.navigate('ProductList', { id: tag.tagid })
                 }}
             >
                 <Text style={{ color: '#fff', fontSize: 12 }}>{tag.name}</Text>

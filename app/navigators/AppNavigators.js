@@ -72,12 +72,7 @@ export const ProductListStock=createDrawerNavigator({
 })
 
 export const RootStack=createStackNavigator({
-    Login:{
-        screen:Login,
-        navigationOptions:{
-            header:null
-        }
-    },    
+  
     Main:{
         screen:MainStock,
         navigationOptions:{
@@ -102,5 +97,10 @@ export const RootStack=createStackNavigator({
             header:null
         }
     }, 
-
+    Login:{
+        screen:Login,
+        navigationOptions:{
+            header:null
+        }
+    },  
 })

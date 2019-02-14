@@ -16,10 +16,7 @@ export default class Welcome extends Component{
     componentDidMount(){
         const {navigation}=this.props
         HomePageDao.init(()=>{
-            //navigation.navigate("Drawer")
             navigation.reset([NavigationActions.navigate({ routeName: 'Main' })], 0)  
-            //navigation.reset([NavigationActions.navigate({ routeName: 'Drawer' })], 0)  
-            //navigation.reset(resetAction)
         })
     }
     render(){

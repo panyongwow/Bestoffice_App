@@ -19,7 +19,7 @@ export default class Storage{
                         resolve(JSON.parse(result))
                         //resolve(result)
                     }else{
-
+                       resolve(null)
                     }
                 }
             })

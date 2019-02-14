@@ -56,9 +56,6 @@ export default class My extends Component {
                                 <AntDesign name='right' size={18} color='gray' />
                             </TouchableOpacity>
                     }
-
-
-
                 </View>
                 <View>
                     <TouchableOpacity

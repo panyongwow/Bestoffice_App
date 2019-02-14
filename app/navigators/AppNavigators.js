@@ -15,15 +15,7 @@ import News from '../containers/news'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const MainStock=createBottomTabNavigator({
-    My:{
-        screen:My,
-        navigationOptions:{
-            tabBarLabel:'我的',
-            tabBarIcon:({tintColor,focused})=>(
-                <AntDesign name="user" style={{color:tintColor}} size={26} />
-            )            
-        }
-    },    
+   
     HomePage:{
         screen:HomePage,
         navigationOptions:{
@@ -51,7 +43,15 @@ const MainStock=createBottomTabNavigator({
             )            
         }
     },
-
+    My:{
+        screen:My,
+        navigationOptions:{
+            tabBarLabel:'我的',
+            tabBarIcon:({tintColor,focused})=>(
+                <AntDesign name="user" style={{color:tintColor}} size={26} />
+            )            
+        }
+    }, 
 },
 {
     navigationOptions:{
@@ -72,19 +72,19 @@ export const ProductListStock=createDrawerNavigator({
 })
 
 export const RootStack=createStackNavigator({
-  
+    Welcome:{
+        screen:Welcome,
+        navigationOptions:{
+            header:null
+        }
+    },  
     Main:{
         screen:MainStock,
         navigationOptions:{
             header:null
         }
     },
-    Welcome:{
-        screen:Welcome,
-        navigationOptions:{
-            header:null
-        }
-    },
+
     Drawer:{
         screen:ProductListStock,
             navigationOptions:{

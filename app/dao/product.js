@@ -7,6 +7,7 @@ export default class ProductDao {
 
         url = url + '?nowpage=' + s.nowpage +
             '&apagenum=' + s.apagenum +
+            '&custid=' + s.custid +
             '&listgoodsid=' + s.listgoodsid +
             '&minprice=' + s.minprice +
             '&maxprice=' + s.maxprice +
@@ -24,10 +25,10 @@ export default class ProductDao {
     }
 
     //根据商品ID获得商品详情
-    static get(id) {
+    static get(id,custid) {
         let url = '/ajax/products/getbyid_m.ashx'
 
-        url = url + '?id='+id
+        url = url + '?id='+id + '&custid='+custid
         return new Promise((resolve, reject) => {
             fetch(BSTURL + url)
                 .then(res => res.json())

@@ -8,6 +8,7 @@ import ProductSmall from '../../components/product/small'
 import ProductMiddle from '../../components/product/middle'
 import Loading from '../../components/loading'
 import ProductDao from '../../dao/product'
+import CustDao from '../../dao/cust'
 
 export default class ProductList extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ export default class ProductList extends Component {
         this.search = {
             nowpage: 1,        //第几页
             apagenum: 20,      //每页显示多少条数据
+            custid: 0,          //用户ID
             listgoodsid: 0,     //所属商品目录，即navigation传入的商品目录ID
             orderby: 0,        //排序方式，0 综合，1 销量，2 价格由高到低，3 价格由低到高
             hasdata: true,      //是否还有数据，以便控制底部
@@ -44,22 +46,29 @@ export default class ProductList extends Component {
             reset: () => {
                 this.listAll()
             }
-        })        
+        })
     }
     componentDidMount() {
         // let { navigation } = this.props
         // let listgoodsID = navigation.getParam('id', 0)   //路由传递过来的已经目录ID
 
         //let listgoodsid = this.props.navigation.state.params.id
-        let listgoodsid=this.props.navigation.getParam('id',0)
-        let companyID=this.props.navigation.getParam('companyID',0)
+        let listgoodsid = this.props.navigation.getParam('id', 0)
+        let companyID = this.props.navigation.getParam('companyID', 0)
         this.search.listgoodsid = listgoodsid
-        this.search.company=companyID
-        this.list()
+        this.search.company = companyID
+
+        CustDao.get()
+            .then(cust => cust ? cust.custid : 0)
+            .then(custid => {
+                this.search.custid = custid
+                this.list()
+            })
+        //this.list()
     }
 
     //重置、下拉刷新，显示全部数据
-    listAll(){
+    listAll() {
         this.search = { ...this.search, nowpage: 1, minprice: 0, maxprice: 0, name: '', company: '', hasdata: true }
         this.setState({
             isShowGoTop: false,
@@ -132,7 +141,7 @@ export default class ProductList extends Component {
                 //另外，如果在在导航器中将该抽屉导航放在第一顺位的话，就不会出现该情况。
                 setTimeout(() => {
                     this.props.navigation.state.params.showCompanys(result.companys)   //传递品牌数据给抽屉页,showCompanys方法的实现是在search.js中
-                },1000)
+                }, 1000)
                 //this.props.navigation.state.params.showCompanys(result.companys)   //如果直接这样写，那么第一次调用将失败
             })
             .catch(error => {
@@ -192,11 +201,11 @@ export default class ProductList extends Component {
                         renderItem={({ item }) => {
                             return (
                                 this.state.display === 'list'
-                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item}  navigation={this.props.navigation}/>
+                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} navigation={this.props.navigation} />
                                     : <View style={styles.productmiddleborder}>
-                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]}  navigation={this.props.navigation}/>
+                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]} navigation={this.props.navigation} />
                                         {
-                                            item.length > 1 ? <ProductMiddle item={item[1]}  navigation={this.props.navigation}/> : null
+                                            item.length > 1 ? <ProductMiddle item={item[1]} navigation={this.props.navigation} /> : null
                                         }
                                     </View>
                             )
@@ -226,7 +235,7 @@ export default class ProductList extends Component {
                         refreshControl={    //下拉刷新
                             <RefreshControl
                                 refreshing={false}
-                                onRefresh={()=>{this.listAll()}}
+                                onRefresh={() => { this.listAll() }}
                                 colors={['red']}
                             />
                         }
@@ -339,45 +348,45 @@ class ListTitle extends Component {
 
 
 const styles = StyleSheet.create({
-    productmiddleborder:{
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        height: 240, 
+    productmiddleborder: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        height: 240,
         width: '100%'
     },
-    footborder:{
-        height: 100, 
-        flexDirection: 'column', 
-        justifyContent: 'center', 
+    footborder: {
+        height: 100,
+        flexDirection: 'column',
+        justifyContent: 'center',
         alignItems: 'center',
-         backgroundColor: '#f3f3f3' 
+        backgroundColor: '#f3f3f3'
     },
-    foot:{
-        fontSize: 14, 
-        color: 'gray', 
-        backgroundColor: 'white', 
-        width: '100%', 
-        height: 42, 
-        textAlign: 'center', 
+    foot: {
+        fontSize: 14,
+        color: 'gray',
+        backgroundColor: 'white',
+        width: '100%',
+        height: 42,
+        textAlign: 'center',
         textAlignVertical: 'center'
     },
     lt_container: {
-        height: 40, 
-        backgroundColor: 'white', 
-        flexDirection: 'row', 
-        justifyContent: 'space-around', 
-        alignItems: 'center', 
-        borderBottomWidth: 1, 
+        height: 40,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        borderBottomWidth: 1,
         borderBottomColor: '#f3f3f3'
     },
     lt_price: {
-        flexDirection: 'row', 
-        width: 40, 
-        justifyContent: 'space-around', 
+        flexDirection: 'row',
+        width: 40,
+        justifyContent: 'space-around',
         alignItems: 'center'
     },
     lt_arrowborder: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         marginBottom: 2
     }
 })

@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 import Tools from '../../util/tools'
 import ProductDao from '../../dao/product'
+import CustDao from '../../dao/cust'
 import Loading from '../../components/loading'
 import SwiperComponent from '../../components/productdetail/swiper'
 import NameDesc from '../../components/productdetail/namedesc'
@@ -49,7 +50,11 @@ export default class Product extends Component {
     }
     //获得商品详情
     productGet(id) {
-        ProductDao.get(id)
+        CustDao.get()
+            .then(cust=>{
+                return cust?cust.custid:0
+            })
+            .then(custid=>ProductDao.get(id,custid))
             .then(result => {
                 this.setState({
                     data: result
@@ -58,7 +63,17 @@ export default class Product extends Component {
             })
             .catch(error => {
                 alert(error)
-            })
+            })            
+        // ProductDao.get(id)
+        //     .then(result => {
+        //         this.setState({
+        //             data: result
+        //         })
+        //         // alert(JSON.stringify(result))
+        //     })
+        //     .catch(error => {
+        //         alert(error)
+        //     })
     }
     render() {
         return (

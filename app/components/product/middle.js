@@ -16,18 +16,19 @@ export default class ProductMiddle extends Component {
                 }}
             >
                 <Image style={styles.image} resizeMode='stretch' source={{ uri: item.picname }} />
-                <View style={ styles.border}>
+                <View style={styles.border}>
                     <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
                     <View style={styles.tagborder}>
                         {item.isbargainprice ? <Tag title='特价' /> : null}
+                        {item.eprice !== item.price ? <Tag title='协议价' /> : null}
                         {item.isdirect ? <Tag title='直送' /> : null}
                         {item.ownstore ? <Tag title={item.ownstore} /> : null}
                         {item.giftnum > 0 ? <Tag title='赠品' /> : null}
                     </View>
-                    <View style={{height: 26, flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ height: 26, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={styles.priceborder}>
                             <Text style={styles.pricepre}>&yen;</Text>
-                            <Text style={styles.price}>{item.price}</Text>
+                            <Text style={styles.price}>{item.eprice}</Text>
                             <Text style={styles.measurement}>/{item.measurement}</Text>
                             {/* {
                                 item.isbargainprice
@@ -55,9 +56,9 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 3,
         borderTopRightRadius: 3,
     },
-    border:{
-        backgroundColor: '#f8f8f8', 
-        height: 80, 
+    border: {
+        backgroundColor: '#f8f8f8',
+        height: 80,
         flexDirection: 'column',
         justifyContent: 'space-between'
     },
@@ -71,9 +72,9 @@ const styles = StyleSheet.create({
         padding: 2,
         height: 38
     },
-    tagborder:{
-        flexDirection: 'row', 
-        marginLeft: 2 
+    tagborder: {
+        flexDirection: 'row',
+        marginLeft: 2
     },
     priceborder: {
         flexDirection: 'row',

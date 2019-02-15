@@ -69,10 +69,10 @@ export default class NameDesc extends Component {
                         : null
                 }
                 {
-                    p.isbargainprice || p.isdirect
+                    p.isbargainprice || p.isdirect || p.price !== p.eprice
                         ? <View style={{ flexDirection: 'row', marginTop: 5 }}>
                             {p.isbargainprice ? <Tag title='特价' /> : null}
-                            <Tag title='协议价' />
+                            {p.price !== p.eprice ? <Tag title='协议价' /> : null}
                             {p.isdirect ? <Tag title='厂家直送' /> : null}
                         </View>
                         : null

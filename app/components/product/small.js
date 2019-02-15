@@ -28,8 +28,9 @@ export default class ProductSmall extends PureComponent {
                             </Text>
                         </View>
                         <View>
-                            <View style={styles.tagborder }>
+                            <View style={styles.tagborder}>
                                 {item.isbargainprice ? <Tag title='特价' /> : null}
+                                {item.price !== item.eprice ? <Tag title='协议价' /> : null}
                                 {item.isdirect ? <Tag title='直送' /> : null}
                                 {item.ownstore ? <Tag title={item.ownstore} /> : null}
                                 {item.giftnum > 0 ? <Tag title='赠品' /> : null}
@@ -37,7 +38,7 @@ export default class ProductSmall extends PureComponent {
                             <View style={styles.border} >
                                 <View style={styles.priceborder} >
                                     <Text style={styles.pricepre}>&yen;</Text>
-                                    <Text style={styles.price}>{item.price}</Text>
+                                    <Text style={styles.price}>{item.eprice}</Text>
                                     <Text style={styles.measurement}>/{item.measurement}</Text>
                                     {/* {
                                         item.isbargainprice
@@ -89,14 +90,14 @@ const styles = StyleSheet.create({
         fontSize: 14,
         width: '100%'
     },
-    tagborder:{
-        flexDirection: 'row', 
-        flexWrap: 'wrap', 
-        marginTop: 5 
+    tagborder: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 5
     },
-    border:{
-        flexDirection: 'row', 
-        justifyContent: 'space-between' 
+    border: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     priceborder: {
         flexDirection: 'row',
@@ -120,19 +121,19 @@ const styles = StyleSheet.create({
         textDecorationLine: 'line-through',
         color: '#bebebe'
     },
-    measurement:{
-        fontSize: 12, 
-        color: '#bebebe', 
-        paddingBottom: 2 
+    measurement: {
+        fontSize: 12,
+        color: '#bebebe',
+        paddingBottom: 2
     },
-    shoppingcart:{
-        marginTop:12, 
-        width: 24, 
-        height: 24, 
-        borderRadius: 12, 
+    shoppingcart: {
+        marginTop: 12,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
         backgroundColor: '#2aadfb',
-         flexDirection: 'row', 
-         justifyContent: 'center', 
-         alignItems: 'center' 
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

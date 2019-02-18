@@ -10,9 +10,16 @@ import {NavigationActions} from 'react-navigation'
 //     ]
 // })
 export default class Welcome extends Component{
-    constructor(){
-       super()
+    //这样写就不行，不加props参数，安装到手机上后会闪退
+    // constructor(){
+    //     super()
+    // }
+
+    constructor(props){
+       super(props)
     }
+
+    
     componentDidMount(){
         const {navigation}=this.props
         HomePageDao.init(()=>{

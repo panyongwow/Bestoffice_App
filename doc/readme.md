@@ -149,6 +149,24 @@
 * 版本问题：
 
       旧版RN（0.40）使用2.0.2或以下版本
+
+
+# 安卓打包
+* 参照React官网上的说明：https://reactnative.cn/docs/0.43/signed-apk-android.html ,要注意的是：
+* 文中说的“~/.gradle/gradle.properties”这个路径是指“android\gradle.properties”文件
+* react的构造函数 constructor()需要按照规范填写props参数，否则会闪退，即：
+
+      //正常
+      constructor(props){
+          super(props)
+      }
+      //闪退
+      constructor(){
+          super()
+      }
+* 修改"android\app\build.gradle"中的“defaultConfig/applicationID”参数，这样安装到手机时，会认为是一个新的app，就不会与原app有冲突了。   
+* 修改app图标：将图标文件替换：“\android\app\src\main\res\”下的各文件夹内图片。
+* 修改app名称：设置“\android\app\src\main\res\values\strings.xml”中的app_name。
        
 
 

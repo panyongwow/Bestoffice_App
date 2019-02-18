@@ -23,9 +23,10 @@ import {name as appName} from './app.json';
 // import ModalExample from './test/modal'
 // import {ModalDemo} from './test/modal/index1'
 import HomeTest from './hometest'
+import ReduxTest from './test/redux/test1'
 
- AppRegistry.registerComponent(appName, () =>App);
+// AppRegistry.registerComponent(appName, () =>App);
 
-// AppRegistry.registerComponent(appName,()=>HomeTest);
+AppRegistry.registerComponent(appName,()=>ReduxTest);
 //AppRegistry.registerComponent(appName, () =>ModalDemo);
 

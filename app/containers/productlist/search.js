@@ -150,6 +150,7 @@ export default class ProductSearch extends Component {
                         style={{ width: '55%', height: 40 }}
                         onPress={() => {
                             this.props.navigation.closeDrawer()
+                           // alert(JSON.stringify(this.state.searchData))
                             this.props.navigation.state.routes[0].params.search(this.state.searchData)
                         }}
                     >

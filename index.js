@@ -1,7 +1,7 @@
 /** @format */
 
 import {AppRegistry} from 'react-native';
-import App from './App';
+//import App from './App';
 import {name as appName} from './app.json';
 
 // import FetchTest from './test/fetchtest'
@@ -25,8 +25,9 @@ import {name as appName} from './app.json';
 import HomeTest from './hometest'
 import ReduxTest from './test/redux/test1'
 
-// AppRegistry.registerComponent(appName, () =>App);
+import App from './test/redux/demo2/app'
+ AppRegistry.registerComponent(appName, () =>App);
 
-AppRegistry.registerComponent(appName,()=>ReduxTest);
+//AppRegistry.registerComponent(appName,()=>ReduxTest);
 //AppRegistry.registerComponent(appName, () =>ModalDemo);
 

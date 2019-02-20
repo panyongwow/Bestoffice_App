@@ -10,7 +10,7 @@ class LoginPage extends Component {
         return (
             <View>
                 <Text>这是登录页面</Text>
-                <Text>姓名：{JSON.stringify(this.props)}</Text>
+                <Text>姓名：{JSON.stringify(this.props.loginInfo)}</Text>
                 <Button
                     title='跳转到首页'
                     onPress={() => {
@@ -32,9 +32,10 @@ class LoginPage extends Component {
     }
 }
 
-function mapStateToProps(state){
+
+const  mapStateToProps=(state)=>{
     return{
-        loginInfo:state.login
+        loginInfo:state.loginInfo
     }
 }
 

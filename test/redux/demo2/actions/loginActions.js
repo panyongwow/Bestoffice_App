@@ -1,5 +1,5 @@
 
-export default function login(account,password){
+export function login(account,password){
     //这里面是登陆过程，fetch之类的。。。
     return {
         type:'LOGIN_SUCCESS',

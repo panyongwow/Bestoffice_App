@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, Button } from 'react-native'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import login from '../actions/loginActions'
+import * as loginActions from '../actions/loginActions'
 
 
 class LoginPage extends Component {
@@ -41,7 +41,7 @@ const  mapStateToProps=(state)=>{
 
 function mapDispatchToProps(dispatch){
     return {
-        loginActions:bindActionCreators(login,dispatch)
+        loginActions:bindActionCreators(loginActions,dispatch)
     }
 }
 

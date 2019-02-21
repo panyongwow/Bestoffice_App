@@ -1,7 +1,10 @@
-import {createStore} from 'redux'
+import {createStore,combineReducers} from 'redux'
 import loginInfo from '../reducers/loginReducers'
 
 export default function configureStore(initialState){
-    const store=createStore(loginInfo,initialState)
+    const rootReducer=combineReducers({
+        loginInfo
+    })
+    const store=createStore(rootReducer,initialState)
     return store
 }

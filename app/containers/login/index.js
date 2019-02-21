@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import { View, Text, TouchableOpacity, Button,ActivityIndicator, TextInput, StyleSheet } from 'react-native'
 import { MD5KEY } from '../../config/config'
 import CustDao from '../../dao/cust'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import MD5 from 'react-native-md5'
+import * as userActions from '../../actions/userAction'
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -74,7 +77,14 @@ export default class Login extends Component {
                 </View>
                
                 <View style={styles.itemcontainer}>
+                    <Text>测试：{this.props.userInfo.isLogin.toString()}</Text>
                     <Text>账号：</Text>
+                    <Button 
+                        title='test'
+                        onPress={()=>{
+                            this.props.userActions.login('123')
+                        }}
+                    />
                     <TextInput
                         style={styles.textinput}
                         value={this.state.account}
@@ -160,3 +170,19 @@ const styles = StyleSheet.create({
         color: 'red'
     }
 })
+
+
+function mapStateToProps(state){
+    return{
+        userInfo:state.userInfo
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        userActions:bindActionCreators(userActions,dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,mapDispatchToProps
+)(Login)

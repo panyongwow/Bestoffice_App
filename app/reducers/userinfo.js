@@ -2,6 +2,7 @@ import * as actionTypes from '../constants/userinfo'
 const initialState={
     isLogin:false,
     account:'',
+    info:'test'
 }
 
 export default function userInfo(state=initialState,action){

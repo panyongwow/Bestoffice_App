@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { View, Text, Button, StyleSheet, ScrollView, Image, TouchableOpacity, RefreshControl, StatusBar } from 'react-native'
 // import Header from '../../components/header'
 import Header from '../../components/header'
@@ -10,9 +12,13 @@ import ListgoodsAD from './subpage/listgoodsad'
 import SubAD from './subpage/subad'
 import Hot from './subpage/hot'
 import HomePageDao from '../../dao/homepage'
+import CustDao from '../../dao/cust'
 import Loading from './../../components/loading'
+import * as userActions from '../../actions/userAction'
+import { BSTURL } from '../../config/config'
+import Storage from '../../storage'
 
-export default class HomePage extends Component {
+class HomePage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -25,9 +31,45 @@ export default class HomePage extends Component {
             ListgoodsAD: [],
             IsShowHot: true,
             IsShowListgoodsAD: false,
+           // isChange: '未改变'
         }
     }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.userInfo.isLogin && !this.props.userInfo.isLogin) {
+            //如果状态由未登录改为已登录时，重新获取首页数据，以便刷新用户的协议价格
+            // this.setState({
+            //     isChange: '已改变'
+            // })
+            HomePageDao.getWebData(nextProps.userInfo.custid)
+                .then(result => {
+                    Storage.save('HomePage', result.details)
+                    this.setState({
+                        ProductHot: result.details.product_hot,
+                        ProductBargain: result.details.product_bargain,
+                        ProductNew: result.details.product_new,
+                        ListgoodsAD: result.details.listgoods_ad
+                    })
+                })
+                .catch(error => { alert(error) })
+        }
+
+    }
     componentDidMount() {
+        CustDao.get()
+            .then(cust => {
+                if (cust !== null) {
+                    if (cust.custid > 0) {
+                        this.props.userActions.login_done({
+                            account: cust.account,
+                            custid: cust.custid
+                        })
+                    }
+                }
+
+            })
+            .catch(error => {
+                alert(error)
+            })
         this.loadData()
     }
     //获取首页相关数据
@@ -44,7 +86,9 @@ export default class HomePage extends Component {
                     ListgoodsAD: result.listgoods_ad
                 })
             })
+
     }
+
     render() {
         const { navigation } = this.props
         return (
@@ -55,7 +99,14 @@ export default class HomePage extends Component {
                     barStyle='dark-content'
 
                 />
-                {/* <Text>12121212555666</Text> */}
+                {/* <Text>账号：{this.props.userInfo.account} 用户ID：{+this.props.userInfo.custid}</Text>
+                <Text>改变状态：{this.state.isChange}</Text>
+                <Button
+                    title='test'
+                    onPress={() => {
+                        alert(JSON.stringify(this.state.ProductHot))
+                    }}
+                /> */}
                 <View>
                     <Header navigation={this.props.navigation} />
                 </View>
@@ -107,41 +158,6 @@ export default class HomePage extends Component {
                             ? <Foot />
                             : null
                     }
-
-
-
-                    {/* <View style={{height:200}}><Text>{JSON.stringify(this.state.Tag)}</Text></View>
-                    <View style={{height:200}}><Text>{JSON.stringify(this.state.ProductHot)}</Text></View>                     */}
-                    {/* <Button
-                        title='获取tag数据'
-                        onPress={()=>{
-                            this.loadTag()
-                        }}
-                    />   
-                    <Button
-                        title='获取AD数据'
-                        onPress={()=>{
-                            this.loadAD()
-                        }}
-                    />                                       */}
-                    {/* <Button
-                        title='go to 我的'
-                        onPress={()=>{
-                            navigation.navigate('My')
-                        }}
-                    />
-                    <Button
-                        title='go to 分类'
-                        onPress={()=>{
-                            navigation.navigate('ListGoods')
-                        }}
-                    />                      
-                    <Button
-                        title='go to 购物车'
-                        onPress={()=>{
-                            navigation.navigate('ShoppingCart')
-                        }}
-                    />    */}
                 </ScrollView>
             </View>
         )
@@ -165,3 +181,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+function mapStateToProps(state) {
+    return {
+        userInfo: state.userInfo
+    }
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        userActions: bindActionCreators(userActions, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(HomePage)

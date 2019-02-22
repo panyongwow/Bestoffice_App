@@ -1,15 +1,15 @@
 import * as actionTypes from '../constants/userinfo'
 
-export function login(data){
+export function login_done(data){
     return {
-        type:actionTypes.LOGIN,
+        type:actionTypes.LOGIN_DONE,
         data
     }
 }
 
-export function logout(data){
+export function logout_done(){
     return {
-        type:actionTypes.LOGOUT,
-        data
+        type:actionTypes.LOGOUT_DONE,
+        
     }
 }

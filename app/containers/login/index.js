@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import { View, Text, TouchableOpacity, Button,ActivityIndicator, TextInput, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { View, Text, TouchableOpacity, Button, ActivityIndicator, TextInput, StyleSheet } from 'react-native'
 import { MD5KEY } from '../../config/config'
 import CustDao from '../../dao/cust'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -15,19 +15,19 @@ class Login extends Component {
         this.state = {
             account: 'panyongwow@163.com',
             password: '12345678',
-            isLoging:false
+            isLoging: false
         }
     }
-    login=()=> {
+    login = () => {
         if (this.state.account.length === 0 || this.state.password.length === 0) {
             this.refs.toast.show('请输入登录账号和密码！')
             return false
         }
-        if(this.state.isLoging){
+        if (this.state.isLoging) {
             return false
         }
         this.setState({
-            isLoging:true
+            isLoging: true
         })
         let md5_password = MD5.hex_md5(this.state.password + MD5KEY)
         CustDao.login(this.state.account, md5_password)
@@ -37,36 +37,42 @@ class Login extends Component {
                 }
                 else {
                     //登录成功
-                    CustDao.set({...result,
-                        account:this.state.account,
-                        password:md5_password,
+                    let loginData = {
+                        ...result,
+                        account: this.state.account,
+                        password: md5_password,
+                    }
+                    CustDao.set(loginData)
+                    this.props.userActions.login_done({
+                        account: this.state.account,
+                        custid:result.custid
                     })
                     this.props.navigation.goBack()   //返回
                 }
                 this.setState({
-                    isLoging:false
+                    isLoging: false
                 })
             })
             .catch(error => {
                 alert(error)
                 this.setState({
-                    isLoging:false
+                    isLoging: false
                 })
             })
 
         //alert(MD5.hex_md5(this.state.password + MD5KEY))
     };
-    register=()=>{
+    register = () => {
         CustDao.get()
-            .then(result=>{alert(JSON.stringify(result))})
-            .catch(error=>{alert(error)})
+            .then(result => { alert(JSON.stringify(result)) })
+            .catch(error => { alert(error) })
     }
     render() {
         return (
             <View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.back}
-                    onPress={()=>{
+                    onPress={() => {
                         this.props.navigation.goBack()
                     }}
                 >
@@ -75,16 +81,9 @@ class Login extends Component {
                 <View style={styles.header}>
                     <Text style={{ fontSize: 20 }}>登 录</Text>
                 </View>
-               
+
                 <View style={styles.itemcontainer}>
-                    <Text>测试：{this.props.userInfo.isLogin.toString()}</Text>
                     <Text>账号：</Text>
-                    <Button 
-                        title='test'
-                        onPress={()=>{
-                            this.props.userActions.login('123')
-                        }}
-                    />
                     <TextInput
                         style={styles.textinput}
                         value={this.state.account}
@@ -108,17 +107,17 @@ class Login extends Component {
                 </View>
                 {
                     this.state.isLoging
-                    ?<ActivityIndicator color='red' style={{height:20,marginTop:10}}/>
-                    :<View style={{height:30}}/>
-                }                
+                        ? <ActivityIndicator color='red' style={{ height: 20, marginTop: 10 }} />
+                        : <View style={{ height: 30 }} />
+                }
                 <TouchableOpacity
                     style={[styles.itemcontainer, styles.login]}
                     onPress={this.login}
                 >
                     <Text style={styles.logintext}>
-                    {
-                        this.state.isLoging?'登录中...':'登 录'
-                    }
+                        {
+                            this.state.isLoging ? '登录中...' : '登 录'
+                        }
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -127,7 +126,7 @@ class Login extends Component {
                 >
                     <Text style={styles.registertext}>新用户注册</Text>
                 </TouchableOpacity>
-                
+
                 <Toast
                     ref='toast'
                     position='top'
@@ -172,17 +171,18 @@ const styles = StyleSheet.create({
 })
 
 
-function mapStateToProps(state){
-    return{
-        userInfo:state.userInfo
+function mapStateToProps(state) {
+    return {
+        //userInfo: state.userInfo
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
-        userActions:bindActionCreators(userActions,dispatch)
+        userActions: bindActionCreators(userActions, dispatch)
     }
 }
 export default connect(
-    mapStateToProps,mapDispatchToProps
+    mapStateToProps, 
+    mapDispatchToProps
 )(Login)

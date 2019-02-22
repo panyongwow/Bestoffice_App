@@ -1,9 +1,11 @@
 import React, { PureComponent, Component } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
 import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-export default class ProductSmall extends PureComponent {
+//商品展示(列表显示)
+class ProductSmall extends Component {
     render() {
         let item = this.props.item
         return (
@@ -30,7 +32,11 @@ export default class ProductSmall extends PureComponent {
                         <View>
                             <View style={styles.tagborder}>
                                 {item.isbargainprice ? <Tag title='特价' /> : null}
-                                {item.price !== item.eprice ? <Tag title='协议价' /> : null}
+                                {
+                                    this.props.userInfo.isLogin && item.price !== item.eprice
+                                        ? <Tag title='协议价' />
+                                        : null
+                                }
                                 {item.isdirect ? <Tag title='直送' /> : null}
                                 {item.ownstore ? <Tag title={item.ownstore} /> : null}
                                 {item.giftnum > 0 ? <Tag title='赠品' /> : null}
@@ -38,13 +44,14 @@ export default class ProductSmall extends PureComponent {
                             <View style={styles.border} >
                                 <View style={styles.priceborder} >
                                     <Text style={styles.pricepre}>&yen;</Text>
-                                    <Text style={styles.price}>{item.eprice}</Text>
+                                    <Text style={styles.price}>
+                                        {
+                                            this.props.userInfo.isLogin
+                                                ? item.eprice
+                                                : item.price
+                                        }
+                                    </Text>
                                     <Text style={styles.measurement}>/{item.measurement}</Text>
-                                    {/* {
-                                        item.isbargainprice
-                                            ? <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
-                                            : null
-                                    } */}
                                 </View>
                                 <TouchableOpacity style={styles.shoppingcart}>
                                     <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />
@@ -137,3 +144,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     }
 })
+
+function mapStateToProps(state) {
+    return {
+        userInfo: state.userInfo
+    }
+}
+export default connect(
+    mapStateToProps
+)(ProductSmall)

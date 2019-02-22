@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as userActions from '../../actions/userAction'
 import { View, Text, Button, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import CustDao from '../../dao/cust'
 
 import Foot from '../../components/foot'
 
-export default class My extends Component {
+class My extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -36,6 +39,7 @@ export default class My extends Component {
         this.setState({
             cust: null
         })
+        this.props.userActions.logout_done()
     }
     render() {
         const { navigation } = this.props
@@ -168,3 +172,17 @@ const styles = StyleSheet.create({
         color: '#fff', fontSize: 16, fontWeight: 'bold'
     }
 })
+
+function mapStateToProps(state){
+    return{}
+}
+
+function mapDispatchToProps(dispatch){
+    return{
+        userActions:bindActionCreators(userActions,dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,mapDispatchToProps
+)(My)

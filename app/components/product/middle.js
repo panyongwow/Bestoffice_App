@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
 import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import userInfo from '../../reducers/userinfo';
 
 //商品展示(中等大小)
-export default class ProductMiddle extends Component {
+class ProductMiddle extends Component {
     render() {
         const item = this.props.item
         return (
@@ -20,7 +22,11 @@ export default class ProductMiddle extends Component {
                     <Text style={styles.name} numberOfLines={2}>{item.name}</Text>
                     <View style={styles.tagborder}>
                         {item.isbargainprice ? <Tag title='特价' /> : null}
-                        {item.eprice !== item.price ? <Tag title='协议价' /> : null}
+                        {
+                            this.props.userInfo.isLogin && item.eprice !== item.price
+                                ? <Tag title='协议价' />
+                                : null
+                        }
                         {item.isdirect ? <Tag title='直送' /> : null}
                         {item.ownstore ? <Tag title={item.ownstore} /> : null}
                         {item.giftnum > 0 ? <Tag title='赠品' /> : null}
@@ -28,13 +34,14 @@ export default class ProductMiddle extends Component {
                     <View style={{ height: 26, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={styles.priceborder}>
                             <Text style={styles.pricepre}>&yen;</Text>
-                            <Text style={styles.price}>{item.eprice}</Text>
+                            <Text style={styles.price}>
+                                {
+                                    this.props.userInfo.isLogin
+                                        ? item.eprice
+                                        : item.price
+                                }
+                            </Text>
                             <Text style={styles.measurement}>/{item.measurement}</Text>
-                            {/* {
-                                item.isbargainprice
-                                    ? <Text style={styles.marketprice}>&yen;{item.marketprice}</Text>
-                                    : null
-                            } */}
                         </View>
                         <TouchableOpacity style={styles.shoppingcart}>
                             <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />
@@ -117,3 +124,12 @@ const styles = StyleSheet.create({
         marginRight: 5
     }
 })
+
+function mapStateToProps(state) {
+    return {
+        userInfo: state.userInfo
+    }
+}
+export default connect(
+    mapStateToProps
+)(ProductMiddle)

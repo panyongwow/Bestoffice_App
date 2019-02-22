@@ -40,7 +40,7 @@ export default class NameDesc extends Component {
                     <Text style={styles.price_pre}>
                         &yen;&nbsp;
                         <Text style={styles.price}>
-                            {p.isgift ? 0 : p.price}
+                            {p.isgift ? 0 : p.eprice}
                         </Text>
                     </Text>
 

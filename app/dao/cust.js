@@ -37,23 +37,23 @@ export default class CustDao {
         Storage.save('cust', data)
     }
     static get() {
-        // return new Promise((resolve, reject) => {
-        //     Storage.get('cust')
-        //         .then(data => resolve(data))
-        //         .catch(error => reject(error))
-        // })
-
         return new Promise((resolve, reject) => {
             Storage.get('cust')
                 .then(data =>{
-                    //alert(data)
                     resolve(data)
                 } )
                 .catch(error =>{
-                    //alert(error)
                     reject(error)
                 } )
         })
+    }
+    static getCustID(){
+        let custid=0
+        Storage.get('cust')
+            .then(data=>{
+                if(data) custid=data.custid 
+                return custid
+            })
     }
     static clear() {
         Storage.remove('cust')

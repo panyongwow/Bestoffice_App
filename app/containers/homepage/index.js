@@ -111,6 +111,24 @@ class HomePage extends Component {
                             })
                     }}
                 /> 
+                <Button
+                    title='clear'
+                    onPress={() => {
+                        shoppingcartDao.clear()
+                        alert('ok')
+                    }}
+                />    
+                <Button
+                    title='getCustID'
+                    onPress={() => {
+                        // //let custid=0
+                        // CustDao.getCustID()
+                        //     .then(custid=>{
+                        //         alert(custid)
+                        //     })
+                        // //alert(custid)
+                    }}
+                />                                 
                 <View>
                     <Header navigation={this.props.navigation} />
                 </View>

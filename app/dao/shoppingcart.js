@@ -30,30 +30,21 @@ export default class ShoppingcartDao {
     static saveToLocal(newData) {
         this.get().then(localData => {
             let hasSame = false
-            if (!localData) localData = []
-            localData.map((item) => {
-                if (item.id > 0 && item.id === newData.id
-                    || item.id === 0 && newData === 0 && item.name === newData.name && item.measurement === newData.measurement) {
-                    item.num += newData.num
-                    hasSame = true
-
-                }
-            })
-
-            if (!hasSame) {
-                localData.push(newData)
+            if (!localData) {
+                localData = [newData]
             }
-
-            // let data=localData.find((item)=>{
-            //     item.id > 0 && item.id === newData.id
-            //     || item.id === 0 && newData === 0 && item.name === newData.name && item.measurement === newData.measurement
-            // })
-            // if(typeof(data)=='undefined'){
-            //     localData.push(newData)
-            // }
-            // else{
-            //     data.num+=newData.num
-            // }
+            else {
+                let data = localData.find((item) => 
+                    item.id > 0 && item.id === newData.id
+                    || item.id === 0 && newData.id === 0 && item.name === newData.name && item.measurement === newData.measurement
+                )
+                 if (typeof (data) == 'undefined') {
+                    localData.push(newData)
+                }
+                else {
+                    data.num += newData.num
+                }
+            }
             return localData
         })
             .then(localData => {
@@ -73,5 +64,8 @@ export default class ShoppingcartDao {
                     reject(error)
                 })
         })
+    }
+    static clear() {
+        Storage.remove('shoppingCart')
     }
 }

@@ -1,4 +1,4 @@
-import * as actionTypes from '../constants/userinfo'
+import * as actionTypes from '../constants/actionTypes'
 
 export function login_done(data){
     return {

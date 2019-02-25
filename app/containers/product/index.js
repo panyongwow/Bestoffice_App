@@ -1,21 +1,22 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Image, Button, WebView, Modal, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Platform, NativeModules } from 'react-native'
-import AutoHeightWebView from 'react-native-webview-autoheight'
-import Swiper from 'react-native-swiper'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Platform, NativeModules } from 'react-native'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import Entypo from 'react-native-vector-icons/Entypo'
-import Tools from '../../util/tools'
 import ProductDao from '../../dao/product'
 import CustDao from '../../dao/cust'
 import Loading from '../../components/loading'
-import SwiperComponent from '../../components/productdetail/swiper'
-import NameDesc from '../../components/productdetail/namedesc'
-import Gift from '../../components/productdetail/gift'
-import Property from '../../components/productdetail/property'
-import BuyNum from '../../components/productdetail/buynum'
-import Desc from '../../components/productdetail/desc'
+import SwiperComponent from '../../components/productDetail/swiper'
+import NameDesc from '../../components/productDetail/namedesc'
+import Gift from '../../components/productDetail/gift'
+import Property from '../../components/productDetail/property'
+import BuyNum from '../../components/productDetail/buynum'
+import Desc from '../../components/productDetail/desc'
+import * as shoppingcartActions from '../../actions/shoppingcartAction'
 
-export default class Product extends Component {
+import TabBarShoppingCart from '../../components/tabBarShoppingCart'
+
+class Product extends Component {
     constructor(props) {
         super(props)
         let { height } = Dimensions.get('window');
@@ -29,17 +30,7 @@ export default class Product extends Component {
         }
     }
     componentDidMount() {
-         let id=this.props.navigation.state.params.id
-
-        //let id = 28188
-        //let id=25682
-        //let id=26461
-        // let id = 27237
-        //id = 2734
-        //id = 12885
-        this.setState({
-            id
-        })
+        let {id}=this.props.navigation.state.params
         this.productGet(id)
     }
 
@@ -59,26 +50,14 @@ export default class Product extends Component {
                 this.setState({
                     data: result
                 })
-                // alert(JSON.stringify(result))
             })
             .catch(error => {
                 alert(error)
             })            
-        // ProductDao.get(id)
-        //     .then(result => {
-        //         this.setState({
-        //             data: result
-        //         })
-        //         // alert(JSON.stringify(result))
-        //     })
-        //     .catch(error => {
-        //         alert(error)
-        //     })
     }
     render() {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                {/* <Text>{this.state.id}</Text> */}
                 {
                     this.state.data.count > 0
                         ? <ScrollView style={{ height: this.screenHeight }}>
@@ -121,7 +100,10 @@ export default class Product extends Component {
                                 onPress={() => {
                                 }}
                             >
-                                <ShoppingCart />
+                                <ShoppingCart cartnum={this.props.shoppingcartInfo.cartnum} />
+                                {/* <TabBarShoppingCart /> */}
+                                {/* <Text style={{ fontSize: 10 }}>购物车</Text> */}
+
                             </TouchableOpacity>
                             {
                                 this.state.data.isgift
@@ -130,6 +112,7 @@ export default class Product extends Component {
                                         <TouchableOpacity
                                             style={{ flex: 1, height: 50 }}
                                             onPress={() => {
+                                                this.props.shoppingcartActions.shoppingcart_increase({cartnum:this.state.buyNum})
                                             }}
                                         >
                                             <Text style={[styles.button, { backgroundColor: '#fe9402' }]}>加入购物车</Text>
@@ -138,7 +121,7 @@ export default class Product extends Component {
                                         <TouchableOpacity
                                             style={{ flex: 1, height: 50 }}
                                             onPress={() => {
-                                                alert(this.state.buyNum)
+                                                
                                             }}
                                         >
                                             <Text style={[styles.button, { backgroundColor: 'red' }]}>立即购买</Text>
@@ -158,15 +141,22 @@ export default class Product extends Component {
 // 左下方购物车
 class ShoppingCart extends Component {
     render() {
+        let {cartnum}=this.props
         return (
             <View style={styles.shoppingcart_container}>
-                <Text style={styles.shoppingcart_num}>1</Text>
+                {
+                    cartnum>0
+                    ?<Text style={styles.shoppingcart_num}>{cartnum}</Text>
+                    :null
+                }
+                
                 <AntDesign name="shoppingcart" color='red' size={28} />
                 <Text style={{ fontSize: 10 }}>购物车</Text>
             </View>
         )
     }
 }
+
 const styles = StyleSheet.create({
     viewborder: {
         paddingTop: 10, paddingBottom: 10, borderBottomColor: '#f3f3f3', borderBottomWidth: 2
@@ -183,5 +173,18 @@ const styles = StyleSheet.create({
     shoppingcart_num:{
         width: 20, height: 20, borderRadius: 10, borderWidth: 1, borderColor: 'red', color: 'red', position: 'absolute', fontSize: 10, textAlign: 'center', lineHeight: 20, top: 4, left: 50 
     }
-
 })
+
+function mapStateToProps(state){
+    return {
+        shoppingcartInfo:state.shoppingcartInfo
+    }
+}
+function mapDispatchToProps(dispatch){
+    return{
+        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,mapDispatchToProps
+)(Product)

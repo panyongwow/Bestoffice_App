@@ -9,38 +9,7 @@ export var FLAG_HOMEPAGE = {
 export default class HomePageDao {
     static init(callback) {
         this.clear()
-        // CustDao.get()
-        //     .then(cust => {
-        //         if (!cust) {
-        //             return { status: 'ERROR' }
-        //         }
-        //         else {
-        //             return CustDao.login(cust.account, cust.password)
-        //         }
-        //     })
-        //     .then(result => {
-        //         let custid = 0
-        //         if (result.status === 'ERROR') {
-        //             CustDao.clear()
-        //         }
-        //         else {
-        //             CustDao.set(result)
-        //             custid = result.custid
-        //         }
-        //         return custid
-        //     })
-        //     .then(custid => {
-        //         let url = '/ajax/homepage/list.ashx?custid=' + custid
-        //         return fetch(BSTURL + url)
-        //     })
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         Storage.save('HomePage', result.details)
-        //         callback()
-        //     })
-        //     .catch(error => { alert(error) })
-
-        CustDao.get()
+         CustDao.get()
             .then(cust => {
                 if (!cust) {
                     return { status: 'ERROR' }

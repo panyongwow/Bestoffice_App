@@ -1,8 +1,11 @@
 import React, { PureComponent, Component } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import * as shoppingcartActions from '../../actions/shoppingcartAction'
+
 
 //商品展示(列表显示)
 class ProductSmall extends Component {
@@ -53,7 +56,12 @@ class ProductSmall extends Component {
                                     </Text>
                                     <Text style={styles.measurement}>/{item.measurement}</Text>
                                 </View>
-                                <TouchableOpacity style={styles.shoppingcart}>
+                                <TouchableOpacity 
+                                    style={styles.shoppingcart}
+                                    onPress={()=>{
+                                        this.props.shoppingcartActions.shoppingcart_increase()
+                                    }}
+                                >
                                     <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />
                                 </TouchableOpacity>
                             </View>
@@ -150,6 +158,12 @@ function mapStateToProps(state) {
         userInfo: state.userInfo
     }
 }
+
+function mapDispatchToProps(dispatch){
+    return {
+        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)
+    }
+}
 export default connect(
-    mapStateToProps
+    mapStateToProps,mapDispatchToProps
 )(ProductSmall)

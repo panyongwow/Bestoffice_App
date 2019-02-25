@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import {bindActionCreators} from 'redux'
 import { connect } from 'react-redux'
 import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import userInfo from '../../reducers/userinfo';
+import * as shoppingcartActions from '../../actions/shoppingcartAction'
+import shoppingcartDao from '../../dao/shoppingcart'
+import userInfo from '../../reducers/userInfo';
 
 //商品展示(中等大小)
 class ProductMiddle extends Component {
+    shoppingcartAdd=()=>{
+        let {item}=this.props
+        shoppingcartDao.add({
+            id:item.id,
+            name:item.name,
+            measurement:item.measurement,
+            num:1
+        })
+        this.props.shoppingcartActions.shoppingcart_increase()
+    }
     render() {
-        const item = this.props.item
+        const {item} = this.props
         return (
             <TouchableOpacity
                 activeOpacity={0.5}
@@ -43,7 +56,10 @@ class ProductMiddle extends Component {
                             </Text>
                             <Text style={styles.measurement}>/{item.measurement}</Text>
                         </View>
-                        <TouchableOpacity style={styles.shoppingcart}>
+                        <TouchableOpacity 
+                            style={styles.shoppingcart}
+                            onPress={this.shoppingcartAdd}
+                        >
                             <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />
                         </TouchableOpacity>
                     </View>
@@ -130,6 +146,12 @@ function mapStateToProps(state) {
         userInfo: state.userInfo
     }
 }
+
+function mapDispatchToProps(dispatch){
+    return {
+        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)  
+    }
+}
 export default connect(
-    mapStateToProps
+    mapStateToProps,mapDispatchToProps
 )(ProductMiddle)

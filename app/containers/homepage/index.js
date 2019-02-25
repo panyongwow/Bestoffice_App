@@ -17,6 +17,7 @@ import Loading from './../../components/loading'
 import * as userActions from '../../actions/userAction'
 import { BSTURL } from '../../config/config'
 import Storage from '../../storage'
+import shoppingcartDao from '../../dao/shoppingcart'
 
 class HomePage extends Component {
     constructor(props) {
@@ -100,13 +101,16 @@ class HomePage extends Component {
 
                 />
                 {/* <Text>账号：{this.props.userInfo.account} 用户ID：{+this.props.userInfo.custid}</Text>
-                <Text>改变状态：{this.state.isChange}</Text>
+                <Text>改变状态：{this.state.isChange}</Text>*/}
                 <Button
                     title='test'
                     onPress={() => {
-                        alert(JSON.stringify(this.state.ProductHot))
+                        shoppingcartDao.get()
+                            .then(data=>{
+                                alert(JSON.stringify(data))
+                            })
                     }}
-                /> */}
+                /> 
                 <View>
                     <Header navigation={this.props.navigation} />
                 </View>

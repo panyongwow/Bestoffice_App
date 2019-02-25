@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Modal, Image, TextInput, StyleSheet } from 'react-native'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as shoppingcartActions from '../../actions/shoppingcartAction'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 //商品单页-购买数量区域
-export default class BuyNum extends Component {
+class BuyNum extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -32,6 +35,9 @@ export default class BuyNum extends Component {
                     data={this.props.data}
                     changeBuyNum={(num) => {
                         this.changeBuyNum(num)
+                    }}
+                    shoppingcart_increase={(num)=>{
+                        this.props.shoppingcartActions.shoppingcart_increase({cartnum:num})
                     }}
                 />
 
@@ -87,18 +93,8 @@ class BuyNumModal extends Component {
             })
         }
     }
-    componentDidMount() {
-        //  alert(this.props.data.pic_detail[0].picname)
-    }
-    // setModalVisible = (visible) => {
-    //     // if (!visible) {
-    //          this.props.changeBuyNum(this.state.buyNum)
-    //     // }
-    //     this.setState({ modalVisible: visible });
 
-    // }
     closeModal() {
-
         setTimeout(() => {
             this.setState({
                 modalVisible: false
@@ -197,7 +193,8 @@ class BuyNumModal extends Component {
                         <TouchableOpacity
                             activeOpacity={0.7}
                             onPress={() => {
-                                alert('加入购物车！')
+                                this.props.shoppingcart_increase(this.state.buyNum)
+                                this.closeModal()
                             }}
                         >
                             <Text style={modalstyles.shoppingcart}>加入购物车</Text>
@@ -264,3 +261,17 @@ const modalstyles = StyleSheet.create({
         backgroundColor: '#f00', color: '#fff', textAlign: 'center', lineHeight: 50, height: 50, fontSize: 16, fontWeight: 'bold'
     }
 })
+
+function mapStateToProps(state){
+    return{}
+}
+
+function mapDispatchToProps(dispatch){
+    return {
+        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,mapDispatchToProps
+)(BuyNum)

@@ -59,8 +59,6 @@ class Login extends Component {
                     isLoging: false
                 })
             })
-
-        //alert(MD5.hex_md5(this.state.password + MD5KEY))
     };
     register = () => {
         CustDao.get()

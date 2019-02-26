@@ -1,5 +1,6 @@
 import { BSTWEBURL } from '../config/config'
 import Storage from '../storage'
+import Post from '../fetch/post'
 
 //保存的用户信息数据格式：
 // {
@@ -15,23 +16,9 @@ import Storage from '../storage'
 export default class CustDao {
     static login(account, password) {
         let url = '/ajax/cust/login.ashx'
-        return new Promise((resolve, reject) => {
-            fetch(BSTWEBURL + url, {
-                method: 'POST',
-                //mode: 'cors',
-                //credentials:'include',
-                headers: {
-                    'Accept': 'application/json,text/plain,*',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    //'Accept': 'application/json',
-                    //'Content-Type': 'application/json'
-                },
-                body: 'account=' + account + '&password=' + password
-            })
-                .then(res => res.json())
-                .then(result => resolve(result))
-                .catch(error => reject(error))
-        })
+        return Post(BSTWEBURL + url,
+            'account=' + account + '&password=' + password
+        )
     }
     static set(data) {
         Storage.save('cust', data)
@@ -39,21 +26,23 @@ export default class CustDao {
     static get() {
         return new Promise((resolve, reject) => {
             Storage.get('cust')
-                .then(data =>{
+                .then(data => {
                     resolve(data)
-                } )
-                .catch(error =>{
+                })
+                .catch(error => {
                     reject(error)
-                } )
+                })
         })
     }
-    static getCustID(){
-        let custid=0
-        Storage.get('cust')
-            .then(data=>{
-                if(data) custid=data.custid 
-                return custid
-            })
+    static getCustID() {
+        return new Promise((resolve, reject) => {
+            Storage.get('cust')
+                .then(data => {
+                    let custid = data ? data.custid : 0
+                    resolve(custid)
+                })
+                .catch(error => reject(error))
+        })
     }
     static clear() {
         Storage.remove('cust')

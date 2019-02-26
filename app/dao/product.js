@@ -1,4 +1,5 @@
 import { BSTURL } from '../config/config'
+import Get from '../fetch/get'
 
 export default class ProductDao {
     //根据条件查询商品，获得商品列表
@@ -14,14 +15,15 @@ export default class ProductDao {
             '&name=' + s.name +
             '&company=' + s.company +
             '&orderby=' + s.orderby
-        return new Promise((resolve, reject) => {
-            fetch(BSTURL + url)
-                .then(res =>
-                    res.json()
-                )
-                .then(result => resolve(result))
-                .catch(error => reject(error))
-        })
+        return Get(BSTURL + url)    
+        // return new Promise((resolve, reject) => {
+        //     fetch(BSTURL + url)
+        //         .then(res =>
+        //             res.json()
+        //         )
+        //         .then(result => resolve(result))
+        //         .catch(error => reject(error))
+        // })
     }
 
     //根据商品ID获得商品详情
@@ -29,12 +31,13 @@ export default class ProductDao {
         let url = '/ajax/products/getbyid_m.ashx'
 
         url = url + '?id='+id + '&custid='+custid
-        return new Promise((resolve, reject) => {
-            fetch(BSTURL + url)
-                .then(res => res.json())
-                .then(result => resolve(result))
-                .catch(error => reject(error))
-        })
+        return Get(BSTURL + url)  
+        // return new Promise((resolve, reject) => {
+        //     fetch(BSTURL + url)
+        //         .then(res => res.json())
+        //         .then(result => resolve(result))
+        //         .catch(error => reject(error))
+        // })
     }
 
 }

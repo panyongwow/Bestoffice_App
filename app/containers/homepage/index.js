@@ -18,6 +18,7 @@ import * as userActions from '../../actions/userAction'
 import { BSTURL } from '../../config/config'
 import Storage from '../../storage'
 import shoppingcartDao from '../../dao/shoppingcart'
+import ShoppingcartDao from '../../dao/shoppingcart';
 
 class HomePage extends Component {
     constructor(props) {
@@ -121,12 +122,12 @@ class HomePage extends Component {
                 <Button
                     title='getCustID'
                     onPress={() => {
-                        // //let custid=0
                         // CustDao.getCustID()
                         //     .then(custid=>{
                         //         alert(custid)
                         //     })
-                        // //alert(custid)
+                        ShoppingcartDao.setToWeb()
+                           // .then(info=>{alert(info)})    
                     }}
                 />                                 
                 <View>

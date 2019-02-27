@@ -53,7 +53,6 @@ export default class ShoppingcartDao {
 
     }
     static setToWeb() {
-
         let getLocalShoppingcart = this.get()    //获取本地购物车数据
             .then(localData => {
                 if (!localData) throw new Error()

@@ -12,13 +12,12 @@ import userInfo from '../../reducers/userInfo';
 class ProductMiddle extends Component {
     shoppingcartAdd=()=>{
         let {item}=this.props
-        shoppingcartDao.add({
+        this.props.shoppingcartActions.shoppingcart_increase({
             id:item.id,
             name:item.name,
             measurement:item.measurement,
-            num:1
+            cartnum:1
         })
-        this.props.shoppingcartActions.shoppingcart_increase()
     }
     render() {
         const {item} = this.props

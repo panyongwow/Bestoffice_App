@@ -9,6 +9,15 @@ import * as shoppingcartActions from '../../actions/shoppingcartAction'
 
 //商品展示(列表显示)
 class ProductSmall extends Component {
+    shoppingcartAdd=()=>{
+        let {item}=this.props
+        this.props.shoppingcartActions.shoppingcart_increase({
+            id:item.id,
+            name:item.name,
+            measurement:item.measurement,
+            cartnum:1
+        })
+    }
     render() {
         let item = this.props.item
         return (
@@ -58,9 +67,7 @@ class ProductSmall extends Component {
                                 </View>
                                 <TouchableOpacity 
                                     style={styles.shoppingcart}
-                                    onPress={()=>{
-                                        this.props.shoppingcartActions.shoppingcart_increase()
-                                    }}
+                                    onPress={this.shoppingcartAdd}
                                 >
                                     <AntDesign name="shoppingcart" style={{ color: 'white' }} size={15} />
                                 </TouchableOpacity>

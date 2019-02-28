@@ -55,6 +55,15 @@ class Product extends Component {
                 alert(error)
             })            
     }
+    shoppingcartAdd=()=>{
+        let p = this.state.data
+        this.props.shoppingcartActions.shoppingcart_increase({
+            id:p.id,
+            name:p.name,
+            measurement:p.measurement,
+            cartnum:this.state.buyNum
+        })
+    }        
     render() {
         return (
             <View style={{ backgroundColor: 'white' }}>
@@ -111,9 +120,7 @@ class Product extends Component {
                                     : <View style={{ flex: 1, flexDirection: 'row' }}>
                                         <TouchableOpacity
                                             style={{ flex: 1, height: 50 }}
-                                            onPress={() => {
-                                                this.props.shoppingcartActions.shoppingcart_increase({cartnum:this.state.buyNum})
-                                            }}
+                                            onPress={this.shoppingcartAdd}
                                         >
                                             <Text style={[styles.button, { backgroundColor: '#fe9402' }]}>加入购物车</Text>
                                         </TouchableOpacity>

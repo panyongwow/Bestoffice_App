@@ -4,10 +4,12 @@ import { bindActionCreators } from 'redux'
 import { View, Text, TouchableOpacity, Button, ActivityIndicator, TextInput, StyleSheet } from 'react-native'
 import { MD5KEY } from '../../config/config'
 import CustDao from '../../dao/cust'
+import ShoppingcartDao from '../../dao/shoppingcart'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import MD5 from 'react-native-md5'
 import * as userActions from '../../actions/userAction'
+import * as shoppingcartActions from '../../actions/shoppingcartAction'
 
 class Login extends Component {
     constructor(props) {
@@ -42,10 +44,14 @@ class Login extends Component {
                         account: this.state.account,
                         password: md5_password,
                     }
-                    CustDao.set(loginData)
+                    CustDao.set(loginData)                  //本地存入登录用户信息
+                    ShoppingcartDao.syncLocalToWeb()        //同步本地购物车数据至服务器
+                        .then(cartnum => {
+                            this.props.shoppingcartActions.shoppingcart_sync({ cartnum })
+                        })
                     this.props.userActions.login_done({
                         account: this.state.account,
-                        custid:result.custid
+                        custid: result.custid
                     })
                     this.props.navigation.goBack()   //返回
                 }
@@ -177,10 +183,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        userActions: bindActionCreators(userActions, dispatch)
+        userActions: bindActionCreators(userActions, dispatch),
+        shoppingcartActions: bindActionCreators(shoppingcartActions, dispatch)
     }
 }
 export default connect(
-    mapStateToProps, 
+    mapStateToProps,
     mapDispatchToProps
 )(Login)

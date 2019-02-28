@@ -11,85 +11,104 @@ import Post from '../fetch/post'
 // ]
 
 export default class ShoppingcartDao {
-    static add(newData) {
-        CustDao.getCustID()
-            .then(custid => {
-                if (custid === 0) {
-                    this.saveToLocal(newData)  //未登录，保存到本地
-                }
-                else {
-                    this.saveToWeb(newData) //已登录，保存到服务器
-                }
-            })
-    }
-    static saveToLocal(newData) {
-        this.get()
-            .then(localData => {
-                if (!localData) {
-                    localData = [newData]
-                }
-                else {
-                    let data = localData.find((item) =>
-                        item.id > 0 && item.id === newData.id      //线上商品
-                        || item.id === 0 && newData.id === 0 && item.name === newData.name && item.measurement === newData.measurement  //代购商品
-                    )
-                    if (typeof (data) == 'undefined') {
-                        localData.push(newData)
+    //添加购物车记录
+    static add(data) {
+        return new Promise((resolve, reject) => {
+            CustDao.get()
+                .then(cust => {
+                    if (!cust) {
+                        this.saveToLocal(data)  //未登录，保存到本地
                     }
                     else {
-                        data.num += newData.num
+                        this.saveToWeb([data], cust) //已登录，保存到服务器
                     }
-                }
-                return localData
-            })
-            .then(localData => {
-                Storage.save('shoppingCart', localData)
-            })
-            .catch(error => {
-                alert(error)
-            })
-    }
-    static saveToWeb(newData) {
+                    resolve()
+                })
+                .catch(e => reject(e))
+        })
 
     }
-    static setToWeb() {
-        let getLocalShoppingcart = this.get()    //获取本地购物车数据
-            .then(localData => {
-                if (!localData) throw new Error()
-                else return localData
-            })
+    //保存购物车记录至本地（未登录状态时购物车记录保存至本地Storage）
+    static saveToLocal(data) {
+        //alert(JSON.stringify(data))
+        return new Promise((resolve, reject) => {
+            this.get()
+                .then(localData => {
+                    if (!localData) {
+                        localData = [data]
+                    }
+                    else {
+                        let sameData = localData.find((item) =>
+                            item.id > 0 && item.id === data.id      //线上商品
+                            || item.id === 0 && data.id === 0 && item.name === data.name && item.measurement === data.measurement  //代购商品
+                        )
+                        if (typeof (sameData) == 'undefined') {
+                            localData.push(data)
+                        }
+                        else {
+                            sameData.cartnum += data.cartnum
+                        }
+                    }
+                    return localData
+                })
+                .then(localData => {
+                    Storage.save('shoppingCart', localData)
+                    resolve()
+                })
+                .catch(e => reject(e))
+        })
 
-        let getCust = CustDao.get()             //获取用户信息
-            .then(custData => {
-                if (!custData) throw new Error()
-                else return custData
-            })
+    }
+    //同步购物车记录，当状态由未登录转为登录时，将本地的购物车记录同步至服务器
+    //如果在本地与服务器上均有某种商品的购物车记录，则以本地数据为准，覆盖服务器数据
+    //同步完毕后，删除本地数据
+    static syncLocalToWeb() {
+        return new Promise((resolve, reject) => {
+            let getLocalShoppingcart = this.get()    //获取本地购物车数据
+                .then(localData => {
+                    if (!localData) return []
+                    else return localData
+                })
 
-        Promise.all([
-            getLocalShoppingcart,
-            getCust
-        ])
-            .then(([shoppingcart, cust]) => {
-                //向服务器提交购物车数据
-                //alert(JSON.stringify(shoppingcart) + "," + JSON.stringify(cust))
-                let url = '/ajax/shoppingcar/add.ashx'
-                return Post(
-                    BSTWEBURL + url,
-                    'custid=' + cust.custid + '&password=' + cust.password + '&shoppingcart=' + JSON.stringify(shoppingcart)
-                )
-            })
-            .then(res => alert(res))
-            .catch(e => e)
+            let getCust = CustDao.get()
+                .then(custData => {
+                    if (!custData) throw new Error()
+                    else return custData
+                })
+            Promise.all([
+                getLocalShoppingcart,
+                getCust
+            ])
+                .then(([shoppingcart, cust]) => {
+                   return this.saveToWeb(shoppingcart, cust)
+                })
+                .then(res=>resolve(res.cartnum))
+                .catch(e=>reject(e))
+        })
+
+    }
+    //保存购物车记录至服务器（已登录状态时）
+    static saveToWeb(data, cust) {
+        return new Promise((resolve,reject)=>{
+            let url = '/ajax/shoppingcar/add.ashx'
+            Post(
+                BSTWEBURL + url,
+                'custid=' + cust.custid + '&password=' + cust.password + '&shoppingcart=' + JSON.stringify(data)
+            )
+                .then(res => {
+                    // alert(JSON.stringify(res))
+                    if (res.status === 'OK') this.clear()     //上传成功后，清除本地购物车数据
+                    resolve(res)
+                })
+                .catch(e => reject(e))            
+        })
+
     }
     static get() {
         return new Promise((resolve, reject) => {
             Storage.get('shoppingCart')
-                .then(data => {
-                    resolve(data)
-                })
-                .catch(error => {
-                    reject(error)
-                })
+                .then(data =>resolve(data))
+                .catch(e => reject(e))
         })
     }
     static clear() {

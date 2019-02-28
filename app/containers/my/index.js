@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as userActions from '../../actions/userAction'
+import * as shoppingcartActions from '../../actions/shoppingcartAction'
 import { View, Text, Button, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import CustDao from '../../dao/cust'
@@ -40,6 +41,7 @@ class My extends Component {
             cust: null
         })
         this.props.userActions.logout_done()
+        this.props.shoppingcartActions.shoppingcart_clear()
     }
     render() {
         const { navigation } = this.props
@@ -179,7 +181,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return{
-        userActions:bindActionCreators(userActions,dispatch)
+        userActions:bindActionCreators(userActions,dispatch),
+        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)
     }
 }
 

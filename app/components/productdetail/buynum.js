@@ -26,6 +26,15 @@ class BuyNum extends Component {
         })
         this.props.changeBuyNum(num)   //传递购买数量给父组件
     }
+    shoppingcartAdd(cartnum){
+        let p = this.props.data
+        this.props.shoppingcartActions.shoppingcart_increase({
+            id:p.id,
+            name:p.name,
+            measurement:p.measurement,
+            cartnum
+        })
+    }    
     render() {
         return (
             <View>
@@ -37,7 +46,9 @@ class BuyNum extends Component {
                         this.changeBuyNum(num)
                     }}
                     shoppingcart_increase={(num)=>{
-                        this.props.shoppingcartActions.shoppingcart_increase({cartnum:num})
+                        //this.props.shoppingcartActions.shoppingcart_increase({cartnum:num})
+                        //alert(num)
+                        this.shoppingcartAdd(num)
                     }}
                 />
 

@@ -7,7 +7,7 @@ export default class GoTop extends Component {
         super(props)
         let { height, width } = Dimensions.get('window')
         this.state = {
-            top: height - 100,
+            top: height - 75,
             left: width - 70,
         }
     }

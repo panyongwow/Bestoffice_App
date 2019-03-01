@@ -7,6 +7,11 @@ export default function shoppingcartInfo(state = initialState, action) {
     if (action.data) cartnum = action.data.cartnum
     //alert(cartnum)
     switch (action.type) {
+        case actionTypes.SHOPPINGCART_INIT:             //购物车初始化
+            return {
+                ...state,
+                cartnum
+            }
         case actionTypes.SHOPPINGCART_INCREASE:          //购物车商品增加
             return {
                 ...state,

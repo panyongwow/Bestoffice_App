@@ -64,7 +64,7 @@ export default class ShoppingcartDao {
     //同步完毕后，删除本地数据
     static syncLocalToWeb() {
         return new Promise((resolve, reject) => {
-            let getLocalShoppingcart = this.get()    //获取本地购物车数据
+            let getLocalShoppingcart = this.getFromLocal()    //获取本地购物车数据
                 .then(localData => {
                     if (!localData) return []
                     else return localData
@@ -89,6 +89,7 @@ export default class ShoppingcartDao {
     }
     //保存购物车记录至服务器（已登录状态时）
     static saveToWeb(data, cust) {
+        //alert(JSON.stringify(data))
         return new Promise((resolve,reject)=>{
             let url = '/ajax/shoppingcar/add.ashx'
             Post(
@@ -96,7 +97,7 @@ export default class ShoppingcartDao {
                 'custid=' + cust.custid + '&password=' + cust.password + '&shoppingcart=' + JSON.stringify(data)
             )
                 .then(res => {
-                    // alert(JSON.stringify(res))
+                    //alert(JSON.stringify(res))
                     if (res.status === 'OK') this.clear()     //上传成功后，清除本地购物车数据
                     resolve(res)
                 })
@@ -104,12 +105,85 @@ export default class ShoppingcartDao {
         })
 
     }
+
+    static getCartNum(){       //获得购物车商品数量
+        return new Promise((resolve,reject)=>{
+            CustDao.getCustID()
+                .then(custid=>{
+                    if(custid===0){
+                       return this.getCartNumFromLocal()            //未登录，从本地获取购物车商品数量
+                    } 
+                    else{
+                      return this.getCartNumFromWeb(custid)
+                    }
+                })
+                .then(cartnum=>resolve(cartnum))
+                .catch(e=>{reject(e)})
+        })
+    }
+    static getCartNumFromLocal(){
+        return new Promise((resolve,reject)=>{
+            this.get()
+                .then(data=>{
+                    if(!data){
+                        return 0
+                    } 
+                    else {
+                        let totalNum=0
+                        data.forEach(item => {
+                            totalNum+=item.cartnum
+                        });
+                        return totalNum
+                    }
+                })
+                .then(cartnum=>resolve(cartnum))
+                .catch(e=>reject(e))
+        })
+    }
+    static getCartNumFromWeb(custid){
+        return new Promise((resolve,reject)=>{
+            let url = '/ajax/shoppingcar/cartnum_get.ashx'
+            Post(
+                BSTWEBURL + url,
+                'custid=' + custid 
+            )
+                .then(res => {
+                    //alert(JSON.stringify(res))
+                    if (res.status === 'OK') {
+                        return res.cartnum
+                    }
+                    else {
+                        throw new Error(res)
+                    }
+                })
+                .then(cartnum=>resolve(cartnum))
+                .catch(e => reject(e))            
+        })
+    }
     static get() {
+        return new Promise((resolve, reject) => {
+            CustDao.get()
+                .then(cust => {
+                    if (!cust) {
+                        return this.getFromLocal()  //未登录，从本地获取
+                    }
+                    else {
+                        return this.getFromWeb(cust) //已登录，从服务器获取
+                    }
+                })
+                .then(data=>resolve(data))
+                .catch(e => reject(e))
+        })
+    }
+    static getFromLocal(){
         return new Promise((resolve, reject) => {
             Storage.get('shoppingCart')
                 .then(data =>resolve(data))
                 .catch(e => reject(e))
-        })
+        })        
+    }
+    static getFromWeb(cust){
+
     }
     static clear() {
         Storage.remove('shoppingCart')

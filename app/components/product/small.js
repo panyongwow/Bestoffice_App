@@ -17,6 +17,7 @@ class ProductSmall extends Component {
             measurement:item.measurement,
             cartnum:1
         })
+        if(this.props.addToShoppingCart) this.props.addToShoppingCart()
     }
     render() {
         let item = this.props.item

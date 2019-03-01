@@ -1,6 +1,10 @@
 import React,{Component} from 'react'
 import {View,Text,StyleSheet,Button,Image} from 'react-native'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as shoppingcartActions from './app/actions/shoppingcartAction'
 import HomePageDao from './app/dao/homepage'
+import ShoppingcartDao from './app/dao/shoppingcart'
 import {NavigationActions} from 'react-navigation'
 import Foot from './app/components/foot'
 import Loading from './app/components/loading'
@@ -11,7 +15,7 @@ import Loading from './app/components/loading'
 //         NavigationActions.navigate({routeName:'Main'})
 //     ]
 // })
-export default class Welcome extends Component{
+class Welcome extends Component{
     //这样写就不行，不加props参数，安装到手机上后会闪退
     // constructor(){
     //     super()
@@ -24,9 +28,14 @@ export default class Welcome extends Component{
     
     componentDidMount(){
         const {navigation}=this.props
-        HomePageDao.init(()=>{
-            navigation.reset([NavigationActions.navigate({ routeName: 'Main' })], 0)  
-        })
+        // HomePageDao.init(()=>{
+        //     navigation.reset([NavigationActions.navigate({ routeName: 'Main' })], 0)  
+        // })
+        HomePageDao.init()
+            .then(()=>ShoppingcartDao.getCartNum())
+            .then(cartnum=>{this.props.shoppingcartActions.shoppingcart_init(cartnum)})
+            .then(()=>navigation.reset([NavigationActions.navigate({ routeName: 'Main' })], 0)  )
+            .catch(e=>alert(e))
     }
     render(){
         const {navigation}=this.props
@@ -54,3 +63,16 @@ const styles=StyleSheet.create({
         
     }
 })
+
+function mapStateToProps(state){
+    return{}
+}
+function mapDispatchToProps(dispatch){
+    return {
+        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)
+    }
+}
+
+export default connect(
+    mapStateToProps,mapDispatchToProps
+)(Welcome)

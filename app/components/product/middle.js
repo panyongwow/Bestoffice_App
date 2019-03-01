@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 import Tag from '../tag'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import * as shoppingcartActions from '../../actions/shoppingcartAction'
-import shoppingcartDao from '../../dao/shoppingcart'
-import userInfo from '../../reducers/userInfo';
 
 //商品展示(中等大小)
 class ProductMiddle extends Component {
@@ -18,6 +16,7 @@ class ProductMiddle extends Component {
             measurement:item.measurement,
             cartnum:1
         })
+        if(this.props.addToShoppingCart) this.props.addToShoppingCart()
     }
     render() {
         const {item} = this.props

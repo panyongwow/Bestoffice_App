@@ -60,7 +60,7 @@ export default class ListgoodsAD extends Component{
                                     {
                                         item.products.map((product,i)=>{
                                             return(
-                                                <ProductMiddle item={product} key={i} navigation={this.props.navigation} />
+                                                <ProductMiddle item={product} key={i} navigation={this.props.navigation} addToShoppingCart={this.props.addToShoppingCart}/>
                                             )
                                         })
                                     }

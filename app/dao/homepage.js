@@ -8,50 +8,43 @@ export var FLAG_HOMEPAGE = {
     TAG: 'TAG'
 }
 export default class HomePageDao {
-    static init(callback) {
+    static init() {
         this.clear()
-        CustDao.get()
-            .then(cust => {
-                if (!cust) {
-                    return { status: 'ERROR' }
-                }
-                else {
-                    return CustDao.login(cust.account, cust.password)
-                }
-            })
-            .then(result => {
-                let custid = 0
-                if (result.status === 'ERROR') {
-                    CustDao.clear()
-                }
-                else {
-                    CustDao.set(result)
-                    custid = result.custid
-                }
-                return custid
-            })
-            .then(custid => this.getWebData(custid))
-            .then(result => {
-                Storage.save('HomePage', result.details)
-                callback()
-            })
-            .catch(error => { alert(error) })
+        return new Promise((resolve, reject) => {
+            CustDao.get()
+                .then(cust => {
+                    if (!cust) {
+                        return { status: 'ERROR' }
+                    }
+                    else {
+                        return CustDao.login(cust.account, cust.password)
+                    }
+                })
+                .then(result => {
+                    let custid = 0
+                    if (result.status === 'ERROR') {
+                        CustDao.clear()
+                    }
+                    else {
+                        CustDao.set(result)
+                        custid = result.custid
+                    }
+                    return custid
+                })
+                .then(custid => this.getWebData(custid))
+                .then(result => {
+                    //alert(JSON.stringify(result))
+                    Storage.save('HomePage', result.details)
+                    resolve()
+                })
+                .catch(e => reject(e))
+        })
+
     }
 
     static getWebData(custid = 0) {
         let url = '/ajax/homepage/list.ashx?custid=' + custid
         return Get(BSTURL + url)
-        // return new Promise((resolve, reject) => {
-        //     let url = '/ajax/homepage/list.ashx?custid=' + custid
-        //     fetch(BSTURL + url)
-        //         .then(res => res.json())
-        //         .then(result => {
-        //             return resolve(result)
-        //         })
-        //         .catch(error => {
-        //             return reject(error)
-        //         })
-        // })
     }
     static get(key) {
         return new Promise((resolve, reject) => {
@@ -68,9 +61,7 @@ export default class HomePageDao {
                     }
                     return resolve(data)
                 })
-                .catch(error => {
-                    return reject(error)
-                })
+                .catch(e => reject(e))
         })
     }
     static clear() {

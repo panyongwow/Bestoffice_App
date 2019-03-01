@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native'
+import Toast from 'react-native-easy-toast'
 import Header from '../../components/header'
 import Foot from '../../components/foot'
 import GoTop from '../../components/gotop'
+import IconShoppingCart from '../../components/iconShoppingCart'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import ProductSmall from '../../components/product/small'
 import ProductMiddle from '../../components/product/middle'
@@ -170,6 +172,9 @@ export default class ProductList extends Component {
         }, 100)
 
     }
+    addToShoppingCart=()=>{
+        this.refs.toast.show("加入购物车成功！")
+    }
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -201,11 +206,11 @@ export default class ProductList extends Component {
                         renderItem={({ item }) => {
                             return (
                                 this.state.display === 'list'
-                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} navigation={this.props.navigation} />
+                                    ? <ProductSmall style={{ backgroundColor: 'white' }} item={item} navigation={this.props.navigation}  addToShoppingCart={this.addToShoppingCart} />
                                     : <View style={styles.productmiddleborder}>
-                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]} navigation={this.props.navigation} />
+                                        <ProductMiddle style={{ backgroundColor: 'white' }} item={item[0]} navigation={this.props.navigation} addToShoppingCart={this.addToShoppingCart} />
                                         {
-                                            item.length > 1 ? <ProductMiddle item={item[1]} navigation={this.props.navigation} /> : null
+                                            item.length > 1 ? <ProductMiddle item={item[1]} navigation={this.props.navigation} addToShoppingCart={this.addToShoppingCart}  /> : null
                                         }
                                     </View>
                             )
@@ -254,6 +259,13 @@ export default class ProductList extends Component {
                         }} />
                         : null
                 }
+                {/* <IconShoppingCart /> */}
+                <Toast
+                    ref='toast'
+                    position='bottom'
+                    positionValue={100}
+                    fadeInDuration={100}
+                />
             </View>
         )
     }

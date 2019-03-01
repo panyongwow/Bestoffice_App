@@ -20,7 +20,7 @@ export default class Hot extends Component{
                     {
                         this.props.ProductHot.map((item,index)=>{
                             return(
-                                <ProductMiddle item={item} key={index} navigation={this.props.navigation} />
+                                <ProductMiddle item={item} key={index} navigation={this.props.navigation} addToShoppingCart={this.props.addToShoppingCart}/>
                             )
                         })
                     }
@@ -35,7 +35,7 @@ export default class Hot extends Component{
                     {
                         this.props.ProductBargain.map((item,index)=>{
                             return(
-                                <ProductMiddle item={item} key={index} navigation={this.props.navigation} />
+                                <ProductMiddle item={item} key={index} navigation={this.props.navigation}  addToShoppingCart={this.props.addToShoppingCart}/>
                             )
                         })
                     }
@@ -50,7 +50,7 @@ export default class Hot extends Component{
                     {
                         this.props.ProductNew.map((item,index)=>{
                             return(
-                                <ProductMiddle item={item} key={index} navigation={this.props.navigation} />
+                                <ProductMiddle item={item} key={index} navigation={this.props.navigation}  addToShoppingCart={this.props.addToShoppingCart}/>
                             )
                         })
                     }

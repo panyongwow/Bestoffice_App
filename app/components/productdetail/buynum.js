@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Modal, Image, TextInput, StyleSheet } from 'react-native'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import * as shoppingcartActions from '../../actions/shoppingcartAction'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 //商品单页-购买数量区域
-class BuyNum extends Component {
+export default class BuyNum extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -26,15 +23,7 @@ class BuyNum extends Component {
         })
         this.props.changeBuyNum(num)   //传递购买数量给父组件
     }
-    shoppingcartAdd(cartnum){
-        let p = this.props.data
-        this.props.shoppingcartActions.shoppingcart_increase({
-            id:p.id,
-            name:p.name,
-            measurement:p.measurement,
-            cartnum
-        })
-    }    
+ 
     render() {
         return (
             <View>
@@ -46,9 +35,7 @@ class BuyNum extends Component {
                         this.changeBuyNum(num)
                     }}
                     shoppingcart_increase={(num)=>{
-                        //this.props.shoppingcartActions.shoppingcart_increase({cartnum:num})
-                        //alert(num)
-                        this.shoppingcartAdd(num)
+                        this.props.shoppingcartAdd(num)
                     }}
                 />
 
@@ -126,7 +113,6 @@ class BuyNumModal extends Component {
         })
     }
     render() {
-        //let pic_s = this.props.data.pic_detail[0].picname.replace(/_l.jpg/g, '_s.jpg')
         let p = this.props.data
         return (
             <Modal
@@ -205,6 +191,7 @@ class BuyNumModal extends Component {
                             activeOpacity={0.7}
                             onPress={() => {
                                 this.props.shoppingcart_increase(this.state.buyNum)
+                                //this.props.shoppingcartAdd(this.state.buyNum)
                                 this.closeModal()
                             }}
                         >
@@ -272,17 +259,3 @@ const modalstyles = StyleSheet.create({
         backgroundColor: '#f00', color: '#fff', textAlign: 'center', lineHeight: 50, height: 50, fontSize: 16, fontWeight: 'bold'
     }
 })
-
-function mapStateToProps(state){
-    return{}
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-        shoppingcartActions:bindActionCreators(shoppingcartActions,dispatch)
-    }
-}
-
-export default connect(
-    mapStateToProps,mapDispatchToProps
-)(BuyNum)

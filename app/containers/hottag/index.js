@@ -6,28 +6,28 @@ import HomePageDao,{FLAG_HOMEPAGE} from '../../dao/homepage'
 export default class HotTag extends Component{
     constructor(props){
         super(props)
-        this.state={
-            data:[]
-        }
+        // this.state={
+        //     data:[]
+        // }
     }
-    componentDidMount(){
-        HomePageDao.get(FLAG_HOMEPAGE.TAG)
-            .then(result=>{
-                this.setState({
-                    data:result
-                })
-            })
-            .catch(error=>{
-                //alert(error)
-            })
-    }    
+    // componentDidMount(){
+    //     HomePageDao.get(FLAG_HOMEPAGE.TAG)
+    //         .then(result=>{
+    //             this.setState({
+    //                 data:result
+    //             })
+    //         })
+    //         .catch(error=>{
+    //             //alert(error)
+    //         })
+    // }    
     render(){
         return (
             <View style={{backgroundColor:'#f00',paddingBottom:5}}>
                 {
-                    this.state.data.length===0
+                    this.props.data.length===0
                     ?null
-                    :<HotTagComponent tag={this.state.data} navigation={this.props.navigation} />
+                    :<HotTagComponent tag={this.props.data} navigation={this.props.navigation} />
                 }
             </View>
         )        

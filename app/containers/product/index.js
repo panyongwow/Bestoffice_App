@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Platf
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import Toast from 'react-native-easy-toast'
 import ProductDao from '../../dao/product'
 import CustDao from '../../dao/cust'
 import Loading from '../../components/loading'
@@ -55,14 +56,15 @@ class Product extends Component {
                 alert(error)
             })            
     }
-    shoppingcartAdd=()=>{
+    shoppingcartAdd(num){
         let p = this.state.data
         this.props.shoppingcartActions.shoppingcart_increase({
             id:p.id,
             name:p.name,
             measurement:p.measurement,
-            cartnum:this.state.buyNum
+            cartnum:num
         })
+        this.refs.toast.show("加入购物车成功！")
     }        
     render() {
         return (
@@ -88,6 +90,10 @@ class Product extends Component {
                                             changeBuyNum={(num) => {
                                                 this.changeBuyNum(num)
                                             }}
+                                            shoppingcartAdd={(num)=>{
+                                                this.shoppingcartAdd(num)
+                                            }}
+                                            //test={123}
                                             style={styles.viewborder}
                                         />
                                 }
@@ -120,7 +126,7 @@ class Product extends Component {
                                     : <View style={{ flex: 1, flexDirection: 'row' }}>
                                         <TouchableOpacity
                                             style={{ flex: 1, height: 50 }}
-                                            onPress={this.shoppingcartAdd}
+                                            onPress={()=>this.shoppingcartAdd(this.state.buyNum)}
                                         >
                                             <Text style={[styles.button, { backgroundColor: '#fe9402' }]}>加入购物车</Text>
                                         </TouchableOpacity>
@@ -139,7 +145,12 @@ class Product extends Component {
                         </View>
                         : null
                 }
-
+                <Toast
+                    ref='toast'
+                    position='bottom'
+                    positionValue={150}
+                    fadeInDuration={100}
+                />
             </View>
         )
     }

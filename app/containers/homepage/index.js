@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { View, Text, Button, StyleSheet, ScrollView, Image, TouchableOpacity, RefreshControl, StatusBar } from 'react-native'
+import Toast from 'react-native-easy-toast'
 // import Header from '../../components/header'
 import Header from '../../components/header'
 import Foot from '../../components/foot'
@@ -33,7 +34,7 @@ class HomePage extends Component {
             ListgoodsAD: [],
             IsShowHot: true,
             IsShowListgoodsAD: false,
-           // isChange: '未改变'
+            // isChange: '未改变'
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -90,7 +91,9 @@ class HomePage extends Component {
             })
 
     }
-
+    addToShoppingCart = () => {
+        this.refs.toast.show("加入购物车成功！")
+    }
     render() {
         const { navigation } = this.props
         return (
@@ -103,22 +106,22 @@ class HomePage extends Component {
                 />
                 {/* <Text>账号：{this.props.userInfo.account} 用户ID：{+this.props.userInfo.custid}</Text>
                 <Text>改变状态：{this.state.isChange}</Text>*/}
-                <Button
+                {/* <Button
                     title='test'
                     onPress={() => {
                         shoppingcartDao.get()
-                            .then(data=>{
+                            .then(data => {
                                 alert(JSON.stringify(data))
                             })
                     }}
-                /> 
+                />
                 <Button
                     title='clear'
                     onPress={() => {
                         shoppingcartDao.clear()
                         alert('ok')
                     }}
-                />    
+                />
                 <Button
                     title='getCustID'
                     onPress={() => {
@@ -127,13 +130,13 @@ class HomePage extends Component {
                         //         alert(custid)
                         //     })
                         ShoppingcartDao.setToWeb()
-                           // .then(info=>{alert(info)})    
+                        // .then(info=>{alert(info)})    
                     }}
-                />                                 
+                /> */}
                 <View>
                     <Header navigation={this.props.navigation} />
                 </View>
-                <HotTag navigation={this.props.navigation} />
+                <HotTag data={this.state.Tag} navigation={this.props.navigation} />
                 <ScrollView
                     onMomentumScrollEnd={(e) => {
                         let offsetY = e.nativeEvent.contentOffset.y
@@ -167,12 +170,17 @@ class HomePage extends Component {
                                 ProductBargain={this.state.ProductBargain}
                                 ProductNew={this.state.ProductNew}
                                 navigation={this.props.navigation}
+                                addToShoppingCart={this.addToShoppingCart}
                             />
                             : <Loading />
                     }
                     {
                         this.state.IsShowListgoodsAD
-                            ? <ListgoodsAD data={this.state.ListgoodsAD} navigation={this.props.navigation} />
+                            ? <ListgoodsAD
+                                data={this.state.ListgoodsAD}
+                                navigation={this.props.navigation}
+                                addToShoppingCart={this.addToShoppingCart}
+                            />
                             : this.state.IsShowHot ? <Loading /> : null
                     }
 
@@ -182,6 +190,12 @@ class HomePage extends Component {
                             : null
                     }
                 </ScrollView>
+                <Toast
+                    ref='toast'
+                    position='bottom'
+                    positionValue={150}
+                    fadeInDuration={100}
+                />
             </View>
         )
     }

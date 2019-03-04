@@ -165,6 +165,7 @@ export default class ShoppingcartDao {
             CustDao.get()
                 .then(cust => {
                     if (!cust) {
+                        //alert('未登录')
                         return this.getFromLocal()  //未登录，从本地获取
                     }
                     else {

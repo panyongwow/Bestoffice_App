@@ -16,19 +16,7 @@ import News from '../containers/news'
 import TabBarShoppingCart from '../components/tabBarShoppingCart'
 
 const MainStock = createBottomTabNavigator({
-    ShoppingCart: {
-        screen: ShoppingCart,
-        navigationOptions: {
-            tabBarLabel: '购物车',
-            tabBarIcon: ({ tintColor, focused }) => (
-                <TabBarShoppingCart color={tintColor} />
-                // <View>
-                //     <AntDesign name="shoppingcart" style={{ color: tintColor }} size={26} />
-                //     <Text  style={{ color: tintColor }} >123</Text>
-                // </View>
-            )
-        }
-    },
+
     HomePage: {
         screen: HomePage,
         navigationOptions: {
@@ -47,7 +35,19 @@ const MainStock = createBottomTabNavigator({
             )
         }
     },
-
+    ShoppingCart: {
+        screen: ShoppingCart,
+        navigationOptions: {
+            tabBarLabel: '购物车',
+            tabBarIcon: ({ tintColor, focused }) => (
+                <TabBarShoppingCart color={tintColor} />
+                // <View>
+                //     <AntDesign name="shoppingcart" style={{ color: tintColor }} size={26} />
+                //     <Text  style={{ color: tintColor }} >123</Text>
+                // </View>
+            )
+        }
+    },
     My: {
         screen: My,
         navigationOptions: {
@@ -77,19 +77,25 @@ export const ProductListStock = createDrawerNavigator({
     })
 
 export const RootStack = createStackNavigator({
-    Main: {
-        screen: MainStock,
-        navigationOptions: {
-            header: null
-        }
-    },
     Welcome: {
         screen: Welcome,
         navigationOptions: {
             header: null
         }
     },
+    Main: {
+        screen: MainStock,
+        navigationOptions: {
+            header: null
+        }
+    },
 
+    Main: {
+        screen: MainStock,
+        navigationOptions: {
+            header: null
+        }
+    },
 
     Drawer: {
         screen: ProductListStock,

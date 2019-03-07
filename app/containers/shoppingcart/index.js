@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Button, TouchableOpacity, FlatList, Image, TextInput, StyleSheet } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import Tag from '../../components/tag'
 import ProductSmall from '../../components/product/small'
 import ShoppingCartDao from '../../dao/shoppingcart'
 
@@ -24,7 +25,7 @@ export default class ShoppingCart extends Component {
         //     })
         this.setState({
             data: [
-                { "id": 11655, "name": "UPM奥友80G A4 高白复印纸", "measurement": "包", "cartnum": 1, "price": 30.3, "picname": "http://img.bestoffice.cn/product/84/11655/f49bf7ef5581c33b4fc5f39edc3af9b9_s.jpg" },
+                { "id": 11655, "name": "UPM奥友80G A4 高白复印纸", "measurement": "包", "cartnum": 1, "price": 309999.3, "picname": "http://img.bestoffice.cn/product/84/11655/f49bf7ef5581c33b4fc5f39edc3af9b9_s.jpg" },
                 { "id": 320, "name": "晨光 0.5创意中性笔GP-1008(黑色)", "measurement": "支", "cartnum": 2, "price": 2.2, "picname": "http://img.bestoffice.cn/product/25/320/42741d0e6233801ef63213bb4ae2818e_s.jpg" },
                 { "id": 320, "name": "惠普 HP 青色硒鼓C9701A（适用机型：HP Color LaserJet 1500, 2500 系列）", "measurement": "支", "cartnum": 999, "price": 2.2, "picname": "http://img.bestoffice.cn/product/25/320/42741d0e6233801ef63213bb4ae2818e_s.jpg" },
                 { "id": 11655, "name": "UPM奥友80G A4 高白复印纸", "measurement": "包", "cartnum": 1, "price": 30.3, "picname": "http://img.bestoffice.cn/product/84/11655/f49bf7ef5581c33b4fc5f39edc3af9b9_s.jpg" },
@@ -38,7 +39,12 @@ export default class ShoppingCart extends Component {
     }
     flatRenderItem(item) {
         return (
-            <View style={{ backgroundColor: '#fff', height: 100, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 0, borderColor: 'red', padding: 10 }}>
+            <TouchableOpacity
+                style={{ backgroundColor: '#fff', height: 100, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 0, borderColor: 'red', padding: 10 }}
+                onPress={() => {
+                    alert(item.id)
+                }}
+            >
                 <TouchableOpacity
                     activeOpacity={1}
                     style={{ width: 18, height: 18, borderWidth: 1, borderColor: 'gray', borderRadius: 9 }}
@@ -61,60 +67,63 @@ export default class ShoppingCart extends Component {
                             {item.name}
                         </Text>
                     </View>
-                    <View>
-                        <View style={styles.border} >
-                            <View style={styles.priceborder} >
-                                <Text style={styles.pricepre}>&yen;</Text>
-                                <Text style={styles.price}>{item.price}</Text>
-                                <Text style={styles.measurement}>/{item.measurement}</Text>
+                    {/* <View> */}
+                    <View style={styles.border} >
+                        <View style={[styles.priceborder, { borderColor: 'red', borderWidth: 0 }]} >
+                            <Text style={styles.pricepre}>&yen;</Text>
+                            <Text style={styles.price}>{item.price}</Text>
+                            <Text style={styles.measurement}>/{item.measurement}</Text>
+                        </View>
+                        {/* <TouchableOpacity style={{borderColor:'red',borderWidth:0}}>
+                                <Tag title='移除' />
+                            </TouchableOpacity> */}
+                        <View style={[styles.buynum_container, { borderColor: 'red', borderWidth: 0 }]}>
+                            <View style={styles.buynum_inner}>
+                                <TouchableOpacity
+                                    style={styles.buynum_button}
+                                    onPress={() => {
+                                        //this.reduceBuyNum()
+                                    }}
+                                >
+                                    <AntDesign name='minus' size={12} color='gray' style={styles.buynum_icon} />
+                                </TouchableOpacity>
+                                <TextInput
+                                    style={styles.buynum_input}
+                                    keyboardType='numeric'
+                                    value={item.cartnum.toString()}
+                                    onChangeText={(text) => {
+                                        // this.setState({
+                                        //     buyNum: text
+                                        // })
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    style={styles.buynum_button}
+                                    onPress={() => {
+                                        // this.addBuyNum()
+                                    }}
+                                >
+                                    <AntDesign name='plus' size={12} color='gray' style={styles.buynum_icon} />
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.buynum_container}>
-                                <View style={styles.buynum_inner}>
-                                    <TouchableOpacity
-                                        style={styles.buynum_button}
-                                        onPress={() => {
-                                            //this.reduceBuyNum()
-                                        }}
-                                    >
-                                        <AntDesign name='minus' size={12} color='gray' style={styles.buynum_icon} />
-                                    </TouchableOpacity>
-                                    <TextInput
-                                        style={styles.buynum_input}
-                                        keyboardType='numeric'
-                                        value={item.cartnum.toString()}
-                                        onChangeText={(text) => {
-                                            // this.setState({
-                                            //     buyNum: text
-                                            // })
-                                        }}
-                                    />
-                                    <TouchableOpacity
-                                        style={styles.buynum_button}
-                                        onPress={() => {
-                                            // this.addBuyNum()
-                                        }}
-                                    >
-                                        <AntDesign name='plus' size={12} color='gray' style={styles.buynum_icon} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-
-
                         </View>
 
+
+
                     </View>
+
+                    {/* </View> */}
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
     render() {
         //const {navigation}=this.props
         return (
             <View style={{ flex: 1 }}>
-                <View style={{backgroundColor:'#fff'}}>
-                    <Text style={{ fontSize: 18, textAlign: 'center', lineHeight: 40,backgroundColor:'#f3f3f3' }}>购物车</Text>
-                    <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center',padding:10 }}>
+                <View style={{ backgroundColor: '#fff' }}>
+                    <Text style={{ fontSize: 18, textAlign: 'center', lineHeight: 40, backgroundColor: '#f3f3f3' }}>购物车</Text>
+                    <View style={{ flexDirection: "row", alignItems: 'center', justifyContent: 'center', padding: 10 }}>
                         <TouchableOpacity
                             style={{ width: 70, height: 26, borderWidth: 1, borderColor: '#f3f3f3', borderRadius: 13 }}
                         >
@@ -123,7 +132,7 @@ export default class ShoppingCart extends Component {
                         <Text style={{ fontSize: 12, marginLeft: 10 }}>登录后将同步手机与电脑购物车中的商品</Text>
                     </View>
                 </View>
-                <View style={{ height: 4, backgroundColor: '#f3f3f3' }}></View>
+                <View style={{ height: 2, backgroundColor: '#f3f3f3' }}></View>
                 <View style={{ flex: 1 }}>
                     <FlatList
                         ref='ShoppingCart'
@@ -131,12 +140,39 @@ export default class ShoppingCart extends Component {
                         keyExtractor={(item, index) => item + index}
                         renderItem={({ item }) => { return this.flatRenderItem(item) }}
                         ItemSeparatorComponent={() =>
-                            <View style={{ height: 4, backgroundColor: '#f3f3f3' }}></View>
+                            <View style={{ height: 2, backgroundColor: '#f3f3f3' }}></View>
                         }
                     />
-                    {/* <View style={{height:50}}>
+                    <View style={{ height: 50, flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{flexDirection:'column',justifyContent:'space-between', flex:1.3,paddingLeft: 10}}>
+                            <View style={{  flexDirection: 'row',paddingTop:8,paddingBottom:5}}>
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={{ width: 18, height: 18, borderWidth: 1, borderColor: 'gray', borderRadius: 9 }}
+                                    onPress={() => {
+                                    }}
+                                />
+                                <Text style={{ marginLeft: 10 }}>全选</Text>
+                            </View>
+                            <View>
+                                <Text style={{ fontSize: 12 }}>合计:&nbsp;<Text>&yen;&nbsp;0.00</Text></Text>
+                            </View>
+                        </View>
+                        {/* <View style={{ flex: 2, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 18 }}>合计:&nbsp;<Text>&yen;&nbsp;999999.99</Text></Text>
+                        </View> */}
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#f00', height: 50, flex: 0.8, alignItems: 'center', justifyContent: 'center' }}
+                        >
+                            <Text style={{ color: '#fff' }}>移除</Text>
+                        </TouchableOpacity>
 
-                    </View> */}
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#f00', height: 50, flex: 1.3, alignItems: 'center', justifyContent: 'center', borderLeftWidth: 1, borderLeftColor: '#fff' }}
+                        >
+                            <Text style={{ color: '#fff' }}>去结算(999)</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 {/* {
                     this.state.selected

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Button, TouchableOpacity, FlatList, Image, TextInput, StyleSheet } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import NumInput from '../../components/numInput'
 import Tag from '../../components/tag'
 import ProductSmall from '../../components/product/small'
 import ShoppingCartDao from '../../dao/shoppingcart'
@@ -143,6 +144,12 @@ export default class ShoppingCart extends Component {
                             <View style={{ height: 2, backgroundColor: '#f3f3f3' }}></View>
                         }
                     />
+                    <View>
+                        <NumInput 
+                            value={2} 
+                            style={{height:50,backgroundColor:'red'}}
+                        />
+                    </View>
                     <View style={{ height: 50, flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{flexDirection:'column',justifyContent:'space-between', flex:1.3,paddingLeft: 10}}>
                             <View style={{  flexDirection: 'row',paddingTop:8,paddingBottom:5}}>

@@ -1,28 +1,28 @@
-import React, { Componenet } from 'react'
+import React, { Component } from 'react'
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import { PropTypes } from 'prop-types'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
-export default class NumInput extends Componenet {
+export default class NumInput extends Component {
     static propTypes = {
-        style: View.propTypes.style,
-        buttonStyle: View.propsTypes.style,
-        iconStyle: View.propsTypes.style,
-        decreaseButtonStyle: View.propTypes.style,
-        increaseButtonStyle: View.propTypes.style,
-        decreaseIconStyle: View.propTypes.style,
-        increaseIconStyle: View.propTypes.style,
-        inputStyle: View.propTypes.style,
+        style: PropTypes.object,
+        buttonStyle: PropTypes.object,
+        // iconStyle: PropTypes.style,
+        // decreaseButtonStyle: PropTypes.style,
+        // increaseButtonStyle: PropTypes.style,
+        // decreaseIconStyle: PropTypes.style,
+        // increaseIconStyle: PropTypes.style,
+        // inputStyle: PropTypes.style,
         value: PropTypes.number
     }
-    static defaultProps = {
+    // static defaultProps = {
 
-    }
+    // }
     constructor(props) {
         super(props)
         this.state = {
-            value: 1
+            value: this.props.value
         }
         this.decreaseNum = this.decreaseNum.bind(this)
         this.increaseNum=this.increaseNum.bind(this)
@@ -39,7 +39,7 @@ export default class NumInput extends Componenet {
     }
     render() {
         return (
-            <View>
+            <View style={[styles.container,this.props.style]}>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={this.decreaseNum}
@@ -49,7 +49,7 @@ export default class NumInput extends Componenet {
                 <TextInput
                     style={styles.input}
                     keyboardType='numeric'
-                    value={item.cartnum.toString()}
+                    value={this.state.value.toString()}
                     onChangeText={(text) => {
                         this.setState({
                             value: text
@@ -68,6 +68,9 @@ export default class NumInput extends Componenet {
 }
 
 const styles = StyleSheet.create({
+    container:{
+        flexDirection:'row'
+    },
     button: {
         width: 24,
         height: 24

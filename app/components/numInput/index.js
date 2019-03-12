@@ -8,12 +8,12 @@ export default class NumInput extends Component {
     static propTypes = {
         style: PropTypes.object,
         buttonStyle: PropTypes.object,
-        // iconStyle: PropTypes.style,
-        // decreaseButtonStyle: PropTypes.style,
-        // increaseButtonStyle: PropTypes.style,
-        // decreaseIconStyle: PropTypes.style,
-        // increaseIconStyle: PropTypes.style,
-        // inputStyle: PropTypes.style,
+        iconStyle: PropTypes.object,
+        decreaseButtonStyle: PropTypes.object,
+        increaseButtonStyle: PropTypes.object,
+        decreaseIconStyle: PropTypes.object,
+        increaseIconStyle: PropTypes.object,
+        inputStyle: PropTypes.object,
         value: PropTypes.number
     }
     // static defaultProps = {
@@ -25,42 +25,51 @@ export default class NumInput extends Component {
             value: this.props.value
         }
         this.decreaseNum = this.decreaseNum.bind(this)
-        this.increaseNum=this.increaseNum.bind(this)
+        this.increaseNum = this.increaseNum.bind(this)
     }
     decreaseNum = () => {
+        let num = this.state.value > 1 ? this.state.value - 1 : 0
         this.setState({
-            value: this.state.value > 1 ? this.state.value - 1 : 0
+            value: num
         })
+        this.props.onChange(num)
     }
     increaseNum = () => {
+        let num = this.state.value + 1
         this.setState({
-            value: this.state.value + 1
+            value: num
         })
+        this.props.onChange(num)
     }
     render() {
         return (
-            <View style={[styles.container,this.props.style]}>
+            <View style={[styles.container, this.props.style]}>
                 <TouchableOpacity
-                    style={styles.button}
+                    style={[styles.button, this.props.buttonStyle, this.props.decreaseButtonStyle]}
                     onPress={this.decreaseNum}
                 >
-                    <AntDesign name='minus' size={12} color='gray' style={styles.icon} />
+                    <AntDesign name='minus' size={12} color='gray'
+                        style={[styles.icon, this.props.iconStyle, this.props.decreaseIconStyle]}
+                    />
                 </TouchableOpacity>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, this.props.inputStyle]}
                     keyboardType='numeric'
                     value={this.state.value.toString()}
                     onChangeText={(text) => {
                         this.setState({
                             value: text
                         })
+                        this.props.onChange(text)
                     }}
                 />
                 <TouchableOpacity
-                    style={styles.button}
+                    style={[styles.button, this.props.buttonStyle, this.props.increaseButtonStyle]}
                     onPress={this.increaseNum}
                 >
-                    <AntDesign name='plus' size={12} color='gray' style={styles.icon} />
+                    <AntDesign name='plus' size={12} color='gray'
+                        style={[styles.icon, this.props.iconStyle, this.props.increaseIconStyle]}
+                    />
                 </TouchableOpacity>
             </View>
         )
@@ -68,8 +77,8 @@ export default class NumInput extends Component {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flexDirection:'row'
+    container: {
+        flexDirection: 'row'
     },
     button: {
         width: 24,

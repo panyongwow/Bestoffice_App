@@ -11,7 +11,8 @@ export default class ShoppingCart extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selected: false,
+            //selected: false,
+            total:0,    //购物车选中的商品总价
             data: []
         }
         //this.flatRenderItem=this.flatRenderItem.bind(this)
@@ -43,7 +44,7 @@ export default class ShoppingCart extends Component {
             <TouchableOpacity
                 style={{ backgroundColor: '#fff', height: 100, flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderWidth: 0, borderColor: 'red', padding: 10 }}
                 onPress={() => {
-                    alert(item.id)
+                    alert(item.id+','+item.cartnum)
                 }}
             >
                 <TouchableOpacity
@@ -75,48 +76,20 @@ export default class ShoppingCart extends Component {
                             <Text style={styles.price}>{item.price}</Text>
                             <Text style={styles.measurement}>/{item.measurement}</Text>
                         </View>
+                        <NumInput 
+                            value={item.cartnum} 
+                            onChange={(num)=>{item.cartnum=num}}
+                        />
                         {/* <TouchableOpacity style={{borderColor:'red',borderWidth:0}}>
                                 <Tag title='移除' />
                             </TouchableOpacity> */}
-                        <View style={[styles.buynum_container, { borderColor: 'red', borderWidth: 0 }]}>
-                            <View style={styles.buynum_inner}>
-                                <TouchableOpacity
-                                    style={styles.buynum_button}
-                                    onPress={() => {
-                                        //this.reduceBuyNum()
-                                    }}
-                                >
-                                    <AntDesign name='minus' size={12} color='gray' style={styles.buynum_icon} />
-                                </TouchableOpacity>
-                                <TextInput
-                                    style={styles.buynum_input}
-                                    keyboardType='numeric'
-                                    value={item.cartnum.toString()}
-                                    onChangeText={(text) => {
-                                        // this.setState({
-                                        //     buyNum: text
-                                        // })
-                                    }}
-                                />
-                                <TouchableOpacity
-                                    style={styles.buynum_button}
-                                    onPress={() => {
-                                        // this.addBuyNum()
-                                    }}
-                                >
-                                    <AntDesign name='plus' size={12} color='gray' style={styles.buynum_icon} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-
-
                     </View>
-
-                    {/* </View> */}
                 </View>
             </TouchableOpacity>
         )
+    }
+    numChange(num){
+        alert(num)
     }
     render() {
         //const {navigation}=this.props
@@ -144,12 +117,6 @@ export default class ShoppingCart extends Component {
                             <View style={{ height: 2, backgroundColor: '#f3f3f3' }}></View>
                         }
                     />
-                    <View>
-                        <NumInput 
-                            value={2} 
-                            style={{height:50,backgroundColor:'red'}}
-                        />
-                    </View>
                     <View style={{ height: 50, flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{flexDirection:'column',justifyContent:'space-between', flex:1.3,paddingLeft: 10}}>
                             <View style={{  flexDirection: 'row',paddingTop:8,paddingBottom:5}}>
@@ -162,7 +129,7 @@ export default class ShoppingCart extends Component {
                                 <Text style={{ marginLeft: 10 }}>全选</Text>
                             </View>
                             <View>
-                                <Text style={{ fontSize: 12 }}>合计:&nbsp;<Text>&yen;&nbsp;0.00</Text></Text>
+                                <Text style={{ fontSize: 12 }}>合计:&nbsp;<Text>&yen;&nbsp;{this.state.total}</Text></Text>
                             </View>
                         </View>
                         {/* <View style={{ flex: 2, alignItems: 'center' }}>
@@ -266,28 +233,4 @@ const styles = StyleSheet.create({
         color: '#bebebe',
         paddingBottom: 2
     },
-    buynum_container: {
-        // flexDirection: 'row', 
-        // alignItems: 'center', 
-        // justifyContent: 'space-between', 
-        //margin: 10, marginTop: 30, paddingTop: 10, paddingBottom: 10, 
-    },
-    buynum_inner: {
-        flexDirection: 'row', alignItems: 'center'
-    },
-    buynum_button: {
-        //backgroundColor: '#f3f3f3', 
-        width: 24,
-        height: 24
-    },
-    buynum_icon: {
-        lineHeight: 22, marginLeft: 6
-    },
-    buynum_input: {
-        backgroundColor: '#f3f3f3',
-        height: 20, width: 40, padding: 0, textAlign: 'center', fontSize: 14,
-        //fontWeight: 'bold', 
-        lineHeight: 20
-    },
-
 })
